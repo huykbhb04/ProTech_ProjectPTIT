@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Be Vietnam Pro', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: #F3F4F6; /* Smoke White */
+  color: #1F2937; /* Gray 800 */
+}
+
+@layer components {
+  .glass {
+    @apply bg-white bg-opacity-70 backdrop-blur-lg border border-white/40 shadow-lg;
+  }
+  .glass-dark {
+    @apply bg-gray-900 bg-opacity-70 backdrop-blur-lg border border-gray-700/40 shadow-xl;
+  }
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+@keyframes progress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+.animate-shake {
+  animation: shake 0.3s ease-in-out;
+}
+

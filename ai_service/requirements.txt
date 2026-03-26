@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+python-multipart
+torch
+torchvision
+pillow
+numpy
+requests
+opencv-python-headless
+paddlepaddle
+paddleocr
+easyocr
+shapely
+shapely
+pyyaml
+scikit-learn
+geopy

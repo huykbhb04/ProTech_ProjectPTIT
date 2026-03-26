@@ -1,0 +1,307 @@
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import {
+    FileText, ArrowLeft, Calendar, Home, User, Zap, Droplet,
+    Package, CheckCircle2, Shield, Download, DollarSign,
+    Droplets, ShieldCheck, AlertCircle
+} from 'lucide-react';
+import contractService from '../../services/contractService';
+
+const TenantContractView = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [contract, setContract] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [assets, setAssets] = useState([]);
+    const [utilityConfigs, setUtilityConfigs] = useState([]);
+
+    useEffect(() => {
+        fetchContractData();
+    }, [id]);
+
+    const fetchContractData = async () => {
+        try {
+            setLoading(true);
+            const [contractData, assetsData, configsData] = await Promise.all([
+                contractService.getContractDetail(id),
+                contractService.getRoomAssets(id),
+                contractService.getUtilityConfigs(id)
+            ]);
+            setContract(contractData);
+            setAssets(assetsData);
+            setUtilityConfigs(configsData);
+        } catch (error) {
+            console.error('Error fetching contract:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    );
+
+    if (!contract) return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-gray-500">
+            <AlertCircle size={48} className="mb-4 text-red-400" />
+            <p className="font-bold">Không tìm thấy thông tin hợp đồng</p>
+            <button onClick={() => navigate('/tenant/dashboard')} className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold">Quay lại Dashboard</button>
+        </div>
+    );
+
+    const terms = typeof contract.terms === 'string' ? JSON.parse(contract.terms) : contract.terms;
+    const additionalServices = typeof contract.additional_services === 'string' ? JSON.parse(contract.additional_services) : (contract.additional_services || []);
+    const serviceCommitments = typeof contract.service_commitments === 'string' ? JSON.parse(contract.service_commitments) : contract.service_commitments;
+
+    return (
+        <div className="min-h-screen relative pb-20 overflow-x-hidden">
+            {/* Background Decorative */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/5 blur-[120px] rounded-full"></div>
+                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 blur-[120px] rounded-full"></div>
+            </div>
+
+            <div className="max-w-5xl mx-auto px-4 py-8 relative z-10">
+                {/* Header */}
+                <div className="flex items-center gap-4 mb-8">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="p-3 hover:bg-white/80 glass rounded-2xl transition-all shadow-sm border-white/40 hover:scale-105 active:scale-95"
+                    >
+                        <ArrowLeft size={20} />
+                    </button>
+                    <div>
+                        <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none mb-1 block">Chi tiết hợp đồng chính thức</span>
+                        <h1 className="text-2xl font-black text-gray-900 leading-none">Mã số: {contract.contract_id || `CT-${contract.id}`}</h1>
+                    </div>
+                    <div className="ml-auto flex gap-3">
+                        <button className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-xl">
+                            <Download size={16} /> Tải bản gốc (PDF)
+                        </button>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    {/* Main Content */}
+                    <div className="lg:col-span-8 space-y-8">
+                        {/* Summary Status Banner */}
+                        <div className="glass p-8 rounded-[2.5rem] border-white/40 shadow-2xl relative overflow-hidden bg-gradient-to-br from-indigo-600 to-indigo-800 text-white">
+                            <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+                            <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+                                <div className="space-y-2 text-center md:text-left">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest mb-2 border border-white/10">
+                                        <ShieldCheck size={12} /> Hợp đồng đã ký kết
+                                    </div>
+                                    <h2 className="text-3xl font-black">{contract.building_name}</h2>
+                                    <p className="text-indigo-100 font-medium">Phòng {contract.room_number || '101'} • {contract.address}</p>
+                                </div>
+                                <div className="bg-white/10 backdrop-blur-xl p-6 rounded-[2rem] border border-white/10 text-center min-w-[200px]">
+                                    <p className="text-[10px] font-black uppercase tracking-widest mb-2 text-indigo-100 italic">Giá thuê hàng tháng</p>
+                                    <p className="text-3xl font-black">{new Intl.NumberFormat('vi-VN').format(contract.rent_price)}₫</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Contract Details */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="glass p-8 rounded-[2rem] border-white/40 shadow-lg">
+                                <h3 className="text-sm font-black text-indigo-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                    <Calendar size={18} /> Thời hạn thuê
+                                </h3>
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center p-4 bg-white/40 rounded-2xl border border-white/60">
+                                        <span className="text-xs font-bold text-gray-400 uppercase">Bắt đầu</span>
+                                        <span className="font-black text-gray-800">{new Date(contract.start_date).toLocaleDateString('vi-VN')}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center p-4 bg-white/40 rounded-2xl border border-white/60">
+                                        <span className="text-xs font-bold text-gray-400 uppercase">Kết thúc</span>
+                                        <span className="font-black text-gray-800">{new Date(contract.end_date).toLocaleDateString('vi-VN')}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="glass p-8 rounded-[2rem] border-white/40 shadow-lg">
+                                <h3 className="text-sm font-black text-indigo-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                    <DollarSign size={18} /> Tiền đặt cọc
+                                </h3>
+                                <div className="flex flex-col items-center justify-center h-28 space-y-2">
+                                    <p className="text-3xl font-black text-indigo-600">{new Intl.NumberFormat('vi-VN').format(contract.deposit_amount)}₫</p>
+                                    <div className="flex items-center gap-1 text-[10px] font-black text-green-600 uppercase bg-green-50 px-3 py-1 rounded-full border border-green-100">
+                                        <CheckCircle2 size={10} /> Đã xác nhận
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Terms Text Section */}
+                        <div className="glass p-10 rounded-[2.5rem] border-white/40 shadow-lg">
+                            <h3 className="text-lg font-black text-gray-900 mb-8 flex items-center gap-3">
+                                <div className="w-1.5 h-6 bg-indigo-600 rounded-full"></div>
+                                Điều khoản hợp đồng
+                            </h3>
+                            <div className="space-y-8">
+                                {terms && typeof terms === 'object' ? Object.entries(terms).map(([key, value]) => (
+                                    <div key={key} className="relative pl-8 border-l-2 border-indigo-100 group">
+                                        <div className="absolute -left-2 top-0 w-4 h-4 bg-indigo-600 rounded-full border-4 border-white shadow-sm group-hover:scale-125 transition-transform"></div>
+                                        <h4 className="text-xs font-black text-indigo-400 uppercase tracking-widest mb-2">{key.replace(/_/g, ' ')}</h4>
+                                        <p className="text-gray-700 leading-relaxed font-bold italic">{value}</p>
+                                    </div>
+                                )) : (
+                                    <p className="text-gray-500 italic">Điều khoản đang được cập nhật...</p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Handover Data */}
+                        {(contract.handover_electricity_index || contract.handover_water_index) && (
+                            <div className="glass p-8 rounded-[2rem] border-white/40 shadow-lg">
+                                <h3 className="text-lg font-black text-gray-900 mb-6 flex items-center gap-3">
+                                    <div className="w-1.5 h-6 bg-amber-500 rounded-full"></div>
+                                    Chỉ số bàn nhận
+                                </h3>
+                                <div className="grid grid-cols-2 gap-4">
+                                    {contract.handover_electricity_index && (
+                                        <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <Zap className="text-amber-600" size={20} />
+                                                <span className="text-[10px] font-black text-gray-500 uppercase">Số điện</span>
+                                            </div>
+                                            <p className="text-2xl font-black text-amber-600">
+                                                {contract.handover_electricity_index} <span className="text-xs font-bold text-amber-400">kWh</span>
+                                            </p>
+                                        </div>
+                                    )}
+                                    {contract.handover_water_index && (
+                                        <div className="p-4 bg-blue-50 rounded-2xl border border-blue-200">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <Droplet className="text-blue-600" size={20} />
+                                                <span className="text-[10px] font-black text-gray-500 uppercase">Số nước</span>
+                                            </div>
+                                            <p className="text-2xl font-black text-blue-600">
+                                                {contract.handover_water_index} <span className="text-xs font-bold text-blue-400">m³</span>
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Service Commitments */}
+                        {serviceCommitments && (
+                            <div className="glass p-8 rounded-[2rem] border-white/40 shadow-lg">
+                                <h3 className="text-lg font-black text-gray-900 mb-6 flex items-center gap-3">
+                                    <div className="w-1.5 h-6 bg-indigo-600 rounded-full"></div>
+                                    Cam kết dịch vụ
+                                </h3>
+                                <div className="space-y-4">
+                                    {serviceCommitments.maintenance_response_time && (
+                                        <div className="p-4 bg-white/40 rounded-2xl border border-white/60">
+                                            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1">Thời gian phản hồi bảo trì</span>
+                                            <span className="font-bold text-gray-800">{serviceCommitments.maintenance_response_time}</span>
+                                        </div>
+                                    )}
+                                    {serviceCommitments.repair_responsibility && (
+                                        <div className="p-4 bg-white/40 rounded-2xl border border-white/60">
+                                            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1">Trách nhiệm sửa chữa</span>
+                                            <span className="font-bold text-gray-800">{serviceCommitments.repair_responsibility}</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Sidebar */}
+                    <div className="lg:col-span-4 space-y-6">
+                        {/* Utility Prices */}
+                        {utilityConfigs.length > 0 && (
+                            <div className="glass p-8 rounded-[2rem] border-white/40 shadow-lg">
+                                <h3 className="text-sm font-black text-indigo-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                    <Droplets size={18} /> Đơn giá dịch vụ
+                                </h3>
+                                <div className="space-y-4">
+                                    {utilityConfigs.map((config) => (
+                                        <div key={config.config_id} className="flex justify-between items-center p-4 bg-white/40 rounded-2xl border border-white/60">
+                                            <span className="text-xs font-bold text-gray-500">{config.name}</span>
+                                            <span className="font-black text-gray-900">{new Intl.NumberFormat('vi-VN').format(config.price)}₫</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Additional Services */}
+                        {additionalServices.length > 0 && (
+                            <div className="glass p-8 rounded-[2rem] border-white/40 shadow-lg">
+                                <h3 className="text-sm font-black text-indigo-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                    <Package size={18} /> Tiện ích đi kèm
+                                </h3>
+                                <div className="space-y-3">
+                                    {additionalServices.filter(s => s.included).map((service, index) => (
+                                        <div key={index} className="flex items-center justify-between p-3 bg-indigo-50/50 rounded-xl border border-indigo-100">
+                                            <div className="flex items-center gap-2">
+                                                <CheckCircle2 className="text-indigo-600" size={14} />
+                                                <span className="text-xs font-bold text-gray-700">{service.name}</span>
+                                            </div>
+                                            <span className="text-[10px] font-black text-indigo-600">
+                                                {service.price > 0 ? `${new Intl.NumberFormat('vi-VN').format(service.price)}₫` : 'Miễn phí'}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Room Assets */}
+                        {assets.length > 0 && (
+                            <div className="glass p-8 rounded-[2rem] border-white/40 shadow-lg">
+                                <h3 className="text-sm font-black text-indigo-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                    <Home size={18} /> Danh mục tài sản
+                                </h3>
+                                <div className="space-y-2">
+                                    {assets.map((asset) => (
+                                        <div key={asset.asset_id} className="flex items-center justify-between p-3 bg-white/40 rounded-xl border border-white/60">
+                                            <span className="text-xs font-bold text-gray-700">{asset.item_name}</span>
+                                            <span className={`px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-tighter ${asset.condition_status === 'new' ? 'bg-green-100 text-green-700' :
+                                                    asset.condition_status === 'good' ? 'bg-blue-100 text-blue-700' :
+                                                        'bg-amber-100 text-amber-700'
+                                                }`}>
+                                                {asset.condition_status === 'new' ? 'Mới' : asset.condition_status === 'good' ? 'Tốt' : 'Trung bình'}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Signature Status */}
+                        <div className="glass p-8 rounded-[2rem] border-white/40 shadow-lg">
+                            <h3 className="text-sm font-black text-indigo-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                <Shield size={18} /> Xác thực bảo mật
+                            </h3>
+                            <div className="space-y-4">
+                                <div className="flex items-start gap-3 p-4 bg-green-50 rounded-2xl border border-green-100">
+                                    <CheckCircle2 size={20} className="text-green-600 mt-1" />
+                                    <div>
+                                        <p className="text-xs font-black text-gray-900">Bên thuê (Bạn)</p>
+                                        <p className="text-[10px] text-gray-500 italic">{contract.tenant_signed_at ? new Date(contract.tenant_signed_at).toLocaleString('vi-VN') : 'Đã ký trực tuyến'}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3 p-4 bg-green-50 rounded-2xl border border-green-100">
+                                    <CheckCircle2 size={20} className="text-green-600 mt-1" />
+                                    <div>
+                                        <p className="text-xs font-black text-gray-900">Bên cho thuê</p>
+                                        <p className="text-[10px] text-gray-500 italic">{contract.landlord_signed_at ? new Date(contract.landlord_signed_at).toLocaleString('vi-VN') : 'Đã ký trực tuyến'}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default TenantContractView;
