@@ -1,145 +1,120 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-    FileText, Calendar, DollarSign, ChevronRight,
-    Clock, CheckCircle2, AlertCircle, Filter
-} from 'lucide-react';
+import { FileText, Calendar, ChevronRight, Loader } from 'lucide-react';
 import api from '../../services/api';
+
+/* ── Status helpers ── */
+const billBadge = s => ({ paid: 'badge-success', pending: 'badge-warning', overdue: 'badge-danger', confirmed: 'badge-info' }[s] || 'badge-muted');
+const billLabel = s => ({ paid: 'Đã thanh toán', pending: 'Chờ thanh toán', overdue: 'Quá hạn', confirmed: 'Chờ duyệt' }[s] || s);
+
+const FILTERS = [
+    { id: 'all', label: 'Tất cả' },
+    { id: 'pending', label: 'Chưa trả' },
+    { id: 'paid', label: 'Đã trả' },
+    { id: 'overdue', label: 'Quá hạn' },
+];
 
 const TenantBills = () => {
     const navigate = useNavigate();
     const [bills, setBills] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [filter, setFilter] = useState('all'); // all, pending, paid, overdue
+    const [filter, setFilter] = useState('all');
 
     useEffect(() => {
-        fetchBills();
+        api.get('/bills/tenant/list')
+            .then(r => setBills(r.data))
+            .catch(console.error)
+            .finally(() => setLoading(false));
     }, []);
 
-    const fetchBills = async () => {
-        try {
-            const res = await api.get('/bills/tenant/list');
-            setBills(res.data);
-        } catch (error) {
-            console.error('Error fetching bills:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const getStatusColor = (status) => {
-        switch (status) {
-            case 'paid': return 'bg-green-100 text-green-700';
-            case 'pending': return 'bg-yellow-100 text-yellow-700';
-            case 'overdue': return 'bg-red-100 text-red-700';
-            case 'confirmed': return 'bg-blue-100 text-blue-700';
-            default: return 'bg-gray-100 text-gray-700';
-        }
-    };
-
-    const getStatusText = (status) => {
-        switch (status) {
-            case 'paid': return 'Đã thanh toán';
-            case 'pending': return 'Chờ thanh toán';
-            case 'overdue': return 'Quá hạn';
-            case 'confirmed': return 'Chờ duyệt';
-            default: return status;
-        }
-    };
-
-    const filteredBills = bills.filter(bill => {
-        if (filter === 'all') return true;
-        return bill.status === filter;
-    });
+    const filtered = bills.filter(b => filter === 'all' ? true : b.status === filter);
+    const unpaidTotal = bills.filter(b => b.status !== 'paid').reduce((s, b) => s + (b.total_amount || 0), 0);
 
     if (loading) return (
         <div className="flex justify-center items-center h-64">
-            <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+            <Loader size={24} className="animate-spin text-gray-300" />
         </div>
     );
 
     return (
-        <div className="max-w-6xl mx-auto px-4 md:px-10 py-8 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-black text-gray-900 tracking-tight">Hóa đơn & Thanh toán</h1>
-                    <p className="text-gray-500 font-medium mt-1">Quản lý hóa đơn điện nước hàng tháng</p>
-                </div>
+        <div className="max-w-5xl mx-auto px-4 md:px-8 py-8 space-y-8 animate-fade-in-up">
 
-                {/* Filter */}
-                <div className="flex bg-white rounded-xl p-1 shadow-sm border border-gray-100">
-                    {['all', 'pending', 'paid'].map((f) => (
-                        <button
-                            key={f}
-                            onClick={() => setFilter(f)}
-                            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${filter === f
-                                ? 'bg-indigo-100 text-indigo-700 shadow-sm'
-                                : 'text-gray-500 hover:bg-gray-50'
-                                }`}
-                        >
-                            {f === 'all' ? 'Tất cả' : f === 'pending' ? 'Chưa trả' : 'Đã trả'}
-                        </button>
-                    ))}
-                </div>
+            {/* ── Header ── */}
+            <div className="section-divider">
+                <p className="section-label mb-2">Tài chính</p>
+                <h1 className="page-title">Hóa đơn & Thanh toán</h1>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredBills.length > 0 ? (
-                    filteredBills.map((bill) => (
-                        <div
-                            key={bill.bill_id}
-                            onClick={() => navigate(`/tenant/bills/${bill.bill_id}`)}
-                            className="bg-white rounded-2xl p-6 shadow-lg shadow-indigo-100 border border-white/50 hover:border-indigo-200 transition-all cursor-pointer group"
-                        >
-                            <div className="flex justify-between items-start mb-4">
-                                <div className="flex items-center gap-3">
-                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${bill.status === 'paid' ? 'bg-green-100 text-green-600' :
-                                        bill.status === 'overdue' ? 'bg-red-100 text-red-600' : 'bg-indigo-100 text-indigo-600'
-                                        }`}>
-                                        <FileText size={24} />
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-bold text-gray-500 uppercase tracking-wider">
-                                            Tháng {new Date(bill.billing_month).getMonth() + 1}/{new Date(bill.billing_month).getFullYear()}
-                                        </p>
-                                        <h3 className="text-xl font-black text-gray-900">
-                                            {bill.total_amount.toLocaleString('vi-VN')} ₫
-                                        </h3>
-                                    </div>
-                                </div>
-                                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${getStatusColor(bill.status)}`}>
-                                    {getStatusText(bill.status)}
-                                </span>
-                            </div>
-
-                            <div className="space-y-3">
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-gray-500 flex items-center gap-2">
-                                        <Calendar size={16} /> Hạn thanh toán
-                                    </span>
-                                    <span className={`font-semibold ${new Date(bill.due_date) < new Date() && bill.status !== 'paid' ? 'text-red-600' : 'text-gray-900'
-                                        }`}>
-                                        {new Date(bill.due_date).toLocaleDateString('vi-VN')}
-                                    </span>
-                                </div>
-                                <div className="h-px bg-gray-100"></div>
-                                <div className="flex justify-between items-center text-indigo-600 font-bold text-sm group-hover:translate-x-1 transition-transform">
-                                    Xem chi tiết
-                                    <ChevronRight size={16} />
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
-                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 mb-4">
-                            <FileText size={32} />
-                        </div>
-                        <h3 className="text-lg font-bold text-gray-900">Không có hóa đơn nào</h3>
-                        <p className="text-gray-500">Bạn chưa có hóa đơn nào trong danh mục này</p>
+            {/* ── Summary Banner ── */}
+            {unpaidTotal > 0 && (
+                <div className="bg-black text-white p-5 flex items-center justify-between">
+                    <div>
+                        <p className="section-label text-gray-500 mb-1">Còn phải thanh toán</p>
+                        <p className="text-2xl font-black tracking-tighter">{unpaidTotal.toLocaleString('vi-VN')} ₫</p>
                     </div>
-                )}
+                    <Calendar size={28} className="text-gray-600" />
+                </div>
+            )}
+
+            {/* ── Filters ── */}
+            <div className="flex gap-1 overflow-x-auto scrollbar-hide">
+                {FILTERS.map(f => (
+                    <button key={f.id} onClick={() => setFilter(f.id)}
+                        className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all border ${
+                            filter === f.id ? 'bg-black text-white border-black' : 'border-gray-200 text-gray-500 hover:border-gray-400 bg-white'
+                        }`}>
+                        {f.label}
+                    </button>
+                ))}
             </div>
+
+            {/* ── Bill Cards ── */}
+            {filtered.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {filtered.map(bill => {
+                        const isOverdue = new Date(bill.due_date) < new Date() && bill.status !== 'paid';
+                        return (
+                            <div key={bill.bill_id}
+                                onClick={() => navigate(`/tenant/bills/${bill.bill_id}`)}
+                                className="card-hover p-5 cursor-pointer group">
+                                <div className="flex items-start justify-between mb-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className={`w-10 h-10 flex items-center justify-center ${
+                                            bill.status === 'paid' ? 'bg-emerald-50 text-emerald-600' :
+                                            isOverdue ? 'bg-red-50 text-red-600' : 'bg-indigo-50 text-indigo-600'
+                                        }`}>
+                                            <FileText size={18} />
+                                        </div>
+                                        <div>
+                                            <p className="section-label">
+                                                Tháng {new Date(bill.billing_month).getMonth() + 1}/{new Date(bill.billing_month).getFullYear()}
+                                            </p>
+                                            <p className="text-xl font-black text-black tracking-tighter">
+                                                {bill.total_amount.toLocaleString('vi-VN')} ₫
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <span className={`badge ${billBadge(bill.status)}`}>{billLabel(bill.status)}</span>
+                                </div>
+
+                                <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                                    <p className={`meta-text ${isOverdue ? 'text-red-500' : 'text-gray-400'}`}>
+                                        Hạn: {new Date(bill.due_date).toLocaleDateString('vi-VN')}
+                                    </p>
+                                    <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wide text-indigo-600 group-hover:text-black transition-colors">
+                                        Xem chi tiết <ChevronRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            ) : (
+                <div className="empty-state border border-dashed border-gray-200">
+                    <FileText size={32} className="text-gray-200 mx-auto mb-4" />
+                    <p className="empty-state-text">Không có hóa đơn nào</p>
+                </div>
+            )}
         </div>
     );
 };

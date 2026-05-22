@@ -1,9 +1,6 @@
 -- Database Initialization Script for Smart PropTech Platform
 -- Based on the 6 Group Specification provided by User
 
-CREATE DATABASE IF NOT EXISTS smart_proptech;
-USE smart_proptech;
-
 -- ========================================================
 -- NHÓM 1: QUẢN LÝ NGƯỜI DÙNG & AI PROFILE (USER CORE)
 -- ========================================================

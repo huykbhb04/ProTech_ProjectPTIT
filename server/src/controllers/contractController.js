@@ -27,10 +27,15 @@ exports.createContractFromBooking = async (req, res) => {
         const room = await Property.getRoomById(booking.room_id);
 
         // Prepare default contract data
+        // Subtract viewing deposit (already paid) from security deposit
+        const paidViewingDeposit = parseFloat(booking.deposit_amount) || 0;
+        const totalSecurityDeposit = room.deposit_amount || room.base_price;
+        const remainingDeposit = Math.max(0, totalSecurityDeposit - paidViewingDeposit);
+
         const contractData = {
             start_date: new Date().toISOString().split('T')[0], // Default start today
             end_date: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0], // 1 year default
-            deposit_amount: room.deposit_amount || room.base_price,
+            deposit_amount: remainingDeposit,
             monthly_price: room.rent_price || room.base_price,
             contract_content: {
                 terms: [
@@ -268,13 +273,13 @@ exports.saveContractHandover = async (req, res) => {
         // Verify ownership
         const contract = await Contract.getById(id);
         if (!contract || contract.landlord_id !== req.user.user_id) {
-            return res.status(403).json({ message: 'KhÃ´ng cÃ³ quyá»n thá»±c hiá»‡n.' });
+            return res.status(403).json({ message: 'Không có quyền thực hiện.' });
         }
 
         // Validate required fields
         if (!handoverData.electricity_index || !handoverData.water_index) {
             return res.status(400).json({
-                message: 'Vui lÃ²ng nháº­p chá»‰ sá»‘ Ä‘iá»‡n vÃ  nÆ°á»›c.'
+                message: 'Vui lòng nhập chỉ số điện và nước.'
             });
         }
 
@@ -282,7 +287,7 @@ exports.saveContractHandover = async (req, res) => {
 
         res.json({
             success: true,
-            message: 'ÄÃ£ lÆ°u thÃ´ng tin bÃ n giao thÃ nh cÃ´ng.'
+            message: 'Đã lưu thông tin bàn giao thành công.'
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -295,12 +300,12 @@ exports.getRoomAssets = async (req, res) => {
         const contract = await Contract.getById(id);
 
         if (!contract) {
-            return res.status(404).json({ message: 'KhÃ´ng tÃ¬m tháº¥y há»£p Ä‘á»“ng.' });
+            return res.status(404).json({ message: 'Không tìm thấy hợp đồng.' });
         }
 
         // Verify access (landlord or tenant)
         if (contract.landlord_id !== req.user.user_id && contract.tenant_id !== req.user.user_id) {
-            return res.status(403).json({ message: 'KhÃ´ng cÃ³ quyá»n truy cáº­p.' });
+            return res.status(403).json({ message: 'Không có quyền truy cập.' });
         }
 
         const assets = await Contract.getRoomAssets(contract.room_id);
@@ -316,12 +321,12 @@ exports.getUtilityConfigs = async (req, res) => {
         const contract = await Contract.getById(id);
 
         if (!contract) {
-            return res.status(404).json({ message: 'KhÃ´ng tÃ¬m tháº¥y há»£p Ä‘á»“ng.' });
+            return res.status(404).json({ message: 'Không tìm thấy hợp đồng.' });
         }
 
         // Verify access (landlord or tenant)
         if (contract.landlord_id !== req.user.user_id && contract.tenant_id !== req.user.user_id) {
-            return res.status(403).json({ message: 'KhÃ´ng cÃ³ quyá»n truy cáº­p.' });
+            return res.status(403).json({ message: 'Không có quyền truy cập.' });
         }
 
         const configs = await Contract.getUtilityConfigs(contract.landlord_id);

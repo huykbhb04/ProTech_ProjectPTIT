@@ -47,31 +47,34 @@ exports.uploadMeterReading = async (req, res) => {
             return res.status(400).json({ message: 'Vui lòng upload ảnh đồng hồ để làm bằng chứng' });
         }
 
-        // Upload to Cloudinary
-        const cloudinaryUrl = file.path; // Already uploaded by multer-cloudinary
+        // file.path = Cloudinary URL (https://...) when using multer-cloudinary
+        const cloudinaryUrl = file.path;
 
         let reading = parseFloat(reading_value);
         let confidence = 1.0; // Manual input is 100% confident
         let isManual = true;
 
-        // If no manual reading provided, try AI (fallback)
+        // If no manual reading provided, try AI OCR (fallback)
         if (isNaN(reading)) {
             isManual = false;
-            // Call AI service for OCR
-            const formData = new FormData();
-            formData.append('file', fs.createReadStream(file.path));
-
             try {
-                const aiResponse = await axios.post('http://localhost:8000/ocr/meter', formData, {
-                    headers: formData.getHeaders()
+                // BUG FIX #6: file.path is a Cloudinary URL, not a local path.
+                // Download the image from Cloudinary into a buffer, then send to AI service.
+                const axiosLib = require('axios');
+                const imageResponse = await axiosLib.get(cloudinaryUrl, { responseType: 'arraybuffer' });
+                const imageBuffer = Buffer.from(imageResponse.data);
+
+                const formData = new FormData();
+                const { Blob } = require('buffer');
+                formData.append('file', new Blob([imageBuffer], { type: file.mimetype || 'image/jpeg' }), file.originalname || 'meter.jpg');
+
+                const aiResponse = await axiosLib.post('http://localhost:8000/ocr/meter', formData, {
+                    headers: formData.getHeaders ? formData.getHeaders() : { 'Content-Type': 'multipart/form-data' }
                 });
                 reading = aiResponse.data.reading;
                 confidence = aiResponse.data.confidence;
             } catch (aiError) {
                 console.error('AI service error:', aiError.message);
-                // Return 200 with image but ask for manual input if not provided
-                // But frontend should have provided it if we follow the new flow.
-                // If we are here, it means frontend didn't send value. 
                 return res.status(503).json({
                     message: 'Dịch vụ AI OCR tạm thời không khả dụng. Vui lòng nhập số thủ công.',
                     imageUrl: cloudinaryUrl
@@ -93,7 +96,7 @@ exports.uploadMeterReading = async (req, res) => {
             reading,
             confidence,
             imageUrl: cloudinaryUrl,
-            autoApprove: true, // Manual input is trusted or AI high confidence
+            autoApprove: true,
             isManual,
             message: 'Đã cập nhật chỉ số thành công'
         });

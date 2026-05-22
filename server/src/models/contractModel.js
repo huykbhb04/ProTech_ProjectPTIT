@@ -176,13 +176,30 @@ class Contract {
     }
 
     static async tenantSign(contractId) {
-        const query = `
-            UPDATE contracts 
-            SET status = 'signed_by_tenant', tenant_signed_at = NOW(), terms_accepted = TRUE 
-            WHERE contract_id = ?
-        `;
-        const [result] = await db.execute(query, [contractId]);
-        return result.affectedRows > 0;
+        const connection = await db.getConnection();
+        try {
+            await connection.beginTransaction();
+            
+            // 1. Update contract status
+            await connection.execute(
+                "UPDATE contracts SET status = 'signed_by_tenant', tenant_signed_at = NOW(), terms_accepted = TRUE WHERE contract_id = ?",
+                [contractId]
+            );
+
+            // 2. Update booking status to 'signed'
+            const [contract] = await connection.execute('SELECT booking_id FROM contracts WHERE contract_id = ?', [contractId]);
+            if (contract.length && contract[0].booking_id) {
+                await connection.execute("UPDATE bookings SET status = 'signed' WHERE booking_id = ?", [contract[0].booking_id]);
+            }
+
+            await connection.commit();
+            return true;
+        } catch (error) {
+            await connection.rollback();
+            throw error;
+        } finally {
+            connection.release();
+        }
     }
 
     static async landlordSign(contractId) {
@@ -192,7 +209,11 @@ class Contract {
             await connection.beginTransaction();
 
             const [contract] = await connection.execute(
-                'SELECT room_id, handover_electricity_index, handover_water_index FROM contracts WHERE contract_id = ?',
+                // BUG FIX #5: Added JOIN rooms to get room_number for use in transaction description
+                `SELECT c.room_id, c.handover_electricity_index, c.handover_water_index, r.room_number
+                 FROM contracts c
+                 JOIN rooms r ON c.room_id = r.room_id
+                 WHERE c.contract_id = ?`,
                 [contractId]
             );
             if (!contract.length) throw new Error('Contract not found');
@@ -211,6 +232,39 @@ class Contract {
                 "UPDATE contracts SET status = 'active', landlord_signed_at = NOW() WHERE contract_id = ?",
                 [contractId]
             );
+
+            // 1b. Update booking status to 'renting' and release escrow
+            const [bookingInfo] = await connection.execute(
+                `SELECT b.booking_id, b.type, b.deposit_amount, b.status, bl.landlord_id 
+                 FROM contracts c 
+                 JOIN bookings b ON c.booking_id = b.booking_id 
+                 JOIN rooms r ON b.room_id = r.room_id
+                 JOIN buildings bl ON r.building_id = bl.building_id
+                 WHERE c.contract_id = ?`,
+                [contractId]
+            );
+
+            if (bookingInfo.length) {
+                const b = bookingInfo[0];
+                // Update status to 'renting'
+                await connection.execute("UPDATE bookings SET status = 'renting' WHERE booking_id = ?", [b.booking_id]);
+
+                // Release escrowed deposit to landlord if it was a reservation and deposited
+                if (b.type === 'reservation' && b.status === 'deposited') {
+                    // Transfer money to landlord wallet
+                    await connection.execute(
+                        "UPDATE users SET wallet_balance = wallet_balance + ? WHERE user_id = ?",
+                        [b.deposit_amount, b.landlord_id]
+                    );
+
+                    // Create transaction record for landlord
+                    await connection.execute(
+                        `INSERT INTO transactions (user_id, amount, type, reference_id, description, status) 
+                         VALUES (?, ?, 'deposit_receive', ?, ?, 'completed')`,
+                        [b.landlord_id, b.deposit_amount, b.booking_id, `Nhận tiền cọc giữ chỗ phòng ${contract[0].room_number}`, 'completed']
+                    );
+                }
+            }
 
             // 2. Update room status to occupied
             await connection.execute(

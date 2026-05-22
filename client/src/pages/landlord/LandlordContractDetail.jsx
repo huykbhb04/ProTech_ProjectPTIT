@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-    FileText, User, Calendar, Home, ArrowLeft, Edit, Save, Plus, X,
-    Upload, Image as ImageIcon, Loader2, PenTool, CheckCircle2, AlertTriangle,
+    FileText, User, Calendar, House, ArrowLeft, Pencil, Save, Plus, X,
+    Upload, Image as ImageIcon, Loader, PenTool, CircleCheck, TriangleAlert,
     Eye, ZoomIn
 } from 'lucide-react';
 import contractService from '../../services/contractService';
@@ -145,7 +145,7 @@ const LandlordContractDetail = () => {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <Loader2 className="w-12 h-12 text-indigo-600 animate-spin" />
+                <Loader className="w-12 h-12 text-indigo-600 animate-spin" />
             </div>
         );
     }
@@ -153,7 +153,7 @@ const LandlordContractDetail = () => {
     if (!contract) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center p-6">
-                <AlertTriangle size={64} className="text-amber-500 mb-4" />
+                <TriangleAlert size={64} className="text-amber-500 mb-4" />
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Không tìm thấy hợp đồng</h2>
                 <button onClick={() => navigate('/landlord/contracts')} className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
                     Quay lại danh sách
@@ -280,7 +280,7 @@ const LandlordContractDetail = () => {
                                         onClick={() => setIsEditingTerms(true)}
                                         className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
                                     >
-                                        <Edit size={16} />
+                                        <Pencil size={16} />
                                         Chỉnh sửa
                                     </button>
                                 )}
@@ -291,7 +291,7 @@ const LandlordContractDetail = () => {
                                             disabled={isSavingTerms}
                                             className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
                                         >
-                                            {isSavingTerms ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
+                                            {isSavingTerms ? <Loader className="animate-spin" size={16} /> : <Save size={16} />}
                                             Lưu
                                         </button>
                                         <button
@@ -431,7 +431,7 @@ const LandlordContractDetail = () => {
                                     >
                                         {isUploadingCCCD ? (
                                             <>
-                                                <Loader2 className="animate-spin" size={20} />
+                                                <Loader className="animate-spin" size={20} />
                                                 Đang upload...
                                             </>
                                         ) : (
@@ -467,7 +467,7 @@ const LandlordContractDetail = () => {
                                     <div className="space-y-3">
                                         <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                                             <div className="flex items-center gap-2 text-green-700 mb-2">
-                                                <CheckCircle2 size={20} />
+                                                <CircleCheck size={20} />
                                                 <span className="font-semibold">Đã hoàn tất thông tin bàn giao</span>
                                             </div>
                                             <div className="grid grid-cols-2 gap-4 mt-3 text-sm">
@@ -562,7 +562,7 @@ const LandlordContractDetail = () => {
                                     >
                                         {isSigning ? (
                                             <>
-                                                <Loader2 className="animate-spin" size={20} />
+                                                <Loader className="animate-spin" size={20} />
                                                 Đang ký...
                                             </>
                                         ) : (
@@ -591,7 +591,7 @@ const LandlordContractDetail = () => {
                                 <div className={`flex items-center gap-3 p-3 rounded-lg ${contract.tenant_signed_at ? 'bg-green-50' : 'bg-gray-50'
                                     }`}>
                                     {contract.tenant_signed_at ? (
-                                        <CheckCircle2 className="text-green-600" size={20} />
+                                        <CircleCheck className="text-green-600" size={20} />
                                     ) : (
                                         <div className="w-5 h-5 border-2 border-gray-300 rounded-full"></div>
                                     )}
@@ -608,7 +608,7 @@ const LandlordContractDetail = () => {
                                 <div className={`flex items-center gap-3 p-3 rounded-lg ${contract.landlord_signed_at ? 'bg-green-50' : 'bg-gray-50'
                                     }`}>
                                     {contract.landlord_signed_at ? (
-                                        <CheckCircle2 className="text-green-600" size={20} />
+                                        <CircleCheck className="text-green-600" size={20} />
                                     ) : (
                                         <div className="w-5 h-5 border-2 border-gray-300 rounded-full"></div>
                                     )}

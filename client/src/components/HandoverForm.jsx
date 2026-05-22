@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Zap, Droplet, DollarSign, Package, FileText, Save, Loader2 } from 'lucide-react';
+import { Zap, Droplet, DollarSign, Package, FileText, Save, Loader } from 'lucide-react';
 import contractService from '../services/contractService';
 
 const HandoverForm = ({ contractId, onSave, onCancel }) => {
@@ -88,7 +88,7 @@ const HandoverForm = ({ contractId, onSave, onCancel }) => {
     if (loading) {
         return (
             <div className="flex items-center justify-center p-12">
-                <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
+                <Loader className="w-8 h-8 text-indigo-600 animate-spin" />
             </div>
         );
     }
@@ -314,7 +314,7 @@ const HandoverForm = ({ contractId, onSave, onCancel }) => {
                 >
                     {saving ? (
                         <>
-                            <Loader2 className="animate-spin" size={20} />
+                            <Loader className="animate-spin" size={20} />
                             Đang lưu...
                         </>
                     ) : (

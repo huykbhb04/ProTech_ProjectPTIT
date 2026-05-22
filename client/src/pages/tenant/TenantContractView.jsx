@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-    FileText, ArrowLeft, Calendar, Home, User, Zap, Droplet,
-    Package, CheckCircle2, Shield, Download, DollarSign,
-    Droplets, ShieldCheck, AlertCircle
+    FileText, ArrowLeft, Calendar, House, User, Zap, Droplet,
+    Package, CircleCheck, Shield, Download, DollarSign,
+    Droplets, ShieldCheck, CircleAlert, Loader
 } from 'lucide-react';
 import contractService from '../../services/contractService';
 
@@ -38,14 +38,14 @@ const TenantContractView = () => {
     };
 
     if (loading) return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-            <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+        <div className="flex items-center justify-center min-h-[400px]">
+            <Loader size={24} className="animate-spin text-gray-300" />
         </div>
     );
 
     if (!contract) return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-gray-500">
-            <AlertCircle size={48} className="mb-4 text-red-400" />
+            <CircleAlert size={48} className="mb-4 text-red-400" />
             <p className="font-bold">Không tìm thấy thông tin hợp đồng</p>
             <button onClick={() => navigate('/tenant/dashboard')} className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold">Quay lại Dashboard</button>
         </div>
@@ -56,56 +56,42 @@ const TenantContractView = () => {
     const serviceCommitments = typeof contract.service_commitments === 'string' ? JSON.parse(contract.service_commitments) : contract.service_commitments;
 
     return (
-        <div className="min-h-screen relative pb-20 overflow-x-hidden">
-            {/* Background Decorative */}
-            <div className="fixed inset-0 z-0 pointer-events-none">
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/5 blur-[120px] rounded-full"></div>
-                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 blur-[120px] rounded-full"></div>
-            </div>
-
-            <div className="max-w-5xl mx-auto px-4 py-8 relative z-10">
-                {/* Header */}
-                <div className="flex items-center gap-4 mb-8">
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="p-3 hover:bg-white/80 glass rounded-2xl transition-all shadow-sm border-white/40 hover:scale-105 active:scale-95"
-                    >
-                        <ArrowLeft size={20} />
+        <div className="max-w-5xl mx-auto space-y-8 pb-20 animate-fade-in-up">
+            {/* \u2500\u2500 Header \u2500\u2500 */}
+            <div className="section-divider flex items-end justify-between">
+                <div className="flex items-center gap-4">
+                    <button onClick={() => navigate(-1)} className="btn-ghost px-3 py-3">
+                        <ArrowLeft size={16} />
                     </button>
                     <div>
-                        <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none mb-1 block">Chi tiết hợp đồng chính thức</span>
-                        <h1 className="text-2xl font-black text-gray-900 leading-none">Mã số: {contract.contract_id || `CT-${contract.id}`}</h1>
-                    </div>
-                    <div className="ml-auto flex gap-3">
-                        <button className="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-xl">
-                            <Download size={16} /> Tải bản gốc (PDF)
-                        </button>
+                        <p className="section-label mb-1">H\u1ee3p đ\u1ed3ng ch\u00ednh th\u1ee9c</p>
+                        <h1 className="page-title">M\u00e3 s\u1ed1: {contract.contract_id || `CT-${contract.id}`}</h1>
                     </div>
                 </div>
+                <button className="btn-primary">
+                    <Download size={14} /> T\u1ea3i b\u1ea3n g\u1ed1c (PDF)
+                </button>
+            </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    {/* Main Content */}
-                    <div className="lg:col-span-8 space-y-8">
-                        {/* Summary Status Banner */}
-                        <div className="glass p-8 rounded-[2.5rem] border-white/40 shadow-2xl relative overflow-hidden bg-gradient-to-br from-indigo-600 to-indigo-800 text-white">
-                            <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
-                            <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
-                                <div className="space-y-2 text-center md:text-left">
-                                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest mb-2 border border-white/10">
-                                        <ShieldCheck size={12} /> Hợp đồng đã ký kết
-                                    </div>
-                                    <h2 className="text-3xl font-black">{contract.building_name}</h2>
-                                    <p className="text-indigo-100 font-medium">Phòng {contract.room_number || '101'} • {contract.address}</p>
-                                </div>
-                                <div className="bg-white/10 backdrop-blur-xl p-6 rounded-[2rem] border border-white/10 text-center min-w-[200px]">
-                                    <p className="text-[10px] font-black uppercase tracking-widest mb-2 text-indigo-100 italic">Giá thuê hàng tháng</p>
-                                    <p className="text-3xl font-black">{new Intl.NumberFormat('vi-VN').format(contract.rent_price)}₫</p>
-                                </div>
-                            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    {/* \u2500\u2500 Status Banner \u2500\u2500 */}
+                <div className="lg:col-span-8 space-y-8">
+                    <div className="bg-black text-white p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                        <div className="space-y-2">
+                            <span className="badge bg-white/10 text-white border-white/20 flex items-center gap-1">
+                                <ShieldCheck size={9} /> Hợp đồng đã ký kết
+                            </span>
+                            <h2 className="text-2xl font-black mt-2">{contract.building_name}</h2>
+                            <p className="text-white/60 text-sm font-medium">Phòng {contract.room_number || '101'} • {contract.address}</p>
                         </div>
+                        <div className="border border-white/10 p-5 text-center min-w-[180px]">
+                            <p className="section-label text-white/40 mb-1">Giá thuê / tháng</p>
+                            <p className="text-2xl font-black">{new Intl.NumberFormat('vi-VN').format(contract.rent_price)}₫</p>
+                        </div>
+                    </div>
 
-                        {/* Contract Details */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Contract Details */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="glass p-8 rounded-[2rem] border-white/40 shadow-lg">
                                 <h3 className="text-sm font-black text-indigo-400 uppercase tracking-widest mb-6 flex items-center gap-2">
                                     <Calendar size={18} /> Thời hạn thuê
@@ -128,7 +114,7 @@ const TenantContractView = () => {
                                 <div className="flex flex-col items-center justify-center h-28 space-y-2">
                                     <p className="text-3xl font-black text-indigo-600">{new Intl.NumberFormat('vi-VN').format(contract.deposit_amount)}₫</p>
                                     <div className="flex items-center gap-1 text-[10px] font-black text-green-600 uppercase bg-green-50 px-3 py-1 rounded-full border border-green-100">
-                                        <CheckCircle2 size={10} /> Đã xác nhận
+                                        <CircleCheck size={10} /> Đã xác nhận
                                     </div>
                                 </div>
                             </div>
@@ -241,7 +227,7 @@ const TenantContractView = () => {
                                     {additionalServices.filter(s => s.included).map((service, index) => (
                                         <div key={index} className="flex items-center justify-between p-3 bg-indigo-50/50 rounded-xl border border-indigo-100">
                                             <div className="flex items-center gap-2">
-                                                <CheckCircle2 className="text-indigo-600" size={14} />
+                                                <CircleCheck className="text-indigo-600" size={14} />
                                                 <span className="text-xs font-bold text-gray-700">{service.name}</span>
                                             </div>
                                             <span className="text-[10px] font-black text-indigo-600">
@@ -257,7 +243,7 @@ const TenantContractView = () => {
                         {assets.length > 0 && (
                             <div className="glass p-8 rounded-[2rem] border-white/40 shadow-lg">
                                 <h3 className="text-sm font-black text-indigo-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                                    <Home size={18} /> Danh mục tài sản
+                                    <House size={18} /> Danh mục tài sản
                                 </h3>
                                 <div className="space-y-2">
                                     {assets.map((asset) => (
@@ -282,14 +268,14 @@ const TenantContractView = () => {
                             </h3>
                             <div className="space-y-4">
                                 <div className="flex items-start gap-3 p-4 bg-green-50 rounded-2xl border border-green-100">
-                                    <CheckCircle2 size={20} className="text-green-600 mt-1" />
+                                    <CircleCheck size={20} className="text-green-600 mt-1" />
                                     <div>
                                         <p className="text-xs font-black text-gray-900">Bên thuê (Bạn)</p>
                                         <p className="text-[10px] text-gray-500 italic">{contract.tenant_signed_at ? new Date(contract.tenant_signed_at).toLocaleString('vi-VN') : 'Đã ký trực tuyến'}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-3 p-4 bg-green-50 rounded-2xl border border-green-100">
-                                    <CheckCircle2 size={20} className="text-green-600 mt-1" />
+                                    <CircleCheck size={20} className="text-green-600 mt-1" />
                                     <div>
                                         <p className="text-xs font-black text-gray-900">Bên cho thuê</p>
                                         <p className="text-[10px] text-gray-500 italic">{contract.landlord_signed_at ? new Date(contract.landlord_signed_at).toLocaleString('vi-VN') : 'Đã ký trực tuyến'}</p>
@@ -298,7 +284,6 @@ const TenantContractView = () => {
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     );

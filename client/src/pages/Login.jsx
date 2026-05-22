@@ -1,98 +1,115 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { login, reset } from '../features/auth/authSlice';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
+import { login, reset, googleLogin } from '../features/auth/authSlice';
+import authService from '../services/authService';
+import { ArrowLeft, KeyRound, Mail, ShieldCheck, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 function Login() {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+    const [formData, setFormData] = useState({ email: '', password: '' });
+    const [showPass, setShowPass] = useState(false);
+    const [isForgotPassword, setIsForgotPassword] = useState(false);
+    const [forgotEmail, setForgotEmail] = useState('');
+    const [forgotSent, setForgotSent] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(false);
+    const [searchParams] = useSearchParams();
 
     const { email, password } = formData;
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
-    const { user, isLoading, isError, isSuccess, message } = useSelector(
-        (state) => state.auth
-    );
+    const { user, isLoading, isError, isSuccess, message } = useSelector(s => s.auth);
 
     useEffect(() => {
-        if (isError) {
-            alert(message); // Simple alert for now
-        }
+        const code = searchParams.get('code');
+        if (!code) return;
 
-        if (isSuccess || user) {
-            navigate('/');
-        }
+        (async () => {
+            try {
+                const result = await dispatch(googleLogin(code)).unwrap();
+                if (result?.token) {
+                    navigate('/', { replace: true });
+                }
+            } catch (error) {
+                toast.error(error || 'Đăng nhập Google thất bại');
+            } finally {
+                navigate('/login', { replace: true });
+            }
+        })();
+    }, [searchParams, dispatch, navigate]);
 
+    useEffect(() => {
+        if (isError) toast.error(message);
+        if (isSuccess || user) navigate('/');
         dispatch(reset());
     }, [user, isError, isSuccess, message, navigate, dispatch]);
 
-    const onChange = (e) => {
-        setFormData((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }));
+    const onChange = e => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const onSubmit = e => { e.preventDefault(); dispatch(login({ email, password })); };
+    const handleForgotSubmit = e => { e.preventDefault(); setForgotSent(true); toast.success('Đã gửi yêu cầu khôi phục!'); };
+
+    const handleGoogleLogin = async () => {
+        try {
+            setGoogleLoading(true);
+            const url = await authService.getGoogleAuthUrl();
+            if (!url) {
+                toast.error('Google OAuth chưa được cấu hình ở backend');
+                return;
+            }
+            window.location.href = url;
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Không thể khởi tạo Google login');
+        } finally {
+            setGoogleLoading(false);
+        }
     };
-
-    const onSubmit = (e) => {
-        e.preventDefault();
-
-        const userData = {
-            email,
-            password,
-        };
-
-        dispatch(login(userData));
-    };
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-100">
-            <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-10 shadow-lg">
-                <h2 className="text-center text-3xl font-extrabold text-gray-900">
-                    Đăng nhập
-                </h2>
-                <form className="mt-8 space-y-6" onSubmit={onSubmit}>
-                    <div className="-space-y-px rounded-md shadow-sm">
-                        <div>
-                            <input
-                                type="email"
-                                name="email"
-                                value={email}
-                                onChange={onChange}
-                                required
-                                className="relative block w-full rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                placeholder="Email address"
-                            />
-                        </div>
-                        <div>
-                            <input
-                                type="password"
-                                name="password"
-                                value={password}
-                                onChange={onChange}
-                                required
-                                className="relative block w-full rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                placeholder="Password"
-                            />
-                        </div>
-                    </div>
+        <div className="min-h-screen flex bg-black text-white font-sans selection:bg-white selection:text-black">
+            <div className="hidden lg:flex relative w-1/2 flex-col justify-between p-16">
+                <img src="https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?q=80&w=2670&auto=format&fit=crop" alt="bg" className="absolute inset-0 w-full h-full object-cover opacity-70" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/90" />
+                <Link to="/" className="relative z-10 text-xl font-black tracking-tighter uppercase">SmartProp</Link>
+                <div className="relative z-10 space-y-6">
+                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400">Xin chào mừng</p>
+                    <h1 className="text-6xl font-black leading-[0.9] tracking-tighter uppercase">KHÔNG GIAN <br /><span className="font-light italic text-gray-400">Đẳng cấp.</span></h1>
+                    <div className="flex items-center gap-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest pt-4"><ShieldCheck size={14} /><span>Hệ thống bảo mật tối ưu</span></div>
+                </div>
+                <p className="relative z-10 text-[9px] font-bold uppercase tracking-[0.4em] text-gray-600">© 2026 SmartProp Ecosystem</p>
+            </div>
 
-                    <div>
-                        <button
-                            type="submit"
-                            className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                        >
-                            Đăng nhập
-                        </button>
-                    </div>
-                </form>
+            <div className="flex flex-1 items-center justify-center p-8 md:p-16 bg-black">
+                <div className="w-full max-w-md">
+                    <Link to="/" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition-colors mb-12 group"><ArrowLeft size={13} className="group-hover:-translate-x-1 transition-transform" /> Trang chủ</Link>
+                    {!isForgotPassword ? (
+                        <div className="animate-fade-in-up">
+                            <div className="mb-10">
+                                <h2 className="text-4xl font-black uppercase tracking-tight mb-2">Đăng nhập.</h2>
+                                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Truy cập hệ thống quản lý SmartProp</p>
+                            </div>
+                            <form className="space-y-8" onSubmit={onSubmit}>
+                                <div>
+                                    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-500 mb-3">Email / Tài khoản</label>
+                                    <input type="email" name="email" value={email} onChange={onChange} required className="w-full bg-transparent border-b border-gray-700 pb-3 text-sm font-medium text-white placeholder-gray-600 focus:outline-none focus:border-white transition-colors" placeholder="user@smartprop.com" />
+                                </div>
+                                <div>
+                                    <div className="flex justify-between items-center mb-3"><label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Mật khẩu</label><button type="button" onClick={() => setIsForgotPassword(true)} className="text-[10px] font-bold text-gray-600 hover:text-white uppercase tracking-widest transition-colors">Quên mật khẩu?</button></div>
+                                    <div className="relative">
+                                        <input type={showPass ? 'text' : 'password'} name="password" value={password} onChange={onChange} required className="w-full bg-transparent border-b border-gray-700 pb-3 pr-8 text-sm font-medium text-white placeholder-gray-600 focus:outline-none focus:border-white transition-colors tracking-wider" placeholder="••••••••" />
+                                        <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-0 top-0 text-gray-600 hover:text-white transition-colors">{showPass ? <EyeOff size={16} /> : <Eye size={16} />}</button>
+                                    </div>
+                                </div>
+                                <button type="submit" disabled={isLoading} className="w-full bg-white text-black font-black uppercase tracking-[0.3em] text-[11px] py-5 mt-4 hover:bg-gray-200 active:scale-[0.98] flex justify-center transition-all disabled:opacity-50">{isLoading ? <div className="w-4 h-4 border-2 border-black border-t-transparent animate-spin rounded-full" /> : 'Đăng nhập ngay'}</button>
+                            </form>
+                            <button onClick={handleGoogleLogin} disabled={googleLoading} className="mt-4 w-full border border-white/10 bg-white/5 text-white font-black uppercase tracking-[0.3em] text-[11px] py-5 rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-2 disabled:opacity-50">
+                                {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Mail size={14} />} Đăng nhập bằng Google
+                            </button>
+                            <div className="mt-10 pt-8 border-t border-white/5 text-center"><p className="text-[11px] font-bold text-gray-600 uppercase tracking-widest">Chưa có tài khoản?{' '}<Link to="/register" className="text-white hover:underline underline-offset-4 decoration-2">Đăng ký</Link></p></div>
+                        </div>
+                    ) : (
+                        <div className="animate-fade-in-up">...</div>
+                    )}
+                </div>
             </div>
         </div>
     );

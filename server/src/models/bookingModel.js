@@ -2,12 +2,12 @@ const db = require('../config/database');
 
 class Booking {
     static async create(bookingData) {
-        const { roomId, tenantId, bookingDate, bookingTime } = bookingData;
+        const { roomId, tenantId, bookingDate, bookingTime, type = 'viewing', depositAmount = 0, commissionRate = 0, commissionAmount = 0 } = bookingData;
         const query = `
-            INSERT INTO bookings (room_id, tenant_id, booking_date, booking_time, status)
-            VALUES (?, ?, ?, ?, 'pending')
+            INSERT INTO bookings (room_id, tenant_id, type, deposit_amount, commission_rate, commission_amount, booking_date, booking_time, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')
         `;
-        const [result] = await db.execute(query, [roomId, tenantId, bookingDate, bookingTime]);
+        const [result] = await db.execute(query, [roomId, tenantId, type, depositAmount, commissionRate, commissionAmount, bookingDate, bookingTime]);
         return result.insertId;
     }
 
@@ -68,7 +68,7 @@ class Booking {
 
     static async findById(bookingId) {
         const query = `
-            SELECT b.*, r.room_number, bl.name as building_name, bl.landlord_id, b.tenant_id
+            SELECT b.*, r.room_number, r.base_price as room_price, bl.name as building_name, bl.landlord_id, b.tenant_id
             FROM bookings b
             JOIN rooms r ON b.room_id = r.room_id
             JOIN buildings bl ON r.building_id = bl.building_id
@@ -76,6 +76,13 @@ class Booking {
         `;
         const [rows] = await db.execute(query, [bookingId]);
         return rows[0];
+    }
+
+    static async updatePaymentStatus(bookingId, status, connection = null) {
+        const query = 'UPDATE bookings SET payment_status = ?, payment_date = NOW() WHERE booking_id = ?';
+        const client = connection || db;
+        const [result] = await client.execute(query, [status, bookingId]);
+        return result.affectedRows > 0;
     }
 
     static async confirm(bookingId, leadInfo) {

@@ -2,375 +2,657 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getMyBuildings, createBuilding, reset } from '../../features/properties/propertySlice';
-import { Plus, Home, MapPin, MoreVertical, Zap, Loader2, Sparkles } from 'lucide-react';
+import {
+    Plus, House, Home, MapPin, Loader, Building2, Search, Grid3x3, List,
+    X, Pencil, Trash2, Eye, Bed, Layers, Sparkles
+} from 'lucide-react';
 import axios from 'axios';
 import aiService from '../../services/aiService';
 import LocationPicker from '../../components/LocationPicker';
+import { toast } from 'react-hot-toast';
 
-const PropertyCard = ({ building }) => (
-    <div className="glass p-5 rounded-2xl card-hover relative group">
-        <div className="absolute top-4 right-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-            <MoreVertical size={20} />
-        </div>
-
-        <div className="flex items-start space-x-4">
-            <div className="p-3 bg-blue-100 rounded-xl text-blue-600">
-                <Home size={24} />
-            </div>
-            <div>
-                <h3 className="text-lg font-bold text-gray-800">{building.name}</h3>
-                <p className="text-sm text-gray-500 flex items-center mt-1">
-                    <MapPin size={14} className="mr-1" /> {building.address}
-                </p>
-            </div>
-        </div>
-
-        <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
-            <div className="bg-gray-50 p-2 rounded-lg text-center">
-                <p className="text-gray-400 text-xs uppercase">Số tầng</p>
-                <p className="font-semibold text-gray-700">{building.total_floors}</p>
-            </div>
-            <div className="bg-gray-50 p-2 rounded-lg text-center">
-                <p className="text-gray-400 text-xs uppercase">Loại hình</p>
-                <p className="font-semibold text-gray-700 capitalize">{building.type}</p>
+/* ── Stat Card ── */
+const StatCard = ({ icon: Icon, iconBg, iconColor, label, value, subtitle }) => (
+    <div
+        className="rounded-[14px] p-4 flex flex-col justify-between border hover:border-[#0f6e56]/30 transition-colors"
+        style={{ backgroundColor: '#ffffff', borderColor: '#bec9c3' }}
+    >
+        <div className="flex justify-between items-start">
+            <span className="text-sm font-semibold text-[#3f4944]">{label}</span>
+            <div
+                className="w-10 h-10 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: iconBg }}
+            >
+                <Icon style={{ color: iconColor, width: 18, height: 18 }} />
             </div>
         </div>
-
-        <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-            <div className="flex -space-x-2">
-                {[1, 2, 3].map(i => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs font-medium text-gray-500">
-                        P{i}
-                    </div>
-                ))}
-                <div className="w-8 h-8 rounded-full bg-gray-100 border-2 border-white flex items-center justify-center text-xs font-medium text-gray-500">+5</div>
-            </div>
-            <Link to={`/landlord/properties/${building.building_id}`} className="text-indigo-600 text-sm font-medium hover:text-indigo-800">Chi tiết &rarr;</Link>
+        <div className="mt-2">
+            <p className="text-[24px] font-semibold text-[#181d1a] leading-7">{value}</p>
+            {subtitle && <p className="text-[11.5px] text-[#6f7a74] mt-1">{subtitle}</p>}
         </div>
     </div>
 );
 
+/* ── Filter Tab ── */
+const FilterTab = ({ active, label, count, onClick }) => (
+    <button
+        onClick={onClick}
+        className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+            active
+                ? 'bg-white text-[#181d1a] shadow-sm'
+                : 'text-[#3f4944] hover:bg-white/50'
+        }`}
+    >
+        {label} {count !== undefined && <span className="ml-1 opacity-60">({count})</span>}
+    </button>
+);
+
+/* ── Building Row ── */
+const BuildingRow = ({ building, onEdit, onDelete, onView }) => (
+    <tr
+        className="border-b hover:bg-[#f9fbfc] transition-colors cursor-pointer group"
+        style={{ borderColor: '#bec9c3' }}
+        onClick={() => onView(building)}
+    >
+        <td className="px-6 py-4">
+            <div className="flex items-center gap-3">
+                <div
+                    className="w-12 h-12 rounded-lg flex items-center justify-center"
+                    style={{ backgroundColor: '#ebefeb' }}
+                >
+                    <Building2 style={{ color: '#0f6e56', width: 20, height: 20 }} />
+                </div>
+                <div>
+                    <p className="font-bold text-[#181d1a]">{building.name}</p>
+                    <p className="text-[11.5px] text-[#6f7a74] flex items-center gap-1">
+                        <MapPin style={{ width: 10, height: 10 }} />
+                        {building.address}
+                    </p>
+                </div>
+            </div>
+        </td>
+        <td className="px-6 py-4">
+            <span className="px-3 py-1 rounded-full text-[11.5px] font-semibold bg-[#e6f7f2] text-[#005440] capitalize">
+                {building.type === 'apartment' ? 'Chung cư mini' : building.type === 'house' ? 'Nhà nguyên căn' : 'Phòng trọ lẻ'}
+            </span>
+        </td>
+        <td className="px-6 py-4">
+            <span className="text-[14px] font-semibold text-[#181d1a]">{building.total_floors || 1}</span>
+            <span className="text-[11.5px] text-[#6f7a74] ml-1">tầng</span>
+        </td>
+        <td className="px-6 py-4">
+            <div className="flex flex-col gap-1">
+                <span className="px-3 py-1 rounded-full text-[11.5px] font-semibold bg-[#e6f7f2] text-[#005440] inline-flex w-fit">
+                    {building.room_count || 0} phòng
+                </span>
+                <span className="text-[11px] text-[#6f7a74]">
+                    Trống: {building.available_count || 0} · Đã thuê: {building.occupied_count || 0}
+                </span>
+            </div>
+        </td>
+        <td className="px-6 py-4">
+            <div className="flex flex-wrap gap-2">
+                <span className="px-3 py-1 rounded-full text-[11.5px] font-semibold bg-[#dcfce7] text-[#16a34a]">
+                    {building.occupied_count || 0} đã thuê
+                </span>
+                <span className="px-3 py-1 rounded-full text-[11.5px] font-semibold bg-[#fffbeb] text-[#f59e0b]">
+                    {building.maintenance_count || 0} bảo trì
+                </span>
+            </div>
+        </td>
+        <td className="px-6 py-4 text-right">
+            <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                    onClick={(e) => { e.stopPropagation(); onView(building); }}
+                    className="p-2 rounded-lg hover:bg-[#ebefeb] transition-colors"
+                    title="Xem chi tiết"
+                >
+                    <Eye style={{ color: '#6f7a74', width: 16, height: 16 }} />
+                </button>
+                <button
+                    onClick={(e) => { e.stopPropagation(); onEdit(building); }}
+                    className="p-2 rounded-lg hover:bg-[#ebefeb] transition-colors"
+                    title="Chỉnh sửa"
+                >
+                    <Pencil style={{ color: '#6f7a74', width: 16, height: 16 }} />
+                </button>
+                <button
+                    onClick={(e) => { e.stopPropagation(); onDelete(building); }}
+                    className="p-2 rounded-lg hover:bg-red-50 transition-colors"
+                    title="Xóa"
+                >
+                    <Trash2 style={{ color: '#ba1a1a', width: 16, height: 16 }} />
+                </button>
+            </div>
+        </td>
+    </tr>
+);
+
+/* ── Field Component ── */
+const Field = ({ label, children }) => (
+    <div>
+        <label className="block text-[14px] font-semibold text-[#181d1a] mb-2">{label}</label>
+        {children}
+    </div>
+);
+
+/* ── Modal ── */
+const BuildingModal = ({
+    isOpen, onClose, onSubmit, loading,
+    provinces, districts, wards,
+    selProvince, selDistrict, selWard,
+    setSelProvince, setSelDistrict, setSelWard,
+    form, setForm, locLoading, onAI, aiLoading
+}) => {
+    if (!isOpen) return null;
+
+    const inputCls = "w-full px-4 py-3 rounded-lg border text-[14px] focus:outline-none transition-all";
+    const inputBorder = { borderColor: '#bec9c3', backgroundColor: '#ffffff' };
+    const selectStyle = {
+        ...inputBorder,
+        appearance: 'none',
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236f7a74'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'right 12px center',
+        backgroundSize: '16px',
+        paddingRight: '40px'
+    };
+
+    return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+            <div
+                className="relative w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-[14px] bg-white shadow-xl"
+                style={{ fontFamily: "'Be Vietnam Pro', sans-serif" }}
+            >
+                {/* Header */}
+                <div
+                    className="flex items-center justify-between px-6 py-4 border-b"
+                    style={{ borderColor: '#bec9c3', backgroundColor: '#f7faf6' }}
+                >
+                    <div>
+                        <p className="text-[11.5px] font-semibold text-[#6f7a74] uppercase tracking-wider">Mới</p>
+                        <h2 className="text-[20px] font-semibold text-[#181d1a]">Thêm Tòa nhà</h2>
+                    </div>
+                    <button onClick={onClose} className="p-2 hover:bg-[#ebefeb] rounded-lg transition-colors">
+                        <X style={{ color: '#6f7a74', width: 20, height: 20 }} />
+                    </button>
+                </div>
+
+                {/* Body */}
+                <form onSubmit={onSubmit} className="p-6 overflow-y-auto max-h-[calc(90vh-140px)] space-y-5">
+                    <Field label="Tên tòa nhà">
+                        <input
+                            type="text"
+                            required
+                            className={inputCls}
+                            style={inputBorder}
+                            placeholder="VD: Trọ Xanh House 1"
+                            value={form.name}
+                            onChange={e => setForm({ ...form, name: e.target.value })}
+                        />
+                    </Field>
+
+                    {/* Address */}
+                    <div className="p-4 rounded-lg space-y-3" style={{ backgroundColor: '#f7faf6' }}>
+                        <p className="text-[14px] font-semibold text-[#181d1a] flex items-center gap-2">
+                            <MapPin style={{ width: 14, height: 14, color: '#0f6e56' }} />
+                            Địa chỉ
+                        </p>
+                        <div className="grid grid-cols-3 gap-3">
+                            <select
+                                className={inputCls}
+                                style={selectStyle}
+                                value={selProvince}
+                                onChange={e => setSelProvince(e.target.value)}
+                                required
+                            >
+                                <option value="">Tỉnh/Thành</option>
+                                {provinces.map(p => <option key={p.code} value={p.code}>{p.name}</option>)}
+                            </select>
+                            <select
+                                className={inputCls}
+                                style={selectStyle}
+                                disabled={!selProvince}
+                                value={selDistrict}
+                                onChange={e => setSelDistrict(e.target.value)}
+                                required
+                            >
+                                <option value="">Quận/Huyện</option>
+                                {districts.map(d => <option key={d.code} value={d.code}>{d.name}</option>)}
+                            </select>
+                            <select
+                                className={inputCls}
+                                style={selectStyle}
+                                disabled={!selDistrict}
+                                value={selWard}
+                                onChange={e => setSelWard(e.target.value)}
+                                required
+                            >
+                                <option value="">Phường/Xã</option>
+                                {wards.map(w => <option key={w.code} value={w.code}>{w.name}</option>)}
+                            </select>
+                        </div>
+                        {locLoading && <p className="text-[11.5px] text-[#0f6e56] font-semibold">Đang tải...</p>}
+                        <input
+                            type="text"
+                            required
+                            className={inputCls}
+                            style={{ ...inputBorder, backgroundColor: '#ffffff' }}
+                            placeholder="Số nhà, tên đường..."
+                            value={form.detailAddress}
+                            onChange={e => setForm({ ...form, detailAddress: e.target.value })}
+                        />
+                    </div>
+
+                    {/* Map Picker */}
+                    <Field label="Vị trí bản đồ">
+                        <LocationPicker
+                            position={form.coordinates}
+                            onLocationChange={latlng => setForm({ ...form, coordinates: latlng })}
+                        />
+                        {form.coordinates && (
+                            <p className="text-[11.5px] text-[#0f6e56] font-semibold mt-1">
+                                ✓ Đã chọn: {form.coordinates.lat.toFixed(6)}, {form.coordinates.lng.toFixed(6)}
+                            </p>
+                        )}
+                    </Field>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <Field label="Loại hình">
+                            <select
+                                className={inputCls}
+                                style={selectStyle}
+                                value={form.type}
+                                onChange={e => setForm({ ...form, type: e.target.value })}
+                            >
+                                <option value="apartment">Chung cư mini</option>
+                                <option value="house">Nhà nguyên căn</option>
+                                <option value="room">Phòng trọ lẻ</option>
+                            </select>
+                        </Field>
+                        <Field label="Số tầng">
+                            <input
+                                type="number"
+                                min="1"
+                                className={inputCls}
+                                style={inputBorder}
+                                value={form.totalFloors}
+                                onChange={e => setForm({ ...form, totalFloors: parseInt(e.target.value) })}
+                            />
+                        </Field>
+                    </div>
+
+                    {/* Description with AI */}
+                    <div>
+                        <div className="flex items-center justify-between mb-2">
+                            <label className="block text-[14px] font-semibold text-[#181d1a]">Mô tả</label>
+                            <button
+                                type="button"
+                                onClick={onAI}
+                                disabled={aiLoading}
+                                className="flex items-center gap-1 text-[#0f6e56] text-[11.5px] font-semibold hover:underline disabled:opacity-50"
+                            >
+                                {aiLoading ? (
+                                    <Loader style={{ width: 12, height: 12 }} className="animate-spin" />
+                                ) : (
+                                    <Sparkles style={{ width: 12, height: 12 }} />
+                                )}
+                                AI Gợi ý
+                            </button>
+                        </div>
+                        <textarea
+                            className={`${inputCls} resize-none`}
+                            style={{ ...inputBorder, height: '100px' }}
+                            placeholder="Mô tả về tòa nhà..."
+                            value={form.description}
+                            onChange={e => setForm({ ...form, description: e.target.value })}
+                        />
+                    </div>
+
+                    {/* Footer */}
+                    <div className="flex gap-3 pt-4 border-t" style={{ borderColor: '#bec9c3' }}>
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="flex-1 px-6 py-3 rounded-lg border font-semibold text-[#3f4944] hover:bg-[#ebefeb] transition-colors"
+                            style={{ borderColor: '#bec9c3' }}
+                        >
+                            Hủy
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="flex-1 px-6 py-3 rounded-lg text-white font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-2"
+                            style={{ backgroundColor: '#0f6e56' }}
+                        >
+                            {loading ? (
+                                <Loader style={{ width: 16, height: 16 }} className="animate-spin" />
+                            ) : (
+                                <Plus style={{ width: 16, height: 16 }} />
+                            )}
+                            Tạo tòa nhà
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+/* ── Main Component ── */
 const PropertyList = () => {
     const dispatch = useDispatch();
-    const { buildings, isLoading, isError, message } = useSelector((state) => state.properties);
-    const [showAddModal, setShowAddModal] = useState(false);
+    const { buildings, isLoading, isError, message } = useSelector(s => s.properties);
+    const [showModal, setShowModal] = useState(false);
+    const [filter, setFilter] = useState('all');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [viewMode, setViewMode] = useState('table');
 
-    // Form State
-    const [newBuilding, setNewBuilding] = useState({
-        name: '',
-        type: 'apartment',
-        totalFloors: 1,
-        description: '',
-        detailAddress: '',
-        coordinates: null // { lat, lng }
+    const [form, setForm] = useState({
+        name: '', type: 'apartment', totalFloors: 1, description: '', detailAddress: '', coordinates: null
     });
-
-    // Address State
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [wards, setWards] = useState([]);
-
-    const [selectedProvince, setSelectedProvince] = useState('');
-    const [selectedDistrict, setSelectedDistrict] = useState('');
-    const [selectedWard, setSelectedWard] = useState('');
-
-    const [loadingLocation, setLoadingLocation] = useState(false);
+    const [selProvince, setSelProvince] = useState('');
+    const [selDistrict, setSelDistrict] = useState('');
+    const [selWard, setSelWard] = useState('');
+    const [locLoading, setLocLoading] = useState(false);
+    const [aiLoading, setAiLoading] = useState(false);
 
     useEffect(() => {
         dispatch(getMyBuildings());
-        return () => {
-            dispatch(reset());
-        }
+        return () => dispatch(reset());
     }, [dispatch]);
 
-    // Fetch Provinces on Load
     useEffect(() => {
-        const fetchProvinces = async () => {
-            try {
-                const res = await axios.get('https://provinces.open-api.vn/api/?depth=1');
-                setProvinces(res.data);
-            } catch (error) {
-                console.error("Failed to fetch provinces", error);
-            }
-        };
-        fetchProvinces();
+        axios.get('https://provinces.open-api.vn/api/?depth=1')
+            .then(r => setProvinces(r.data))
+            .catch(console.error);
     }, []);
 
-    // Fetch Districts when Province changes
     useEffect(() => {
-        if (!selectedProvince) {
-            setDistricts([]);
-            setWards([]);
-            return;
-        }
-        const fetchDistricts = async () => {
-            setLoadingLocation(true);
-            try {
-                const res = await axios.get(`https://provinces.open-api.vn/api/p/${selectedProvince}?depth=2`);
-                setDistricts(res.data.districts);
-                setSelectedDistrict('');
-                setWards([]);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoadingLocation(false);
-            }
-        };
-        fetchDistricts();
-    }, [selectedProvince]);
+        if (!selProvince) { setDistricts([]); setWards([]); return; }
+        setLocLoading(true);
+        axios.get(`https://provinces.open-api.vn/api/p/${selProvince}?depth=2`)
+            .then(r => { setDistricts(r.data.districts); setSelDistrict(''); setWards([]); })
+            .catch(console.error)
+            .finally(() => setLocLoading(false));
+    }, [selProvince]);
 
-    // Fetch Wards when District changes
     useEffect(() => {
-        if (!selectedDistrict) {
-            setWards([]);
-            return;
-        }
-        const fetchWards = async () => {
-            setLoadingLocation(true);
-            try {
-                const res = await axios.get(`https://provinces.open-api.vn/api/d/${selectedDistrict}?depth=2`);
-                setWards(res.data.wards);
-                setSelectedWard('');
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoadingLocation(false);
-            }
-        };
-        fetchWards();
-    }, [selectedDistrict]);
+        if (!selDistrict) { setWards([]); return; }
+        setLocLoading(true);
+        axios.get(`https://provinces.open-api.vn/api/d/${selDistrict}?depth=2`)
+            .then(r => { setWards(r.data.wards); setSelWard(''); })
+            .catch(console.error)
+            .finally(() => setLocLoading(false));
+    }, [selDistrict]);
 
-
-    const handleAddBuilding = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Construct full address
-        const provinceName = provinces.find(p => p.code == selectedProvince)?.name || '';
-        const districtName = districts.find(d => d.code == selectedDistrict)?.name || '';
-        const wardName = wards.find(w => w.code == selectedWard)?.name || '';
-
-        // Validate address
-        if (!provinceName || !districtName || !wardName || !newBuilding.detailAddress) {
-            alert("Vui lòng nhập đầy đủ địa chỉ!");
+        const pName = provinces.find(p => p.code == selProvince)?.name || '';
+        const dName = districts.find(d => d.code == selDistrict)?.name || '';
+        const wName = wards.find(w => w.code == selWard)?.name || '';
+        if (!pName || !dName || !wName || !form.detailAddress) {
+            toast.error('Vui lòng nhập đầy đủ địa chỉ!');
             return;
         }
-
-        const fullAddress = `${newBuilding.detailAddress}, ${wardName}, ${districtName}, ${provinceName}`;
-
         dispatch(createBuilding({
-            ...newBuilding,
-            address: fullAddress,
-            coordinates: newBuilding.coordinates ? JSON.stringify(newBuilding.coordinates) : null
+            ...form,
+            address: `${form.detailAddress}, ${wName}, ${dName}, ${pName}`,
+            coordinates: form.coordinates ? JSON.stringify(form.coordinates) : null
         }));
-
-        setShowAddModal(false);
-        // Reset form
-        setNewBuilding({ name: '', type: 'apartment', totalFloors: 1, description: '', detailAddress: '', coordinates: null });
-        setSelectedProvince('');
-        setSelectedDistrict('');
-        setSelectedWard('');
+        setShowModal(false);
+        setForm({ name: '', type: 'apartment', totalFloors: 1, description: '', detailAddress: '', coordinates: null });
+        setSelProvince(''); setSelDistrict(''); setSelWard('');
     };
 
-    if (isLoading && !showAddModal) return <div className="text-center p-10"><Loader2 className="animate-spin mx-auto text-indigo-600" /></div>;
+    const handleAI = async () => {
+        if (!form.name || !form.detailAddress) { toast.error('Nhập tên và địa chỉ trước!'); return; }
+        setAiLoading(true);
+        try {
+            const pName = provinces.find(p => p.code == selProvince)?.name || '';
+            const dName = districts.find(d => d.code == selDistrict)?.name || '';
+            const res = await aiService.generateDescription({
+                title: form.name, price: 0, area: 0,
+                location: `${form.detailAddress}, ${dName}, ${pName}`,
+                amenities: [form.type], type: 'Tòa nhà'
+            });
+            if (res.description) setForm(prev => ({ ...prev, description: res.description }));
+        } catch (e) {
+            toast.error('Lỗi AI: ' + e.message);
+        } finally {
+            setAiLoading(false);
+        }
+    };
+
+    const handleDelete = (building) => {
+        toast.error('Chức năng xóa đang phát triển');
+    };
+
+    const handleEdit = (building) => {
+        toast.error('Chức năng sửa đang phát triển');
+    };
+
+    const handleView = (building) => {
+        window.location.href = `/landlord/properties/${building.building_id}`;
+    };
+
+    // Calculate stats from database-backed fields
+    const stats = {
+        total: buildings.length,
+        totalRooms: buildings.reduce((sum, b) => sum + Number(b.room_count || 0), 0),
+        occupied: buildings.reduce((sum, b) => sum + Number(b.occupied_count || 0), 0),
+        vacant: buildings.reduce((sum, b) => sum + Number(b.available_count || 0), 0),
+        deposited: buildings.reduce((sum, b) => sum + Number(b.deposited_count || 0), 0),
+        maintenance: buildings.reduce((sum, b) => sum + Number(b.maintenance_count || 0), 0),
+    };
+
+    const filteredBuildings = buildings.filter(b => {
+        const matchesSearch = b.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            b.address?.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesFilter = filter === 'all' || b.type === filter;
+        return matchesSearch && matchesFilter;
+    });
 
     return (
-        <div>
-            <div className="flex justify-between items-center mb-8">
+        <div
+            className="min-h-screen pb-20"
+            style={{
+                backgroundColor: '#f7faf6',
+                fontFamily: "'Be Vietnam Pro', sans-serif",
+                paddingTop: '80px',
+                paddingLeft: '24px',
+                paddingRight: '24px',
+                maxWidth: '1280px',
+                margin: '0 auto'
+            }}
+        >
+            {/* Header */}
+            <div className="flex items-end justify-between mb-6">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-800">Quản lý Tòa nhà & Phòng</h1>
-                    <p className="text-gray-500">Danh sách các bất động sản bạn đang quản lý</p>
+                    <p className="text-[11.5px] font-semibold uppercase tracking-wider text-[#6f7a74] mb-1">Bất động sản</p>
+                    <h1 className="text-[24px] font-semibold text-[#181d1a] leading-8">Tòa nhà & Phòng</h1>
                 </div>
                 <button
-                    onClick={() => setShowAddModal(true)}
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-indigo-700 transition flex items-center"
+                    onClick={() => setShowModal(true)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-white text-sm font-semibold hover:opacity-90 transition-all"
+                    style={{ backgroundColor: '#0f6e56' }}
                 >
-                    <Plus size={20} className="mr-2" /> Thêm Tòa nhà
+                    <Plus style={{ width: 16, height: 16 }} />
+                    Thêm tòa nhà
                 </button>
             </div>
 
-            {isError && <div className="bg-red-100 text-red-700 p-4 rounded-lg mb-4">{message}</div>}
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {buildings.map((building) => (
-                    <PropertyCard key={building.building_id} building={building} />
-                ))}
-
-                {/* Empty State / Add New Placeholder */}
-                {buildings.length === 0 && (
-                    <div onClick={() => setShowAddModal(true)} className="border-2 border-dashed border-gray-300 rounded-2xl p-10 flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:border-indigo-500 hover:text-indigo-500 transition-colors h-full min-h-[250px]">
-                        <Plus size={48} className="mb-4" />
-                        <p className="font-medium">Chưa có tòa nhà nào</p>
-                        <p className="text-sm">Bấm để thêm mới</p>
-                    </div>
-                )}
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <StatCard
+                    icon={Building2}
+                    iconBg="#e6f7f2"
+                    iconColor="#0f6e56"
+                    label="Tổng tòa nhà"
+                    value={stats.total}
+                    subtitle="Đang quản lý"
+                />
+                <StatCard
+                    icon={Layers}
+                    iconBg="#eef2ff"
+                    iconColor="#4f46e5"
+                    label="Tổng phòng"
+                    value={stats.totalRooms}
+                    subtitle="Phòng trọ"
+                />
+                <StatCard
+                    icon={Bed}
+                    iconBg="#dcfce7"
+                    iconColor="#16a34a"
+                    label="Đã cho thuê"
+                    value={stats.occupied}
+                    subtitle="Đang hoạt động"
+                />
+                <StatCard
+                    icon={Home}
+                    iconBg="#fffbeb"
+                    iconColor="#f59e0b"
+                    label="Còn trống"
+                    value={stats.vacant}
+                    subtitle="Sẵn sàng cho thuê"
+                />
+                <StatCard
+                    icon={Layers}
+                    iconBg="#fef3c7"
+                    iconColor="#b45309"
+                    label="Đang bảo trì"
+                    value={stats.maintenance}
+                    subtitle="Tạm thời khóa phòng"
+                />
             </div>
 
-            {/* Simple Modal for Add Building */}
-            {showAddModal && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-                    <div className="bg-white rounded-2xl p-6 w-full max-w-lg shadow-2xl animate-in fade-in zoom-in duration-200 my-8">
-                        <h2 className="text-xl font-bold mb-4 text-gray-800">Thêm Tòa nhà Mới</h2>
-                        <form onSubmit={handleAddBuilding} className="space-y-4">
-                            {/* Basic Info */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="col-span-2">
-                                    <label className="block text-sm font-medium text-gray-700">Tên tòa nhà (Ví dụ: Trọ Xanh House 1)</label>
-                                    <input
-                                        type="text"
-                                        required
-                                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2.5"
-                                        value={newBuilding.name}
-                                        onChange={(e) => setNewBuilding({ ...newBuilding, name: e.target.value })}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Address Selection */}
-                            <div className="space-y-3 p-4 bg-gray-50 rounded-xl">
-                                <h3 className="text-sm font-semibold text-gray-700 flex items-center"><MapPin size={16} className="mr-2" /> Địa chỉ</h3>
-
-                                <div className="grid grid-cols-3 gap-3">
-                                    <div>
-                                        <select
-                                            required
-                                            className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2 text-sm"
-                                            value={selectedProvince}
-                                            onChange={(e) => setSelectedProvince(e.target.value)}
-                                        >
-                                            <option value="">Tỉnh/Thành</option>
-                                            {provinces.map(p => <option key={p.code} value={p.code}>{p.name}</option>)}
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <select
-                                            required
-                                            disabled={!selectedProvince}
-                                            className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2 text-sm disabled:bg-gray-200"
-                                            value={selectedDistrict}
-                                            onChange={(e) => setSelectedDistrict(e.target.value)}
-                                        >
-                                            <option value="">Quận/Huyện</option>
-                                            {districts.map(d => <option key={d.code} value={d.code}>{d.name}</option>)}
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <select
-                                            required
-                                            disabled={!selectedDistrict}
-                                            className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2 text-sm disabled:bg-gray-200"
-                                            value={selectedWard}
-                                            onChange={(e) => setSelectedWard(e.target.value)}
-                                        >
-                                            <option value="">Phường/Xã</option>
-                                            {wards.map(w => <option key={w.code} value={w.code}>{w.name}</option>)}
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <input
-                                        type="text"
-                                        required
-                                        placeholder="Số nhà, tên đường..."
-                                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2.5 text-sm"
-                                        value={newBuilding.detailAddress}
-                                        onChange={(e) => setNewBuilding({ ...newBuilding, detailAddress: e.target.value })}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Map Selection */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Vị trí bản đồ</label>
-                                <LocationPicker
-                                    position={newBuilding.coordinates}
-                                    onLocationChange={(latlng) => setNewBuilding({ ...newBuilding, coordinates: latlng })}
-                                />
-                                {newBuilding.coordinates && (
-                                    <p className="text-xs text-green-600 mt-1">Đã chọn: {newBuilding.coordinates.lat.toFixed(6)}, {newBuilding.coordinates.lng.toFixed(6)}</p>
-                                )}
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Loại hình</label>
-                                    <select
-                                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2.5"
-                                        value={newBuilding.type}
-                                        onChange={(e) => setNewBuilding({ ...newBuilding, type: e.target.value })}
-                                    >
-                                        <option value="apartment">Chung cư mini</option>
-                                        <option value="house">Nhà nguyên căn</option>
-                                        <option value="room">Phòng trọ lẻ</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Số tầng</label>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2.5"
-                                        value={newBuilding.totalFloors}
-                                        onChange={(e) => setNewBuilding({ ...newBuilding, totalFloors: parseInt(e.target.value) })}
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <div className="flex justify-between items-center mb-1">
-                                    <label className="block text-sm font-medium text-gray-700">Mô tả (Tiện ích, nội quy...)</label>
-                                    <button
-                                        type="button"
-                                        onClick={async () => {
-                                            if (!newBuilding.name || !newBuilding.detailAddress) {
-                                                alert("Vui lòng nhập tên và địa chỉ trước khi dùng AI");
-                                                return;
-                                            }
-                                            // Construct address from state
-                                            const provinceName = provinces.find(p => p.code == selectedProvince)?.name || '';
-                                            const districtName = districts.find(d => d.code == selectedDistrict)?.name || '';
-                                            const fullAddress = `${newBuilding.detailAddress}, ${districtName}, ${provinceName}`;
-
-                                            try {
-                                                const res = await aiService.generateDescription({
-                                                    title: newBuilding.name,
-                                                    price: 0, // Building doesn't have a single price
-                                                    area: 0,
-                                                    location: fullAddress,
-                                                    amenities: [newBuilding.type === 'apartment' ? 'Chung cư mini' : 'Nhà trọ'], // Hint for AI
-                                                    type: 'Tòa nhà/Chung cư mini'
-                                                });
-                                                if (res.description) {
-                                                    setNewBuilding(prev => ({ ...prev, description: res.description }));
-                                                }
-                                            } catch (e) {
-                                                alert("Lỗi AI: " + e.message);
-                                            }
-                                        }}
-                                        className="flex items-center gap-1 text-indigo-600 hover:text-indigo-800 text-xs font-bold"
-                                    >
-                                        <Sparkles size={14} /> AI Gợi ý
-                                    </button>
-                                </div>
-                                <textarea
-                                    className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2.5"
-                                    rows="3"
-                                    value={newBuilding.description}
-                                    onChange={(e) => setNewBuilding({ ...newBuilding, description: e.target.value })}
-                                ></textarea>
-                            </div>
-
-                            <div className="flex justify-end space-x-3 mt-6 pt-4 border-t">
-                                <button type="button" onClick={() => setShowAddModal(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">Hủy</button>
-                                <button type="submit" disabled={isLoading} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center">
-                                    {isLoading && <Loader2 className="animate-spin mr-2 h-4 w-4" />}
-                                    Tạo tòa nhà
-                                </button>
-                            </div>
-                        </form>
+            {/* Filter Tabs */}
+            <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-1 p-1 rounded-full" style={{ backgroundColor: '#ebefeb' }}>
+                    <FilterTab label="Tất cả" active={filter === 'all'} onClick={() => setFilter('all')} count={buildings.length} />
+                    <FilterTab label="Căn hộ" active={filter === 'apartment'} onClick={() => setFilter('apartment')} />
+                    <FilterTab label="Nhà nguyên căn" active={filter === 'house'} onClick={() => setFilter('house')} />
+                    <FilterTab label="Phòng trọ" active={filter === 'room'} onClick={() => setFilter('room')} />
+                </div>
+                <div className="flex items-center gap-3">
+                    {/* Search */}
+                    <div className="relative">
+                        <Search style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 16, height: 16, color: '#6f7a74' }} />
+                        <input
+                            type="text"
+                            placeholder="Tìm kiếm..."
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            className="pl-10 pr-4 py-2 rounded-lg border text-sm focus:outline-none transition-all"
+                            style={{ borderColor: '#bec9c3', backgroundColor: '#ffffff', width: 200 }}
+                        />
+                    </div>
+                    {/* View Toggle */}
+                    <div className="flex items-center rounded-lg border overflow-hidden" style={{ borderColor: '#bec9c3' }}>
+                        <button
+                            onClick={() => setViewMode('table')}
+                            className={`p-2 transition-colors ${viewMode === 'table' ? 'text-white' : 'bg-white text-[#6f7a74] hover:bg-[#ebefeb]'}`}
+                            style={viewMode === 'table' ? { backgroundColor: '#0f6e56' } : {}}
+                        >
+                            <List style={{ width: 16, height: 16 }} />
+                        </button>
+                        <button
+                            onClick={() => setViewMode('grid')}
+                            className={`p-2 transition-colors ${viewMode === 'grid' ? 'text-white' : 'bg-white text-[#6f7a74] hover:bg-[#ebefeb]'}`}
+                            style={viewMode === 'grid' ? { backgroundColor: '#0f6e56' } : {}}
+                        >
+                            <Grid3x3 style={{ width: 16, height: 16 }} />
+                        </button>
                     </div>
                 </div>
+            </div>
+
+            {/* Content */}
+            {isLoading ? (
+                <div className="flex justify-center py-20">
+                    <Loader style={{ width: 24, height: 24 }} className="animate-spin text-[#bec9c3]" />
+                </div>
+            ) : filteredBuildings.length === 0 ? (
+                <div
+                    className="flex flex-col items-center justify-center py-20 rounded-[14px] border border-dashed cursor-pointer hover:border-[#0f6e56]/30 transition-colors"
+                    style={{ borderColor: '#bec9c3' }}
+                    onClick={() => setShowModal(true)}
+                >
+                    <div
+                        className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+                        style={{ backgroundColor: '#ebefeb' }}
+                    >
+                        <House style={{ width: 28, height: 28, color: '#bec9c3' }} />
+                    </div>
+                    <p className="text-[14px] font-semibold text-[#6f7a74]">Chưa có tòa nhà nào</p>
+                    <p className="text-[11.5px] text-[#6f7a74] mt-1">Bấm để thêm tòa nhà đầu tiên</p>
+                </div>
+            ) : (
+                <div
+                    className="rounded-[14px] overflow-hidden border"
+                    style={{ backgroundColor: '#ffffff', borderColor: '#bec9c3' }}
+                >
+                    <table className="w-full text-left">
+                        <thead style={{ backgroundColor: '#f8fafc' }}>
+                            <tr className="border-b" style={{ borderColor: '#bec9c3' }}>
+                                <th className="px-6 py-3 text-[11.5px] font-semibold text-[#6f7a74] uppercase tracking-wider">Tòa nhà</th>
+                                <th className="px-6 py-3 text-[11.5px] font-semibold text-[#6f7a74] uppercase tracking-wider">Loại hình</th>
+                                <th className="px-6 py-3 text-[11.5px] font-semibold text-[#6f7a74] uppercase tracking-wider">Số tầng</th>
+                                <th className="px-6 py-3 text-[11.5px] font-semibold text-[#6f7a74] uppercase tracking-wider">Phòng</th>
+                                <th className="px-6 py-3 text-[11.5px] font-semibold text-[#6f7a74] uppercase tracking-wider">Trạng thái</th>
+                                <th className="px-6 py-3 text-[11.5px] font-semibold text-[#6f7a74] uppercase tracking-wider text-right">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y" style={{ borderColor: '#bec9c3' }}>
+                            {filteredBuildings.map(building => (
+                                <BuildingRow
+                                    key={building.building_id}
+                                    building={building}
+                                    onEdit={handleEdit}
+                                    onDelete={handleDelete}
+                                    onView={handleView}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             )}
+
+            {/* FAB */}
+            <button
+                onClick={() => setShowModal(true)}
+                className="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-50"
+                style={{ backgroundColor: '#0f6e56', color: 'white' }}
+            >
+                <Plus style={{ width: 28, height: 28 }} />
+            </button>
+
+            {/* Modal */}
+            <BuildingModal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                onSubmit={handleSubmit}
+                loading={isLoading}
+                building={null}
+                provinces={provinces}
+                districts={districts}
+                wards={wards}
+                selProvince={selProvince}
+                selDistrict={selDistrict}
+                selWard={selWard}
+                setSelProvince={setSelProvince}
+                setSelDistrict={setSelDistrict}
+                setSelWard={setSelWard}
+                form={form}
+                setForm={setForm}
+                locLoading={locLoading}
+                onAI={handleAI}
+                aiLoading={aiLoading}
+            />
         </div>
     );
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     User, Camera, Calendar, MapPin, Mail, ShieldCheck,
     CreditCard, Star, Save, Trash2, Plus,
-    CheckCircle2, AlertCircle, Loader2
+    CircleCheck, CircleAlert, Loader
 } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import userService from '../services/userService';
@@ -151,7 +151,7 @@ const UnifiedProfile = () => {
 
     if (loading) return (
         <div className="min-h-screen flex items-center justify-center">
-            <Loader2 className="animate-spin text-indigo-600" size={48} />
+            <Loader className="animate-spin text-indigo-600" size={48} />
         </div>
     );
 
@@ -187,7 +187,7 @@ const UnifiedProfile = () => {
                             </span>
                         ) : (
                             <span className="flex items-center gap-1.5 px-4 py-1.5 bg-amber-100 text-amber-700 rounded-full text-[10px] font-black uppercase tracking-widest">
-                                <AlertCircle size={14} /> Chưa xác thực
+                                <CircleAlert size={14} /> Chưa xác thực
                             </span>
                         )}
                     </div>
@@ -268,7 +268,7 @@ const UnifiedProfile = () => {
                                     type="submit" disabled={saving}
                                     className="w-full md:w-auto px-10 py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-black transition-all shadow-xl flex items-center justify-center gap-3 active:scale-95"
                                 >
-                                    {saving ? <Loader2 className="animate-spin" size={20} /> : <Save size={20} />}
+                                    {saving ? <Loader className="animate-spin" size={20} /> : <Save size={20} />}
                                     Lưu thay đổi
                                 </button>
                             </div>
@@ -345,7 +345,7 @@ const UnifiedProfile = () => {
 
                         <div className="bg-indigo-50 p-6 rounded-3xl space-y-3">
                             <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2">
-                                <CheckCircle2 size={14} /> Bảo mật thanh toán
+                                <CircleCheck size={14} /> Bảo mật thanh toán
                             </p>
                             <p className="text-[10px] font-bold text-indigo-900/60 leading-relaxed uppercase">
                                 Thông tin của bạn được mã hóa và bảo vệ theo tiêu chuẩn SSL 256-bit.

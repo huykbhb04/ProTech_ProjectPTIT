@@ -1,370 +1,213 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, User, Phone, CheckCircle2, XCircle, ChevronRight, Info, Building2, Search, Filter, Mail, ArrowUpRight } from 'lucide-react';
+import {
+    Calendar, User, Search, ListFilter,
+    Plus, ChevronLeft, ChevronRight, Building2, Loader, CalendarDays, CalendarClock, FilePen
+} from 'lucide-react';
 import bookingService from '../../services/bookingService';
+
+const StatCard = ({ label, value, color, trend }) => (
+    <div className="bg-white rounded-xl border p-4" style={{ borderColor: '#bec9c3' }}>
+        <p className="text-[11.5px] text-[#6f7a74] uppercase tracking-wider mb-1">{label}</p>
+        <div className="flex items-end gap-2">
+            <span className="text-[32px] font-bold" style={{ color }}>{value}</span>
+            {trend && <span className="text-[11.5px] pb-2" style={{ color: '#0f6e56' }}>{trend}</span>}
+        </div>
+    </div>
+);
+
+const StatusBadge = ({ status }) => {
+    const statusMap = {
+        pending: { label: 'Đang chờ', bg: '#fef3c7', color: '#d97706' },
+        confirmed: { label: 'Đã xác nhận', bg: '#e6f7f2', color: '#005440' },
+        rejected: { label: 'Đã từ chối', bg: '#fee2e2', color: '#dc2626' },
+        completed: { label: 'Đã hoàn thành', bg: '#e5e9e5', color: '#6f7a74' }
+    };
+    const s = statusMap[status] || { label: status, bg: '#e5e9e5', color: '#6f7a74' };
+    return <span className="px-3 py-1 rounded-full text-[11.5px] font-bold uppercase" style={{ backgroundColor: s.bg, color: s.color }}>{s.label}</span>;
+};
+
+const LogPreview = ({ log }) => {
+    if (!log) return <span className="text-[#6f7a74]">Không có log</span>;
+    if (typeof log === 'object') {
+        return (
+            <div className="space-y-1 text-[13px] text-[#3f4944]">
+                <div>Hành động: <strong>{log.action}</strong></div>
+                <div>Thời gian: <strong>{log.confirmedAt || log.rejectedAt}</strong></div>
+                <div>Lý do / ghi chú: <strong>{log.landlordNotes || log.reason || '—'}</strong></div>
+                <div>Trạng thái trước: <strong>{log.previousStatus || '—'}</strong></div>
+            </div>
+        );
+    }
+    return <pre className="whitespace-pre-wrap rounded-lg bg-[#f7faf6] p-3 text-[12px] text-[#3f4944]">{String(log)}</pre>;
+};
+
+const BookingCard = ({ booking, onConfirm, onReject, onViewLog }) => {
+    const isPending = booking.status === 'pending';
+    const confirmLog = booking.confirm_log ? (() => { try { return JSON.parse(booking.confirm_log); } catch { return booking.confirm_log; } })() : null;
+
+    return (
+        <div className="bg-white p-6 rounded-[12px] border flex items-center justify-between hover:bg-[#f9fbfc] transition-all" style={{ borderColor: '#bec9c3' }}>
+            <div className="flex items-center gap-6 w-1/4">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: '#e0e7ff' }}>
+                    <User style={{ width: 24, height: 24, color: '#4338ca' }} />
+                </div>
+                <div>
+                    <h4 className="font-bold text-[16px] text-[#181d1a]">{booking.tenant_name}</h4>
+                    <p className="text-[14px] text-[#3f4944]">{booking.tenant_phone || 'Chưa có'}</p>
+                </div>
+            </div>
+            <div className="flex flex-col gap-1 w-1/4">
+                <div className="flex items-center gap-2 text-[14px]">
+                    <Building2 style={{ width: 20, height: 20, color: '#0f6e56' }} />
+                    <span className="font-semibold">{booking.building_name} - Phòng {booking.room_number}</span>
+                </div>
+                <div className="flex items-center gap-4 text-[#6f7a74] text-[14px]">
+                    <span className="flex items-center gap-1"><CalendarDays style={{ width: 16, height: 16 }} />{booking.scheduled_date ? new Date(booking.scheduled_date).toLocaleDateString('vi-VN') : 'Chưa xác định'}</span>
+                    <span className="flex items-center gap-1"><CalendarClock style={{ width: 16, height: 16 }} />{booking.scheduled_time || 'N/A'}</span>
+                </div>
+            </div>
+            <div className="flex items-center justify-center w-1/4">
+                <div className="flex flex-col items-center gap-2">
+                    <StatusBadge status={booking.status} />
+                    <button onClick={() => onViewLog(booking)} className="text-[12px] text-[#0f6e56] font-semibold underline">Xem log</button>
+                </div>
+            </div>
+            <div className="flex items-center gap-2 w-1/4 justify-end">
+                {isPending ? (
+                    <>
+                        <button onClick={() => onConfirm(booking)} className="px-4 py-2 rounded-lg text-[14px] font-semibold text-white hover:opacity-90 transition-all" style={{ backgroundColor: '#0f6e56' }}>Xác nhận</button>
+                        <button onClick={() => onReject(booking.booking_id)} className="px-4 py-2 rounded-lg text-[14px] font-semibold border hover:bg-[#fee2e2] transition-all" style={{ borderColor: '#dc2626', color: '#dc2626' }}>Từ chối</button>
+                    </>
+                ) : booking.status === 'completed' ? (
+                    <button className="flex items-center gap-1 px-4 py-2 rounded-lg text-[14px] font-semibold border hover:border-[#0f6e56] hover:text-[#0f6e56] transition-all" style={{ borderColor: '#bec9c3', color: '#3f4944' }}><FilePen style={{ width: 16, height: 16 }} />Tạo hợp đồng</button>
+                ) : (
+                    <button className="px-4 py-2 rounded-lg text-[14px] font-semibold border hover:border-[#0f6e56] hover:text-[#0f6e56] transition-all" style={{ borderColor: '#bec9c3', color: '#3f4944' }}>Chi tiết</button>
+                )}
+            </div>
+        </div>
+    );
+};
+
+const ConfirmModal = ({ booking, onClose, onConfirm, loading }) => {
+    const [form, setForm] = useState({ leadName: '', leadPhone: '', notes: '' });
+    if (!booking) return null;
+    return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+            <div className="relative bg-white rounded-[16px] w-full max-w-md shadow-xl" style={{ fontFamily: "'Be Vietnam Pro', sans-serif" }}>
+                <div className="p-6 border-b" style={{ borderColor: '#bec9c3', backgroundColor: '#f7faf6' }}><h3 className="text-[20px] font-bold text-[#181d1a]">Xác nhận lịch hẹn</h3></div>
+                <div className="p-6 space-y-4">
+                    <div className="p-4 rounded-xl" style={{ backgroundColor: '#e6f7f2' }}><p className="text-[14px] text-[#181d1a]">Hệ thống sẽ tự động gửi thông báo xác nhận cho khách hàng <strong>{booking.tenant_name}</strong>.</p></div>
+                    <div className="space-y-3">
+                        <input value={form.leadName} onChange={(e) => setForm({ ...form, leadName: e.target.value })} className="w-full rounded-lg border px-3 py-2" placeholder="Người dẫn xem" />
+                        <input value={form.leadPhone} onChange={(e) => setForm({ ...form, leadPhone: e.target.value })} className="w-full rounded-lg border px-3 py-2" placeholder="Số điện thoại" />
+                        <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="w-full rounded-lg border px-3 py-2" placeholder="Ghi chú" rows={3} />
+                    </div>
+                    <button onClick={() => onConfirm(form)} disabled={loading} className="w-full py-3 rounded-lg text-white font-semibold text-[14px] hover:opacity-90 transition-all disabled:opacity-50" style={{ backgroundColor: '#0f6e56' }}>{loading ? 'Đang xử lý...' : 'Xác nhận ngay'}</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const LogModal = ({ booking, onClose }) => {
+    if (!booking) return null;
+    const log = booking.confirm_log ? (() => { try { return JSON.parse(booking.confirm_log); } catch { return booking.confirm_log; } })() : null;
+    return (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+            <div className="relative bg-white rounded-[16px] w-full max-w-lg shadow-xl">
+                <div className="p-6 border-b" style={{ borderColor: '#bec9c3', backgroundColor: '#f7faf6' }}><h3 className="text-[20px] font-bold text-[#181d1a]">Confirm log</h3></div>
+                <div className="p-6"><LogPreview log={log} /></div>
+                <div className="p-6 border-t" style={{ borderColor: '#bec9c3' }}><button onClick={onClose} className="w-full py-2 rounded-lg border">Đóng</button></div>
+            </div>
+        </div>
+    );
+};
 
 const BookingManagement = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [confirmModal, setConfirmModal] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
-    const [leadInfo, setLeadInfo] = useState({
-        leadPersonName: '',
-        leadPersonPhone: '',
-        landlordNotes: ''
-    });
+    const [confirmModal, setConfirmModal] = useState(null);
+    const [logModal, setLogModal] = useState(null);
+    const [confirming, setConfirming] = useState(false);
 
-    useEffect(() => {
-        fetchBookings();
-    }, []);
+    useEffect(() => { fetchBookings(); }, []);
 
     const fetchBookings = async () => {
         try {
             setLoading(true);
             const data = await bookingService.getLandlordBookings();
-            setBookings(data);
+            setBookings(Array.isArray(data) ? data : []);
         } catch (error) {
-            console.error("Error fetching bookings:", error);
+            console.error('Error fetching bookings:', error);
         } finally {
             setLoading(false);
         }
     };
 
-    const handleConfirm = async (e) => {
-        e.preventDefault();
+    const handleConfirm = async (formData) => {
+        setConfirming(true);
         try {
-            await bookingService.confirmBooking(confirmModal.booking_id, leadInfo);
+            await bookingService.confirmBooking(confirmModal.booking_id, {
+                leadPersonName: formData.leadName,
+                leadPersonPhone: formData.leadPhone,
+                landlordNotes: formData.notes,
+            });
             setConfirmModal(null);
             fetchBookings();
-            // Using a more subtle notification would be better, but keeping alert for reliability
-            alert("Đã xác nhận lịch xem phòng thành công!");
+            alert('Đã xác nhận lịch xem phòng thành công!');
         } catch (error) {
-            alert("Lỗi khi xác nhận: " + (error.response?.data?.message || error.message));
+            alert('Lỗi: ' + (error.response?.data?.message || error.message));
+        } finally {
+            setConfirming(false);
         }
     };
 
     const handleReject = async (id) => {
-        if (window.confirm("Bạn có chắc muốn từ chối lịch hẹn này? Thông báo sẽ được gửi tới người thuê.")) {
+        const reason = window.prompt('Nhập lý do từ chối (không bắt buộc):', '');
+        if (window.confirm('Bạn có chắc muốn từ chối lịch hẹn này?')) {
             try {
-                await bookingService.rejectBooking(id);
+                await bookingService.rejectBooking(id, { reason });
                 fetchBookings();
             } catch (error) {
-                alert("Lỗi khi từ chối: " + error.message);
+                alert('Lỗi: ' + error.message);
             }
         }
     };
 
-    const filteredBookings = bookings.filter(b => {
-        const matchesSearch = b.tenant_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            b.building_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            b.room_number.toString().includes(searchTerm);
+    const filtered = bookings.filter(b => {
+        const matchesSearch = b.tenant_name?.toLowerCase().includes(searchTerm.toLowerCase()) || b.building_name?.toLowerCase().includes(searchTerm.toLowerCase()) || b.room_number?.toString().includes(searchTerm);
         const matchesStatus = statusFilter === 'all' || b.status === statusFilter;
         return matchesSearch && matchesStatus;
     });
 
-    const stats = {
-        total: bookings.length,
-        pending: bookings.filter(b => b.status === 'pending').length,
-        confirmed: bookings.filter(b => b.status === 'confirmed').length
-    };
-
-    const getStatusVariant = (status) => {
-        switch (status) {
-            case 'confirmed': return { bg: 'bg-green-500', text: 'text-green-500', light: 'bg-green-50', border: 'border-green-100' };
-            case 'rejected': return { bg: 'bg-red-500', text: 'text-red-500', light: 'bg-red-50', border: 'border-red-100' };
-            default: return { bg: 'bg-amber-500', text: 'text-amber-500', light: 'bg-amber-50', border: 'border-amber-100' };
-        }
-    };
-
-    if (loading) return (
-        <div className="flex items-center justify-center min-h-[500px]">
-            <div className="flex flex-col items-center gap-4">
-                <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-                <p className="text-xs font-black text-gray-400 uppercase tracking-widest">Đang tải dữ liệu...</p>
-            </div>
-        </div>
-    );
+    const stats = { total: bookings.length, pending: bookings.filter(b => b.status === 'pending').length, confirmed: bookings.filter(b => b.status === 'confirmed').length };
 
     return (
-        <div className="max-w-[1600px] mx-auto space-y-10 pb-20">
-            {/* Professional Header */}
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-                <div>
-                    <h2 className="text-4xl font-black text-gray-900 tracking-tight italic">Quản lý lịch hẹn</h2>
-                    <p className="text-gray-500 font-bold uppercase text-[10px] tracking-[0.3em] mt-1 ml-1">Hệ thống điều phối dẫn khách xem phòng tập trung</p>
-                </div>
-
-                <div className="flex items-center gap-4 w-full lg:w-auto">
-                    <div className="grid grid-cols-3 gap-2 bg-white px-4 py-2 rounded-[2rem] border border-gray-100 shadow-sm">
-                        <div className="flex flex-col items-center px-4 border-r border-gray-50">
-                            <span className="text-lg font-black text-gray-900">{stats.total}</span>
-                            <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Yêu cầu</span>
-                        </div>
-                        <div className="flex flex-col items-center px-4 border-r border-gray-50">
-                            <span className="text-lg font-black text-amber-500">{stats.pending}</span>
-                            <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Chờ duyệt</span>
-                        </div>
-                        <div className="flex flex-col items-center px-4">
-                            <span className="text-lg font-black text-green-500">{stats.confirmed}</span>
-                            <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest">Đã chốt</span>
-                        </div>
-                    </div>
-                </div>
+        <div className="min-h-screen pb-20" style={{ backgroundColor: '#f7faf6', fontFamily: "'Be Vietnam Pro', sans-serif", paddingTop: '80px', paddingLeft: '24px', paddingRight: '24px', maxWidth: '1280px', margin: '0 auto' }}>
+            <div className="flex items-end justify-between mb-6">
+                <div><p className="text-[11.5px] font-semibold uppercase tracking-wider text-[#6f7a74] mb-1">Quản lý</p><h1 className="text-[24px] font-semibold text-[#181d1a] leading-8">Lịch hẹn xem phòng</h1></div>
+                <div className="flex items-center gap-3"><button className="flex items-center gap-2 px-4 py-2 rounded-lg text-[14px] font-semibold text-white hover:opacity-90 transition-all" style={{ backgroundColor: '#0f6e56' }}><Plus style={{ width: 16, height: 16 }} />Thêm tòa nhà</button></div>
             </div>
-
-            {/* Filter Bar */}
-            <div className="bg-white p-4 rounded-[2.5rem] border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4">
-                <div className="flex-1 relative group">
-                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors" size={18} />
-                    <input
-                        type="text"
-                        placeholder="Tìm theo tên khách, phòng, tòa nhà..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-14 pr-6 py-4 bg-gray-50 border-transparent rounded-[1.8rem] text-sm font-bold focus:bg-white focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 transition-all"
-                    />
-                </div>
-                <div className="flex bg-gray-50 p-1.5 rounded-[1.8rem] border border-gray-50 shrink-0">
-                    {[
-                        { id: 'all', label: 'Tất cả' },
-                        { id: 'pending', label: 'Chờ duyệt' },
-                        { id: 'confirmed', label: 'Đã xác nhận' },
-                        { id: 'rejected', label: 'Đã từ chối' }
-                    ].map(f => (
-                        <button
-                            key={f.id}
-                            onClick={() => setStatusFilter(f.id)}
-                            className={`px-6 py-2.5 rounded-[1.5rem] text-[11px] font-black uppercase tracking-wider transition-all ${statusFilter === f.id ? 'bg-white text-indigo-600 shadow-md' : 'text-gray-400 hover:text-gray-600'}`}
-                        >
-                            {f.label}
-                        </button>
-                    ))}
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <StatCard label="Tổng số lịch hẹn" value={stats.total} color="#181d1a" trend="+12% tháng này" />
+                <StatCard label="Đang chờ duyệt" value={stats.pending} color="#b45309" trend="Cần xử lý ngay" />
+                <StatCard label="Đã xác nhận" value={stats.confirmed} color="#0f6e56" trend="Thành công cao" />
             </div>
-
-            {/* Booking Grid/Table */}
-            <div className="grid grid-cols-1 gap-1">
-                {/* Desktop Header Row */}
-                <div className="hidden lg:grid grid-cols-12 gap-6 px-10 py-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
-                    <div className="col-span-3">Thông tin tòa nhà & Phòng</div>
-                    <div className="col-span-3">Người thuê</div>
-                    <div className="col-span-2">Thời gian hẹn</div>
-                    <div className="col-span-2">Trạng thái</div>
-                    <div className="col-span-2 text-right">Hành động</div>
-                </div>
-
-                {filteredBookings.length === 0 ? (
-                    <div className="bg-white rounded-[3rem] p-32 text-center border-2 border-dashed border-gray-100 mt-4">
-                        <Calendar size={64} className="mx-auto text-gray-200 mb-6" />
-                        <h3 className="text-2xl font-black text-gray-900 italic">Mọi thứ đều yên tĩnh!</h3>
-                        <p className="text-sm font-bold text-gray-400 mt-3 max-w-xs mx-auto">Hiện không có yêu cầu nào khớp với bộ lọc của bạn.</p>
-                    </div>
-                ) : (
-                    filteredBookings.map((booking) => {
-                        const variant = getStatusVariant(booking.status);
-                        return (
-                            <div key={booking.booking_id} className="bg-white rounded-[2.5rem] p-6 lg:px-10 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-indigo-100/30 hover:-translate-y-0.5 transition-all group/card mb-4 lg:mb-1">
-                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                                    {/* Property Column */}
-                                    <div className="lg:col-span-3 flex items-center gap-4">
-                                        <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 group-hover/card:bg-indigo-600 group-hover/card:text-white transition-all overflow-hidden relative border border-indigo-100">
-                                            <Building2 size={24} />
-                                        </div>
-                                        <div>
-                                            <div className="font-black text-gray-900 group-hover/card:text-indigo-600 transition-colors">Phòng {booking.room_number}</div>
-                                            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-tight">{booking.building_name}</div>
-                                        </div>
-                                    </div>
-
-                                    {/* Tenant Column */}
-                                    <div className="lg:col-span-3 flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden flex-shrink-0">
-                                            <img src={`https://ui-avatars.com/api/?name=${booking.tenant_name}&background=random&color=fff&bold=true`} alt="" />
-                                        </div>
-                                        <div>
-                                            <div className="font-black text-gray-900 text-sm">{booking.tenant_name}</div>
-                                            <div className="flex items-center gap-2 text-xs font-bold text-gray-500">
-                                                <Phone size={10} className="text-indigo-600" />
-                                                {booking.tenant_phone}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Time Column */}
-                                    <div className="lg:col-span-2">
-                                        <div className="flex items-center gap-2 text-sm font-black text-gray-800">
-                                            <Calendar size={14} className="text-indigo-400" />
-                                            {new Date(booking.booking_date).toLocaleDateString('vi-VN')}
-                                        </div>
-                                        <div className="flex items-center gap-2 text-[11px] font-bold text-gray-400 mt-1">
-                                            <Clock size={12} />
-                                            {booking.booking_time.substring(0, 5)}
-                                        </div>
-                                    </div>
-
-                                    {/* Status Column */}
-                                    <div className="lg:col-span-2">
-                                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-black uppercase tracking-wider ${variant.light} ${variant.text} ${variant.border}`}>
-                                            <div className={`w-1.5 h-1.5 rounded-full ${variant.bg}`}></div>
-                                            {booking.status === 'pending' ? 'Chờ duyệt' :
-                                                booking.status === 'confirmed' ? 'Đã chốt' :
-                                                    booking.status === 'rejected' ? 'Bị từ chối' : 'Đã hủy'}
-                                        </div>
-                                    </div>
-
-                                    {/* Actions Column */}
-                                    <div className="lg:col-span-2 flex justify-end gap-2">
-                                        {booking.status === 'pending' ? (
-                                            <>
-                                                <button
-                                                    onClick={() => handleReject(booking.booking_id)}
-                                                    className="p-3 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all"
-                                                    title="Từ chối"
-                                                >
-                                                    <XCircle size={22} />
-                                                </button>
-                                                <button
-                                                    onClick={() => {
-                                                        setConfirmModal(booking);
-                                                        setLeadInfo({
-                                                            leadPersonName: 'Chính chủ',
-                                                            leadPersonPhone: '',
-                                                            landlordNotes: ''
-                                                        });
-                                                    }}
-                                                    className="px-6 py-3 bg-indigo-600 text-white rounded-[1.2rem] text-xs font-black shadow-lg shadow-indigo-100 hover:bg-gray-900 hover:-translate-y-1 transition-all flex items-center gap-2"
-                                                >
-                                                    Phê duyệt <ArrowUpRight size={14} />
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <button
-                                                onClick={() => {
-                                                    // Add logic to view detail modal if needed
-                                                    alert(`Thông tin dẫn khách:\nNgười dẫn: ${booking.lead_person_name}\nSĐT: ${booking.lead_person_phone}`);
-                                                }}
-                                                className="flex items-center gap-2 text-[11px] font-black text-gray-400 hover:text-indigo-600 transition-colors uppercase tracking-widest"
-                                            >
-                                                Chi tiết <ChevronRight size={14} />
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })
-                )}
+            <div className="p-4 rounded-xl flex flex-wrap items-center justify-between gap-4 mb-6" style={{ backgroundColor: '#f1f4f1', border: '1px solid #bec9c3' }}>
+                <div className="relative flex-grow max-w-md"><Search style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 20, height: 20, color: '#6f7a74' }} /><input type="text" placeholder="Tìm kiếm khách hàng..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 rounded-lg border text-[14px] focus:outline-none focus:border-[#0f6e56]" style={{ borderColor: '#bec9c3', backgroundColor: 'white' }} /></div>
+                <div className="flex items-center gap-2"><select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="px-4 py-2 rounded-lg border text-[14px] focus:outline-none focus:border-[#0f6e56]" style={{ borderColor: '#bec9c3', backgroundColor: 'white' }}><option value="all">Tất cả trạng thái</option><option value="pending">Đang chờ</option><option value="confirmed">Đã xác nhận</option><option value="rejected">Từ chối</option><option value="completed">Đã hoàn thành</option></select><button className="flex items-center gap-1 px-4 py-2 rounded-lg text-[14px] font-semibold border hover:bg-[#ebefeb] transition-colors" style={{ borderColor: '#bec9c3', color: '#3f4944' }}><ListFilter style={{ width: 16, height: 16 }} />Lọc nâng cao</button><button className="flex items-center gap-1 px-4 py-2 rounded-lg text-[14px] font-semibold border hover:bg-[#ebefeb] transition-colors" style={{ borderColor: '#bec9c3', color: '#3f4944' }}><Plus style={{ width: 16, height: 16 }} />Xuất file</button></div>
             </div>
-
-            {/* Premium Confirm Modal */}
-            {confirmModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-gray-900/60 backdrop-blur-md animate-in fade-in duration-300">
-                    <div className="bg-white w-full max-w-2xl rounded-[3rem] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.2)] flex flex-col md:flex-row animate-in zoom-in-95 duration-500">
-                        {/* Side Banner */}
-                        <div className="w-full md:w-64 bg-indigo-600 p-10 flex flex-col justify-between text-white relative overflow-hidden">
-                            <div className="absolute -top-10 -left-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-                            <div className="relative z-10">
-                                <div className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-8">Xác nhận lịch</div>
-                                <h3 className="text-3xl font-black italic leading-tight">Sắp xếp dẫn khách</h3>
-                                <p className="text-xs font-bold text-indigo-100 mt-4 leading-relaxed opacity-80">Phòng {confirmModal.room_number} <br /> {confirmModal.building_name}</p>
-                            </div>
-                            <div className="relative z-10 space-y-4">
-                                <div className="flex items-center gap-4 p-4 bg-white/10 backdrop-blur rounded-2xl border border-white/10">
-                                    <div className="w-10 h-10 rounded-full overflow-hidden border border-white/20">
-                                        <img src={`https://ui-avatars.com/api/?name=${confirmModal.tenant_name}&background=fff&color=4f46e5&bold=true`} alt="" />
-                                    </div>
-                                    <div>
-                                        <div className="text-[9px] font-black uppercase tracking-widest opacity-60">Khách thuê</div>
-                                        <div className="text-sm font-black">{confirmModal.tenant_name}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Form Area */}
-                        <div className="flex-1 p-10 bg-white overflow-y-auto max-h-[90vh]">
-                            <div className="flex justify-between items-center mb-8">
-                                <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none">Cấu hình người dẫn xem</div>
-                                <button onClick={() => setConfirmModal(null)} className="text-gray-300 hover:text-red-500 transition-colors">
-                                    <XCircle size={24} />
-                                </button>
-                            </div>
-
-                            <form onSubmit={handleConfirm} className="space-y-8">
-                                <div className="grid grid-cols-2 gap-4">
-                                    {[
-                                        { id: 'Chính chủ', icon: User, label: 'Chính chủ', desc: 'Bạn dẫn khách' },
-                                        { id: 'staff', icon: Mail, label: 'Nhân viên', desc: 'Chỉ định người khác' }
-                                    ].map(opt => (
-                                        <div
-                                            key={opt.id}
-                                            onClick={() => setLeadInfo({ ...leadInfo, leadPersonName: opt.id === 'Chính chủ' ? 'Chính chủ' : '' })}
-                                            className={`p-5 rounded-[2rem] border-2 transition-all cursor-pointer group ${(opt.id === 'Chính chủ' && leadInfo.leadPersonName === 'Chính chủ') ||
-                                                    (opt.id === 'staff' && leadInfo.leadPersonName !== 'Chính chủ')
-                                                    ? 'border-indigo-600 bg-indigo-50/30' : 'border-gray-100 hover:border-indigo-100'
-                                                }`}
-                                        >
-                                            <div className="flex items-center justify-between mb-3">
-                                                <opt.icon className={`${(opt.id === 'Chính chủ' && leadInfo.leadPersonName === 'Chính chủ') || (opt.id === 'staff' && leadInfo.leadPersonName !== 'Chính chủ') ? 'text-indigo-600' : 'text-gray-400'}`} size={24} />
-                                                <div className={`w-5 h-5 rounded-full border-4 flex items-center justify-center ${(opt.id === 'Chính chủ' && leadInfo.leadPersonName === 'Chính chủ') ||
-                                                        (opt.id === 'staff' && leadInfo.leadPersonName !== 'Chính chủ')
-                                                        ? 'border-indigo-600 bg-indigo-600 ring-4 ring-white' : 'border-gray-200'
-                                                    }`}>
-                                                    <CheckCircle2 size={10} className="text-white" />
-                                                </div>
-                                            </div>
-                                            <div className="text-sm font-black text-gray-900">{opt.label}</div>
-                                            <div className="text-[10px] font-bold text-gray-500 mt-1">{opt.desc}</div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className="space-y-5">
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Họ tên người dẫn</label>
-                                        <input
-                                            type="text"
-                                            required
-                                            value={leadInfo.leadPersonName}
-                                            onChange={(e) => setLeadInfo({ ...leadInfo, leadPersonName: e.target.value })}
-                                            className="w-full px-8 py-5 bg-gray-50 border-transparent rounded-[2rem] text-sm font-black focus:bg-white focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 transition-all"
-                                            placeholder="Tên người dẫn"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Số điện thoại liên hệ</label>
-                                        <input
-                                            type="tel"
-                                            required
-                                            value={leadInfo.leadPersonPhone}
-                                            onChange={(e) => setLeadInfo({ ...leadInfo, leadPersonPhone: e.target.value })}
-                                            className="w-full px-8 py-5 bg-gray-50 border-transparent rounded-[2rem] text-sm font-black focus:bg-white focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 transition-all"
-                                            placeholder="Số điện thoại"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Ghi chú gửi người thuê (tùy chọn)</label>
-                                        <textarea
-                                            rows="2"
-                                            value={leadInfo.landlordNotes}
-                                            onChange={(e) => setLeadInfo({ ...leadInfo, landlordNotes: e.target.value })}
-                                            className="w-full px-8 py-5 bg-gray-50 border-transparent rounded-[2.5rem] text-sm font-black focus:bg-white focus:ring-4 focus:ring-indigo-50 focus:border-indigo-600 transition-all resize-none"
-                                            placeholder="Dặn dò khách trước khi đến..."
-                                        />
-                                    </div>
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    className="w-full py-6 bg-indigo-600 text-white rounded-[2.5rem] font-black text-sm shadow-2xl shadow-indigo-100 hover:bg-gray-900 hover:-translate-y-1 transition-all"
-                                >
-                                    Xác nhận & Gửi thông báo
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <div className="flex flex-col gap-4 mb-6">
+                {loading ? <div className="flex justify-center py-20"><Loader style={{ width: 24, height: 24, color: '#bec9c3' }} className="animate-spin" /></div> : filtered.length === 0 ? <div className="bg-white rounded-xl border p-16 text-center" style={{ borderColor: '#bec9c3' }}><Calendar style={{ width: 48, height: 48, color: '#bec9c3', margin: '0 auto' }} /><p className="text-[14px] font-semibold text-[#6f7a74] mt-4">Không có lịch hẹn nào</p></div> : filtered.map(booking => <BookingCard key={booking.booking_id} booking={booking} onConfirm={setConfirmModal} onReject={handleReject} onViewLog={setLogModal} />)}
+            </div>
+            <div className="flex items-center justify-between border-t pt-6" style={{ borderColor: '#bec9c3' }}><span className="text-[14px] text-[#6f7a74]">Hiển thị {filtered.length}/{stats.total} kết quả</span><div className="flex items-center gap-1"><button className="w-10 h-10 rounded-lg border flex items-center justify-center hover:bg-[#ebefeb] transition-colors" style={{ borderColor: '#bec9c3' }}><ChevronLeft style={{ width: 16, height: 16, color: '#6f7a74' }} /></button><button className="w-10 h-10 rounded-lg text-[14px] font-bold flex items-center justify-center transition-colors" style={{ backgroundColor: '#0f6e56', color: 'white' }}>1</button><button className="w-10 h-10 rounded-lg border flex items-center justify-center hover:bg-[#ebefeb] transition-colors" style={{ borderColor: '#bec9c3' }}><ChevronRight style={{ width: 16, height: 16, color: '#6f7a74' }} /></button></div></div>
+            <button className="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform z-50" style={{ backgroundColor: '#0f6e56', color: 'white' }}><Plus style={{ width: 28, height: 28 }} /></button>
+            <ConfirmModal booking={confirmModal} onClose={() => setConfirmModal(null)} onConfirm={handleConfirm} loading={confirming} />
+            <LogModal booking={logModal} onClose={() => setLogModal(null)} />
         </div>
     );
 };

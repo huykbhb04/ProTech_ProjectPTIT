@@ -154,15 +154,19 @@ class Bill {
     }
 
     static async checkAbnormalConsumption(roomId, type, consumption) {
-        // Get average consumption of last 3 months
+        // BUG FIX #4: LIMIT inside AVG() is not valid SQL — it does not restrict rows before averaging.
+        // Fix: use a subquery to first SELECT the last 3 months, then AVG over that subset.
         const query = `
-            SELECT AVG(${type}_consumption) as avg_consumption
-            FROM bills
-            WHERE room_id = ? 
-              AND ${type}_consumption IS NOT NULL
-              AND status != 'cancelled'
-            ORDER BY billing_month DESC
-            LIMIT 3
+            SELECT AVG(sub.consumption) as avg_consumption
+            FROM (
+                SELECT ${type}_consumption as consumption
+                FROM bills
+                WHERE room_id = ? 
+                  AND ${type}_consumption IS NOT NULL
+                  AND status != 'cancelled'
+                ORDER BY billing_month DESC
+                LIMIT 3
+            ) sub
         `;
 
         const [rows] = await db.execute(query, [roomId]);

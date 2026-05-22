@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const billController = require('../controllers/billController');
 const { protect, landlordOnly } = require('../middleware/authMiddleware');
-const upload = require('../middleware/uploadMiddleware');
+const { upload } = require('../middleware/uploadMiddleware');
 
 // Tenant routes
 router.get('/tenant/list', protect, billController.getTenantBills);

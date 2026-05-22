@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { MapPin, Users, Sparkles, Check, Search, Heart, UserPlus, Zap, Loader2 } from 'lucide-react';
+import { MapPin, Users, Sparkles, Check, Search, Heart, UserPlus, Zap, Loader } from 'lucide-react';
 import LocationPicker from '../../components/LocationPicker';
 import api from '../../services/api';
 import axios from 'axios'; // Keep axios for Nominatim only
@@ -182,7 +182,7 @@ const RoommateMatching = () => {
                                     <div className="relative group shadow-2xl rounded-xl bg-white/50 backdrop-blur-sm">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             {isSearchingAddress ? (
-                                                <Loader2 className="h-5 w-5 text-indigo-500 animate-spin" />
+                                                <Loader className="h-5 w-5 text-indigo-500 animate-spin" />
                                             ) : (
                                                 <Search className="h-5 w-5 text-gray-400 group-focus-within:text-indigo-600" />
                                             )}
@@ -265,7 +265,7 @@ const RoommateMatching = () => {
                             className={`w-full py-5 rounded-2xl font-black text-lg uppercase tracking-widest shadow-2xl transition-all active:scale-95 flex items-center justify-center gap-3 ${loading ? 'bg-gray-100 text-gray-400 curson-not-allowed' : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:shadow-indigo-500/30 hover:to-purple-700'
                                 }`}
                         >
-                            {loading ? <Loader2 className="animate-spin" /> : <Search />}
+                            {loading ? <Loader className="animate-spin" /> : <Search />}
                             {loading ? 'AI đang phân tích...' : 'Tìm người phù hợp'}
                         </button>
                     </div>

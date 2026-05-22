@@ -28,6 +28,11 @@ app.use('/api/contracts', require('./routes/contractRoutes'));
 app.use('/api/bills', require('./routes/billRoutes'));
 app.use('/api/saved-listings', require('./routes/savedListingRoutes'));
 app.use('/api/roommates', require('./routes/roommateRoutes'));
+app.use('/api/admin/system', require('./routes/adminConfigRoutes'));
+app.use('/api/categories', require('./routes/categoryRoutes'));
+app.use('/api/landlord/banners', require('./routes/bannerRoutes'));
+app.use('/api/landlord/stats', require('./routes/statisticsRoutes'));
+app.use('/api/admin/stats', require('./routes/adminStatisticsRoutes'));
 
 // Basic route
 app.get('/', (req, res) => {

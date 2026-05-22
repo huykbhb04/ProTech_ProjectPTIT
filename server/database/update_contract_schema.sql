@@ -1,5 +1,5 @@
 -- Migration to enhance Contracts table for Online Signing
-USE smart_proptech;
+USE init_schema;
 
 ALTER TABLE contracts 
 ADD COLUMN booking_id INT AFTER contract_id,

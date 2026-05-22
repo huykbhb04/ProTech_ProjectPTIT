@@ -1,39 +1,251 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,300;1,400;1,700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   DESIGN SYSTEM — ProTech PTIT
+   Nguồn tham chiếu: DiscoverRooms.jsx
+   ============================================================ */
+
 :root {
-  font-family: 'Be Vietnam Pro', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background-color: #F3F4F6; /* Smoke White */
-  color: #1F2937; /* Gray 800 */
+  font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+
+  /* Color tokens */
+  --color-bg:         #ffffff;
+  --color-bg-soft:    #f8f8f8;
+  --color-text:       #000000;
+  --color-text-soft:  #666666;
+  --color-text-muted: #aaaaaa;
+  --color-border:     #eeeeee;
+  --color-border-soft:#f5f5f5;
+  --color-accent:     #000000;
+
+  /* Role accents */
+  --color-landlord:   #4f46e5; /* indigo-600 */
+  --color-admin:      #dc2626; /* red-600    */
+  --color-tenant:     #4f46e5; /* indigo-600 */
 }
 
+/* ============================================================
+   TYPOGRAPHY UTILITIES
+   ============================================================ */
 @layer components {
+
+  /* Tiêu đề trang chính: text-2xl font-bold tracking-tighter uppercase */
+  .page-title {
+    @apply text-2xl font-bold tracking-tighter text-black uppercase;
+  }
+
+  /* Label section / header nhỏ */
+  .section-label {
+    @apply text-[10px] font-black uppercase tracking-widest text-gray-500;
+  }
+
+  /* Meta text (địa chỉ, ngày tháng...) */
+  .meta-text {
+    @apply text-[10px] font-bold uppercase tracking-widest text-gray-400;
+  }
+
+  /* Body text chuẩn */
+  .body-text {
+    @apply text-sm font-medium text-gray-600 leading-relaxed;
+  }
+
+  /* ============================================================
+     CARD COMPONENTS
+     ============================================================ */
+
+  /* Card cơ bản: nền trắng, viền nhẹ, bo góc vừa */
+  .card-base {
+    @apply bg-white border border-gray-100 rounded-2xl;
+  }
+
+  /* Card có hover effect */
+  .card-hover {
+    @apply bg-white border border-gray-100 rounded-2xl transition-all duration-300 hover:shadow-md hover:-translate-y-0.5;
+  }
+
+  /* Glass card (dùng trong sidebar dark layout nếu cần) */
   .glass {
-    @apply bg-white bg-opacity-70 backdrop-blur-lg border border-white/40 shadow-lg;
+    @apply bg-white/70 backdrop-blur-lg border border-white/40 shadow-lg;
   }
   .glass-dark {
-    @apply bg-gray-900 bg-opacity-70 backdrop-blur-lg border border-gray-700/40 shadow-xl;
+    @apply bg-gray-900/70 backdrop-blur-lg border border-gray-700/40 shadow-xl;
   }
-  .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+
+  /* ============================================================
+     BUTTON COMPONENTS
+     ============================================================ */
+
+  /* Primary button: đen nền, chữ trắng, uppercase tracking */
+  .btn-primary {
+    @apply bg-black text-white px-6 py-3 text-[11px] font-black uppercase tracking-[0.3em]
+           hover:opacity-70 active:scale-95 transition-all duration-300 inline-flex items-center gap-2;
+  }
+
+  /* Ghost button: viền đen, hover fill đen */
+  .btn-ghost {
+    @apply border border-gray-200 text-black px-6 py-3 text-[11px] font-black uppercase tracking-[0.3em]
+           hover:bg-black hover:text-white hover:border-black active:scale-95 transition-all duration-300
+           inline-flex items-center gap-2;
+  }
+
+  /* Danger button */
+  .btn-danger {
+    @apply bg-red-600 text-white px-6 py-3 text-[11px] font-black uppercase tracking-[0.3em]
+           hover:bg-red-700 active:scale-95 transition-all duration-300 inline-flex items-center gap-2;
+  }
+
+  /* Small action button (trong table) */
+  .btn-action {
+    @apply border border-gray-200 text-black px-3 py-1.5 text-[10px] font-black uppercase tracking-wide
+           hover:bg-black hover:text-white hover:border-black transition-all duration-200
+           inline-flex items-center gap-1;
+  }
+
+  /* ============================================================
+     INPUT COMPONENTS
+     ============================================================ */
+
+  /* Input kiểu Discover: chỉ border-bottom, không box */
+  .input-minimal {
+    @apply w-full border-0 border-b border-gray-200 bg-transparent py-3 px-0
+           text-sm font-medium text-black placeholder:text-gray-300
+           focus:outline-none focus:ring-0 focus:border-black
+           transition-colors duration-300;
+  }
+
+  /* Input kiểu box (form thông thường) */
+  .input-box {
+    @apply w-full border border-gray-200 bg-white rounded-xl px-4 py-3
+           text-sm font-medium text-black placeholder:text-gray-400
+           focus:outline-none focus:ring-0 focus:border-black
+           transition-colors duration-300;
+  }
+
+  /* Label cho input */
+  .input-label {
+    @apply text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 block;
+  }
+
+  /* ============================================================
+     STATUS BADGES
+     ============================================================ */
+
+  /* Base badge */
+  .badge {
+    @apply text-[9px] font-black uppercase tracking-widest px-2 py-0.5 border rounded inline-flex items-center gap-1;
+  }
+
+  /* Trạng thái tích cực: available, active, paid, completed, success */
+  .badge-success {
+    @apply badge bg-emerald-50 text-emerald-700 border-emerald-200;
+  }
+
+  /* Đang thuê / ký kết / pending */
+  .badge-info {
+    @apply badge bg-indigo-50 text-indigo-700 border-indigo-200;
+  }
+
+  /* Cảnh báo / nháp / in-progress */
+  .badge-warning {
+    @apply badge bg-amber-50 text-amber-700 border-amber-200;
+  }
+
+  /* Lỗi / quá hạn / từ chối */
+  .badge-danger {
+    @apply badge bg-red-50 text-red-600 border-red-200;
+  }
+
+  /* Không hoạt động / hết hạn / đã đóng */
+  .badge-muted {
+    @apply badge bg-gray-100 text-gray-500 border-gray-200;
+  }
+
+  /* ============================================================
+     TABLE
+     ============================================================ */
+
+  .table-header {
+    @apply text-[10px] font-black uppercase tracking-widest text-gray-400 py-3 px-4 text-left;
+  }
+
+  .table-cell {
+    @apply text-sm font-medium text-gray-700 py-3 px-4;
+  }
+
+  .table-row {
+    @apply border-b border-gray-50 hover:bg-gray-50/50 transition-colors;
+  }
+
+  /* ============================================================
+     EMPTY STATES
+     ============================================================ */
+
+  .empty-state {
+    @apply py-24 text-center;
+  }
+
+  .empty-state-text {
+    @apply text-[10px] font-bold uppercase tracking-[0.4em] text-gray-300 italic;
+  }
+
+  /* ============================================================
+     SECTION DIVIDERS
+     ============================================================ */
+
+  .section-divider {
+    @apply border-b border-gray-100 pb-8 mb-8;
+  }
+
+  /* ============================================================
+     PAGE WRAPPER (nội dung chính bên trong layout)
+     ============================================================ */
+
+  .page-content {
+    @apply bg-white min-h-screen;
+  }
+
+  /* Upload zone */
+  .upload-zone {
+    @apply border-2 border-dashed border-gray-200 rounded-2xl p-12 text-center
+           hover:border-black transition-colors duration-300 cursor-pointer;
   }
 }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
+  25%       { transform: translateX(-4px); }
+  75%       { transform: translateX(4px); }
 }
 
 @keyframes progress {
-  0% { width: 0%; }
+  0%   { width: 0%; }
   100% { width: 100%; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .animate-shake {
   animation: shake 0.3s ease-in-out;
 }
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Scrollbar ẩn */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 

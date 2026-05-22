@@ -1,2 +1,0 @@
-WORKING_MODEL=models/gemini-2.5-flash
-SHORT_NAME=gemini-2.5-flash

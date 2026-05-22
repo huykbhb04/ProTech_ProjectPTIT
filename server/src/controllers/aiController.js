@@ -13,18 +13,18 @@ exports.generateDescription = async (req, res) => {
 
         let model;
         try {
-            model = genAI.getGenerativeModel({ model: "models/gemini-2.5-flash" });
+            model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
         } catch (e) {
-            console.log("Fallback to gemini-1.5-flash");
-            model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            console.log("Fallback to gemini-flash-latest");
+            model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
         }
 
         // Construct Prompt
         const prompt = `
         Bạn là một chuyên gia Copywriter Bất động sản với 10 năm kinh nghiệm.
-        Hãy viết một bài đăng quảng cáo cho thuê ${type} cực kỳ hấp dẫn, chuẩn SEO, thu hút người xem ngay từ cái nhìn đầu tiên.
+        Hãy viết một bài đăng quảng cáo cho thuê ${type} cực kỳ hấp dẫn, chuẩn chuyên nghiệp, thu hút người xem ngay từ cái nhìn đầu tiên.
         
-        Thông tin đầu vào:
+        Thông đầu vào:
         - Tiêu đề gốc: ${title}
         - Diện tích: ${area} m2
         - Giá thuê: ${new Intl.NumberFormat('vi-VN').format(price || 0)} VNĐ
@@ -39,7 +39,7 @@ exports.generateDescription = async (req, res) => {
            - 💎 Ưu điểm nổi bật: Tại sao nên thuê phòng này?
            - 💰 Giá & Liên hệ: Kêu gọi hành động.
         3. Văn phong: Thân thiện, nhiệt tình, dùng nhiều emoji phù hợp để tạo điểm nhấn thị giác.
-        4. Hashtags: Thêm 5-7 hashtag liên quan ở cuối bài (ví dụ: #chothue #phongtro #homestay...).
+        4. Hashtags: Thêm 5-7 hashtag liên quan ở cuối bài.
 
         Hãy trả về kết quả dưới dạng Markdown nhưng KHÔNG dùng code block.
         `;
@@ -52,7 +52,7 @@ exports.generateDescription = async (req, res) => {
         } catch (innerError) {
             console.error("Primary model failed, trying fallback...", innerError.message);
             // Fallback attempt
-            const fallbackModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            const fallbackModel = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
             const result = await fallbackModel.generateContent(prompt);
             const response = await result.response;
             const text = response.text();

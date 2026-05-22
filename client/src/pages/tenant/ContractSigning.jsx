@@ -3,12 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
     ArrowLeft,
     Camera,
-    CheckCircle2,
+    CircleCheck,
     Shield,
     ShieldCheck,
     PenTool,
     User,
-    Loader2
+    Loader
 } from 'lucide-react';
 import SignaturePad from 'react-signature-canvas';
 import { toast } from 'react-hot-toast';
@@ -270,7 +270,7 @@ const ContractSigning = () => {
                                     <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
                                 ) : (
                                     <>
-                                        <CheckCircle2 size={24} />
+                                        <CircleCheck size={24} />
                                         Hoàn tất hợp đồng
                                     </>
                                 )}

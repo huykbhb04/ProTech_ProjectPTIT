@@ -1,503 +1,618 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Search, MapPin, Heart, ChevronDown, Check, Star, ShieldCheck, Clock, Award, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleSaveListing } from '../../features/savedListings/savedListingsSlice';
+import {
+  Award,
+  BadgeCheck,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Clock3,
+  Filter,
+  Heart,
+  Home,
+  LogOut,
+  MapPin,
+  MoveRight,
+  ParkingCircle,
+  Refrigerator,
+  Ruler,
+  Search,
+  ShieldCheck,
+  SlidersHorizontal,
+  Sparkles,
+  Star,
+  User,
+  WashingMachine,
+  Wifi,
+  Wind,
+} from 'lucide-react';
+import api from '../../services/api';
 import listingService from '../../services/listingService';
+import { toggleSaveListing } from '../../features/savedListings/savedListingsSlice';
+import { logout, reset } from '../../features/auth/authSlice';
 
-// --- Cấu hình màu sắc & Tokens thiết kế ---
-const COLORS = {
-    bg: '#ffffff',
-    bgSoft: '#f8f8f8',
-    text: '#000000',
-    textSoft: '#666666',
-    border: '#eeeeee',
-    accent: '#000000'
+const PRICE_RANGES = [
+  { id: 'all', label: 'Mọi mức giá' },
+  { id: 'under_3', label: 'Dưới 3 triệu', min: 0, max: 3000000 },
+  { id: '3_to_5', label: '3 - 5 triệu', min: 3000000, max: 5000000 },
+  { id: '5_to_10', label: '5 - 10 triệu', min: 5000000, max: 10000000 },
+  { id: '10_to_20', label: '10 - 20 triệu', min: 10000000, max: 20000000 },
+  { id: 'over_20', label: 'Trên 20 triệu', min: 20000000, max: Infinity },
+];
+
+const ROOM_TYPES = [
+  { id: 'all', label: 'Tất cả' },
+  { id: 'apartment', label: 'Căn hộ' },
+  { id: 'room', label: 'Phòng trọ' },
+  { id: 'studio', label: 'Studio' },
+  { id: 'house', label: 'Nhà nguyên căn' },
+];
+
+const AMENITIES = [
+  { id: 'wifi', label: 'Wi-Fi', icon: Wifi },
+  { id: 'air_conditioner', label: 'Điều hòa', icon: Wind },
+  { id: 'refrigerator', label: 'Tủ lạnh', icon: Refrigerator },
+  { id: 'washing_machine', label: 'Máy giặt', icon: WashingMachine },
+  { id: 'parking', label: 'Để xe', icon: ParkingCircle },
+];
+
+const COMMITMENTS = [
+  { icon: BadgeCheck, title: 'Thông tin xác thực', desc: 'Tin đăng được kiểm duyệt trước khi hiển thị.' },
+  { icon: Clock3, title: 'Hỗ trợ 24/7', desc: 'Đội ngũ hỗ trợ sẵn sàng trong quá trình thuê.' },
+  { icon: ShieldCheck, title: 'Hợp đồng pháp lý', desc: 'Quy trình an toàn cho thuê dài hạn và ngắn hạn.' },
+  { icon: Award, title: 'Thủ tục nhanh gọn', desc: 'Đặt lịch, giữ phòng và xác nhận thuê nhanh.' },
+];
+
+const defaultHeroImage = 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2670&auto=format&fit=crop';
+
+const formatCurrency = (value) => new Intl.NumberFormat('vi-VN').format(Number(value || 0));
+
+const splitImages = (value) => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) return parsed;
+    } catch {
+      return value.split(',').map(s => s.trim()).filter(Boolean);
+    }
+  }
+  return [];
 };
 
-const CATEGORIES = [
-    { id: 'all', label: 'TẤT CẢ BỘ SƯU TẬP' },
-    { id: 'apartment', label: 'CĂN HỘ CAO CẤP' },
-    { id: 'studio', label: 'STUDIO TỐI GIẢN' },
-    { id: 'room', label: 'PHÒNG TRỌ ĐỘC BẢN' }
-];
+const ListingCard = ({ item, saved, onToggleSave }) => {
+  const images = splitImages(item.images);
+  const cover = images[0] || defaultHeroImage;
+  const isVip = item.premium_until && new Date(item.premium_until) > new Date();
 
-const TESTIMONIALS = [
-    { id: 1, name: "Alexander V.", text: "Sự quản lý liền mạch và thiết kế nội thất tinh tế của các căn hộ ở đây là không thể so sánh được. Một trải nghiệm sống đẳng cấp thực sự.", role: "Kiến trúc sư" },
-    { id: 2, name: "Sophia M.", text: "Tôi đã tìm thấy ngôi nhà mơ ước của mình chỉ trong vài phút. Sự minh bạch và cách tiếp cận dựa trên công nghệ giúp việc thuê nhà trở nên thượng lưu và dễ dàng.", role: "Giám đốc sáng tạo" }
-];
-
-// --- Animation Helper (CSS) ---
-const STYLES = `
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes heroReveal {
-    from { clip-path: inset(100% 0 0 0); }
-    to { clip-path: inset(0 0 0 0); }
-}
-.reveal-item {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.reveal-item.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-.hide-scrollbar::-webkit-scrollbar { display: none; }
-
-.hero-slide-enter { opacity: 0; }
-.hero-slide-enter-active { opacity: 1; transition: opacity 1s ease-in-out; }
-.hero-slide-exit { opacity: 1; }
-.hero-slide-exit-active { opacity: 0; transition: opacity 1s ease-in-out; }
-`;
-
-// --- Sub-components ---
-
-const CommitmentCard = ({ icon: Icon, title, desc }) => (
-    <div className="flex flex-col items-center text-center px-8 border-r border-gray-100 last:border-0">
-        <div className="mb-6 text-black">
-            <Icon size={32} strokeWidth={1} />
+  return (
+    <div className="group overflow-hidden rounded-[14px] border border-[#e2e8f0] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
+      <Link to={`/tenant/room/${item.room_id}`} className="block">
+        <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
+          <img src={cover} alt={item.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0c1a3a]/70 via-transparent to-transparent" />
+          <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+            {isVip && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#943700] px-3 py-1 text-[11px] font-semibold text-white shadow-sm">
+                <Sparkles size={12} fill="currentColor" /> VIP
+              </span>
+            )}
+            <span className="inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-[#0c1a3a] shadow-sm backdrop-blur">
+              {item.category_name || item.type_name || item.room_type || 'Tin đăng'}
+            </span>
+          </div>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onToggleSave(item.listing_id);
+            }}
+            className={`absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 backdrop-blur-md transition-colors ${saved ? 'bg-[#ba1a1a] text-white' : 'bg-white/90 text-[#ba1a1a] hover:bg-[#ba1a1a] hover:text-white'}`}
+            aria-label={saved ? 'Bỏ lưu tin' : 'Lưu tin'}
+          >
+            <Heart size={18} className={saved ? 'fill-white' : ''} />
+          </button>
+          <div className="absolute bottom-4 left-4 right-4 text-white text-[12px] font-medium flex items-center gap-2">
+            <MapPin size={14} />
+            <span className="line-clamp-1">{item.building_name || item.address || 'Đang cập nhật địa chỉ'}</span>
+          </div>
         </div>
-        <h3 className="text-xs font-bold tracking-[0.2em] uppercase mb-3 text-black">{title}</h3>
-        <p className="text-[11px] text-gray-400 leading-relaxed font-medium uppercase tracking-wider">{desc}</p>
+      </Link>
+      <div className="p-4 md:p-5">
+        <Link to={`/tenant/room/${item.room_id}`}>
+          <h3 className="mb-2 line-clamp-2 text-[18px] font-semibold leading-7 text-[#191b23] transition-colors group-hover:text-[#004ac6]">{item.title}</h3>
+        </Link>
+        <div className="mb-4 flex flex-wrap items-center gap-4 text-[14px] text-[#434655]">
+          <span className="inline-flex items-center gap-1"><Ruler size={16} /> {item.area ? `${item.area}m²` : 'Đang cập nhật'}</span>
+          <span className="inline-flex items-center gap-1"><Home size={16} /> {item.bedrooms ? `${item.bedrooms} PN` : '1 PN'}</span>
+        </div>
+        <div className="mb-4 flex items-center gap-2 text-[12px] text-[#515d81]">
+          <Star size={14} className="fill-[#943700] text-[#943700]" />
+          <span className="font-semibold text-[#191b23]">4.9</span>
+          <span>·</span>
+          <span className="line-clamp-1">{item.address || item.building_name || 'Khu vực trung tâm'}</span>
+        </div>
+        <div className="flex items-center justify-between border-t border-[#e2e8f0] pt-4">
+          <div>
+            <p className="text-[12px] font-medium text-[#737686]">Giá thuê</p>
+            <p className="text-[24px] font-bold tracking-tight text-[#004ac6]">
+              {formatCurrency(item.rent_price || 0)}<span className="text-[14px] font-medium text-[#737686]">/tháng</span>
+            </p>
+          </div>
+          <Link to={`/tenant/room/${item.room_id}`} className="inline-flex h-11 w-11 items-center justify-center rounded-[8px] bg-[#dae2ff] text-[#0c1a3a] transition-colors hover:bg-[#004ac6] hover:text-white" aria-label="Xem chi tiết">
+            <MoveRight size={18} />
+          </Link>
+        </div>
+      </div>
     </div>
-);
-
-const ListingCard = ({ item, index, isSaved, onToggle }) => {
-    const images = Array.isArray(item.images) ? item.images : JSON.parse(item.images || '[]');
-    const coverImage = images[0] || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2670&auto=format&fit=crop';
-    const hoverImage = images[1] || coverImage;
-
-    return (
-        <div
-            className="group block relative animate-in fade-in slide-in-from-bottom-5 duration-700"
-            style={{ animationDelay: `${index * 100}ms` }}
-        >
-            <Link
-                to={`/tenant/room/${item.room_id}`}
-                className="block"
-            >
-                <div className="relative overflow-hidden aspect-[4/5] bg-gray-100 mb-5">
-                    {/* Main Image */}
-                    <img
-                        src={coverImage}
-                        alt={item.title}
-                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 group-hover:opacity-0"
-                    />
-                    {/* Hover Image */}
-                    <img
-                        src={hoverImage}
-                        alt={item.title}
-                        className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 group-hover:opacity-100 scale-100 group-hover:scale-105 transition-transform duration-[2000ms]"
-                    />
-
-                    {/* Status Badge */}
-                    {item.premium_until && new Date(item.premium_until) > new Date() && (
-                        <div className="absolute top-0 left-0 bg-black text-white text-[9px] font-bold px-3 py-1.5 uppercase tracking-widest">
-                            Bộ sưu tập Signature
-                        </div>
-                    )}
-                </div>
-            </Link>
-
-            {/* Minimalist Action - Fixed Position Outside Link or handled separately */}
-            <div className="absolute top-4 right-4 translate-x-10 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all duration-500 z-10">
-                <button
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggle(item.listing_id); }}
-                    className={`w-10 h-10 flex items-center justify-center border border-black/5 transition-all ${isSaved ? 'bg-black text-white' : 'bg-white text-black hover:bg-black hover:text-white'}`}
-                >
-                    <Heart size={16} strokeWidth={1.5} className={isSaved ? "fill-white" : ""} />
-                </button>
-            </div>
-
-            <Link to={`/tenant/room/${item.room_id}`} className="block">
-                <div className="space-y-1.5 px-1">
-                    <div className="flex justify-between items-baseline gap-4">
-                        <h3 className="text-sm font-medium tracking-tight text-black line-clamp-1 group-hover:opacity-60 transition-opacity uppercase">
-                            {item.title}
-                        </h3>
-                        <p className="text-sm font-bold text-black shrink-0">
-                            {new Intl.NumberFormat('vi-VN').format(item.rent_price)} <span className="text-[10px] font-normal opacity-40">VND</span>
-                        </p>
-                    </div>
-                    <div className="flex justify-between items-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                        <span className="flex items-center gap-1"><MapPin size={10} /> {item.building_name}</span>
-                        <span className="flex items-center gap-0.5"><Star size={10} className="fill-black text-black" /> 5.0</span>
-                    </div>
-                </div>
-            </Link>
-        </div>
-    );
-};
-
-// --- Collage Component for Hero ---
-const HeroImageCollage = ({ images, activeIdx = 0 }) => {
-    const imgList = Array.isArray(images) ? images : JSON.parse(images || '[]');
-    if (imgList.length === 0) return null;
-
-    // Cycle through images if many exist, using activeIdx for offset
-    const getImg = (offset) => imgList[(activeIdx + offset) % imgList.length];
-
-    if (imgList.length === 1) {
-        return (
-            <div className="absolute inset-0 overflow-hidden">
-                <img
-                    src={imgList[0]}
-                    alt="VIP Property"
-                    className="absolute inset-0 w-full h-full object-cover opacity-60 scale-100 animate-[heroReveal_2s_cubic-bezier(0.2,0.8,0.2,1)_forwards]"
-                />
-            </div>
-        );
-    }
-
-    if (imgList.length === 2) {
-        return (
-            <div className="absolute inset-0 w-full h-full flex opacity-60 transition-all duration-1000">
-                <div className="w-1/2 h-full overflow-hidden border-r border-black/20">
-                    <img key={`left-${activeIdx}`} src={getImg(0)} className="w-full h-full object-cover animate-in fade-in duration-1000" alt="" />
-                </div>
-                <div className="w-1/2 h-full overflow-hidden">
-                    <img key={`right-${activeIdx}`} src={getImg(1)} className="w-full h-full object-cover animate-in fade-in duration-1000" alt="" />
-                </div>
-            </div>
-        );
-    }
-
-    // Dynamic collage for 3+ images: rotates content within positions
-    return (
-        <div className="absolute inset-0 w-full h-full grid grid-cols-12 gap-1 opacity-60 transition-all duration-1000">
-            <div className="col-span-8 h-full overflow-hidden">
-                <img key={`main-${activeIdx}`} src={getImg(0)} className="w-full h-full object-cover animate-in fade-in slide-in-from-left-4 duration-1000" alt="" />
-            </div>
-            <div className="col-span-4 h-full grid grid-rows-2 gap-1">
-                <div className="overflow-hidden">
-                    <img key={`sub1-${activeIdx}`} src={getImg(1)} className="w-full h-full object-cover animate-in fade-in slide-in-from-top-4 duration-1000" alt="" />
-                </div>
-                <div className="overflow-hidden">
-                    <img key={`sub2-${activeIdx}`} src={getImg(2)} className="w-full h-full object-cover animate-in fade-in slide-in-from-bottom-4 duration-1000" alt="" />
-                </div>
-            </div>
-        </div>
-    );
+  );
 };
 
 const DiscoverRooms = () => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState('all');
-    const [listings, setListings] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [scrolled, setScrolled] = useState(false);
-    const [heroIndex, setHeroIndex] = useState(0);
-    const [subImageIndex, setSubImageIndex] = useState(0);
-    const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth);
-    const { savedIds } = useSelector(state => state.savedListings);
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth);
+  const { savedIds } = useSelector(state => state.savedListings);
 
-    // --- VIP listings for Hero ---
-    const vipListings = listings.filter(l => l.premium_until && new Date(l.premium_until) > new Date()).slice(0, 5);
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedPrice, setSelectedPrice] = useState('all');
+  const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [selectedRoomType, setSelectedRoomType] = useState('all');
+  const [sortBy, setSortBy] = useState('newest');
+  const [listings, setListings] = useState([]);
+  const [banners, setBanners] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [themeConfig, setThemeConfig] = useState({ primary_color: '#004ac6' });
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
 
-    // Rotation logic for Listings
-    useEffect(() => {
-        if (vipListings.length <= 1) return;
-        const timer = setInterval(() => {
-            setHeroIndex(prev => (prev + 1) % vipListings.length);
-            setSubImageIndex(0); // Reset image index when listing changes
-        }, 8000); // 8s per listing
-        return () => clearInterval(timer);
-    }, [vipListings.length]);
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [listingRes, bannerRes, themeRes, categoriesRes] = await Promise.allSettled([
+          listingService.getActiveListings(),
+          listingService.getActiveBanners(),
+          api.get('/listings/theme'),
+          api.get('/categories'),
+        ]);
 
-    // Rotation logic for Images WITHIN a listing
-    useEffect(() => {
-        if (!vipListings[heroIndex]) return;
-        const images = JSON.parse(vipListings[heroIndex].images || '[]');
-        if (images.length <= 3) return; // No point cycling if all fit in collage
-
-        const subTimer = setInterval(() => {
-            setSubImageIndex(prev => (prev + 1) % images.length);
-        }, 4000); // 4s per image rotation
-        return () => clearInterval(subTimer);
-    }, [heroIndex, vipListings]);
-
-    // Intersection Observer for Reveal Effect
-    const revealRefs = useRef([]);
-    revealRefs.current = [];
-
-    const addToRefs = (el) => {
-        if (el && !revealRefs.current.includes(el)) {
-            revealRefs.current.push(el);
-        }
+        if (listingRes.status === 'fulfilled') setListings(Array.isArray(listingRes.value) ? listingRes.value : []);
+        if (bannerRes.status === 'fulfilled') setBanners(Array.isArray(bannerRes.value) ? bannerRes.value : []);
+        if (themeRes.status === 'fulfilled' && themeRes.value?.data) setThemeConfig(themeRes.value.data);
+        if (categoriesRes.status === 'fulfilled') setCategories(Array.isArray(categoriesRes.value.data) ? categoriesRes.value.data : []);
+      } catch (error) {
+        console.error('DiscoverRooms load failed:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    useEffect(() => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
+    load();
+  }, []);
 
-        revealRefs.current.forEach(ref => observer.observe(ref));
-        return () => observer.disconnect();
-    }, [listings, loading]);
+  useEffect(() => {
+    const s = searchParams.get('search');
+    if (s) setSearchTerm(s);
+  }, [searchParams]);
 
-    useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 100);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+  const handleLogout = async () => {
+    await dispatch(logout());
+    dispatch(reset());
+    navigate('/');
+  };
 
-    useEffect(() => {
-        const fetch = async () => {
-            try {
-                const data = await listingService.getActiveListings();
-                setListings(Array.isArray(data) ? data : []);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetch();
-    }, []);
-
-    const handleToggleSave = async (listingId) => {
-        if (!user) {
-            toast.error('Vui lòng đăng nhập để lưu tin');
-            return;
-        }
-
-        try {
-            await dispatch(toggleSaveListing(listingId)).unwrap();
-            // Toast will be handled if needed, or by slice
-        } catch (error) {
-            toast.error('Có lỗi xảy ra');
-        }
-    };
-
-    const filtered = listings.filter(item => {
-        const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.building_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.address.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = selectedCategory === 'all' || item.type?.toLowerCase() === selectedCategory;
-        return matchesSearch && matchesCategory;
+  const filtered = useMemo(() => {
+    let result = listings.filter(item => {
+      const q = searchTerm.toLowerCase();
+      const matchesSearch = (item.title || '').toLowerCase().includes(q) || (item.building_name || '').toLowerCase().includes(q) || (item.address || '').toLowerCase().includes(q);
+      const matchesCategory = selectedCategory === 'all' || item.category_id === Number(selectedCategory);
+      const matchesRoomType = selectedRoomType === 'all' || (item.room_type || item.type || '').toLowerCase() === selectedRoomType;
+      const priceRange = PRICE_RANGES.find(r => r.id === selectedPrice);
+      const matchesPrice = selectedPrice === 'all' || (priceRange && (item.rent_price || 0) >= priceRange.min && (item.rent_price || 0) <= priceRange.max);
+      let itemAm = {};
+      try {
+        itemAm = typeof item.amenities === 'string' ? JSON.parse(item.amenities) : (item.amenities || {});
+      } catch {
+        itemAm = {};
+      }
+      const matchesAmenities = selectedAmenities.length === 0 || selectedAmenities.every(am => itemAm[am]);
+      return matchesSearch && matchesCategory && matchesRoomType && matchesPrice && matchesAmenities;
     });
 
-    const activeHeroListing = vipListings[heroIndex];
+    if (sortBy === 'price_asc') result = [...result].sort((a, b) => (a.rent_price || 0) - (b.rent_price || 0));
+    else if (sortBy === 'price_desc') result = [...result].sort((a, b) => (b.rent_price || 0) - (a.rent_price || 0));
+    else result = [...result].sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+    return result;
+  }, [listings, searchTerm, selectedCategory, selectedPrice, selectedAmenities, selectedRoomType, sortBy]);
 
-    return (
-        <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white pb-32">
-            <style>{STYLES}</style>
+  const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
+  const visibleListings = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-            {/* 1. HERO SECTION - VIP CAROUSEL */}
-            <div className="relative h-[95vh] w-full overflow-hidden bg-black transition-all duration-1000">
-                {activeHeroListing ? (
-                    <>
-                        <HeroImageCollage images={activeHeroListing.images} activeIdx={subImageIndex} />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/30"></div>
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory, selectedPrice, selectedAmenities, selectedRoomType, itemsPerPage, sortBy]);
 
-                        <div key={activeHeroListing.listing_id} className="relative h-full flex flex-col justify-center items-center text-center px-6 md:px-12 animate-[fadeIn_1.5s_ease-out_both]">
-                            <span className="text-[11px] font-bold text-white uppercase tracking-[0.5em] mb-10 block opacity-90">
-                                {activeHeroListing.building_name} • BỘ SƯU TẬP ĐẶC BIỆT
-                            </span>
-                            <h1 className="text-5xl md:text-7xl lg:text-[10rem] font-bold text-white tracking-tighter leading-[0.8] mb-16 uppercase max-w-6xl">
-                                {activeHeroListing.title.split(' ').slice(0, 2).join(' ')} <br />
-                                <span className="font-light italic tracking-normal text-white/90">
-                                    {activeHeroListing.title.split(' ').slice(2).join(' ') || 'Tuyệt mỹ.'}
-                                </span>
-                            </h1>
-                            <div className="flex flex-col items-center gap-12">
-                                <Link
-                                    to={`/tenant/room/${activeHeroListing.room_id}`}
-                                    className="bg-white text-black px-16 py-6 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all duration-700 border border-white active:scale-95"
-                                >
-                                    Khám phá chi tiết
-                                </Link>
-                            </div>
+  const heroBanner = banners.find(b => b.type === 'home_banner');
+  const heroImage = splitImages(heroBanner?.image_url)[0] || defaultHeroImage;
+  const heroTitle = heroBanner?.listing_title || 'Khám phá không gian sống hoàn hảo';
+  const heroSubtitle = heroBanner?.description || 'Hơn 5,000+ phòng trọ và căn hộ cao cấp đang chờ bạn.';
+  const sidebarBanners = banners.filter(b => b.type === 'sidebar_banner');
+  const primary = themeConfig.primary_color || '#004ac6';
 
-                            {/* Carousel Indicators */}
-                            {vipListings.length > 1 && (
-                                <div className="absolute bottom-20 flex gap-4">
-                                    {vipListings.map((_, idx) => (
-                                        <button
-                                            key={idx}
-                                            onClick={() => setHeroIndex(idx)}
-                                            className={`h-1 transition-all duration-500 ${heroIndex === idx ? 'w-12 bg-white' : 'w-4 bg-white/20'}`}
-                                        />
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <img
-                            src="https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?q=80&w=2670&auto=format&fit=crop"
-                            alt="Luxury Interior"
-                            className="absolute inset-0 w-full h-full object-cover opacity-60 animate-[heroReveal_2s_cubic-bezier(0.2,0.8,0.2,1)_forwards]"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/30"></div>
-                        <div className="relative h-full flex flex-col justify-center items-center text-center px-6 md:px-12 animate-[fadeIn_1.5s_ease-out_0.5s_both]">
-                            <span className="text-[11px] font-bold text-white uppercase tracking-[0.5em] mb-10 block opacity-90">
-                                SmartProp Tuyển Chọn
-                            </span>
-                            <h1 className="text-6xl md:text-8xl lg:text-[11rem] font-bold text-white tracking-tighter leading-[0.8] mb-16 uppercase">
-                                KHÔNG GIAN <br />
-                                <span className="font-light italic tracking-normal text-white/90">Sống Đẳng Cấp.</span>
-                            </h1>
-                            <div className="flex flex-col items-center gap-12">
-                                <button
-                                    onClick={() => document.getElementById('discover').scrollIntoView({ behavior: 'smooth' })}
-                                    className="bg-white text-black px-16 py-6 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-black hover:text-white transition-all duration-700 border border-white active:scale-95"
-                                >
-                                    Khám Phá Ngay
-                                </button>
-                            </div>
-                        </div>
-                    </>
-                )}
+  const resetFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory('all');
+    setSelectedPrice('all');
+    setSelectedRoomType('all');
+    setSelectedAmenities([]);
+    setSortBy('newest');
+  };
 
-                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
-                    <div className="h-20 w-[1px] bg-white/20 relative overflow-hidden">
-                        <div className="h-full w-full bg-white absolute top-0 animate-[shimmer_2.5s_infinite]"></div>
-                    </div>
-                </div>
+  return (
+    <div className="min-h-screen bg-[#faf8ff] text-[#191b23]">
+      <style>{`:root { --primary: ${primary}; } .no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
+
+      <nav className="sticky top-0 z-50 border-b border-[#e2e8f0] bg-white/95 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-4 md:px-8">
+          <div className="flex items-center gap-8">
+            <Link to="/" className="text-[24px] font-semibold tracking-tight text-[#0c1a3a]">SmartProp</Link>
+            <div className="hidden lg:flex items-center gap-6 text-[14px] font-medium text-[#515d81]">
+              <a href="#discover" className="border-b-2 border-[var(--primary)] pb-1 text-[var(--primary)]">Khám phá</a>
+              <a href="#commitments" className="transition-colors hover:text-[var(--primary)]">Dịch vụ</a>
+              <a href="#footer" className="transition-colors hover:text-[var(--primary)]">Hỗ trợ</a>
             </div>
+          </div>
 
-            {/* 2. STICKY FILTER BAR - MINIMALIST */}
-            <div id="discover" className={`sticky top-0 z-50 bg-white/98 backdrop-blur-xl border-b border-gray-100 transition-all duration-700 ${scrolled ? 'py-4 shadow-xl' : 'py-10'}`}>
-                <div className="max-w-[1800px] mx-auto px-6 md:px-16 flex flex-col lg:flex-row justify-between items-center gap-10">
-
-                    {/* Collection Categories */}
-                    <div className="flex gap-12 overflow-x-auto w-full lg:w-auto hide-scrollbar pb-2 lg:pb-0">
-                        {CATEGORIES.map(cat => (
-                            <button
-                                key={cat.id}
-                                onClick={() => setSelectedCategory(cat.id)}
-                                className={`text-[11px] font-black uppercase tracking-[0.25em] transition-all relative pb-3 group ${selectedCategory === cat.id ? 'opacity-100 text-black' : 'opacity-30 hover:opacity-100 text-gray-500'
-                                    }`}
-                            >
-                                {cat.label}
-                                <span className={`absolute bottom-0 left-0 h-[3px] bg-black transition-all duration-500 ease-in-out ${selectedCategory === cat.id ? 'w-full' : 'w-0 group-hover:w-full'
-                                    }`}></span>
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Minimalist Search */}
-                    <div className="relative w-full lg:w-[450px] group border-b border-black/10 focus-within:border-black transition-all duration-500">
-                        <input
-                            type="text"
-                            placeholder="TÌM KIẾM KHÔNG GIAN CỦA BẠN..."
-                            className="w-full bg-transparent border-none py-4 px-0 text-[11px] font-bold tracking-[0.15em] focus:ring-0 placeholder-gray-300 uppercase"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        <Search className="absolute right-0 top-4 text-black w-4 h-4 opacity-30 group-focus-within:opacity-100 transition-opacity" />
-                    </div>
-                </div>
+          {user?.role === 'tenant' ? (
+            <div className="flex items-center gap-2 md:gap-3">
+              <Link to="/tenant/saved" className="hidden sm:flex items-center gap-2 rounded-[8px] border border-[#e2e8f0] px-4 py-2 text-[14px] font-medium text-[#191b23] transition-colors hover:border-[var(--primary)] hover:text-[var(--primary)]">
+                <Heart size={16} className="text-[#ba1a1a]" />
+                Tin đã lưu
+                {savedIds.length > 0 && <span className="ml-1 rounded-full bg-[#ba1a1a] px-2 py-0.5 text-[11px] font-bold text-white">{savedIds.length}</span>}
+              </Link>
+              <Link to="/tenant/bookings" className="hidden sm:flex items-center gap-2 rounded-[8px] border border-[#e2e8f0] px-4 py-2 text-[14px] font-medium text-[#191b23] transition-colors hover:border-[var(--primary)] hover:text-[var(--primary)]">
+                <Calendar size={16} className="text-[#737686]" />
+                Lịch hẹn
+              </Link>
+              <Link to="/tenant/profile" className="flex items-center gap-2 rounded-[8px] border border-[#e2e8f0] px-3 py-2 text-[14px] font-medium text-[#191b23] hover:border-[var(--primary)] hover:text-[var(--primary)]">
+                <User size={16} />
+                <span className="hidden md:inline">{user.full_name || user.fullName || 'Tài khoản'}</span>
+              </Link>
+              <button onClick={handleLogout} className="inline-flex items-center gap-2 rounded-[8px] bg-[#0c1a3a] px-4 py-2 text-[14px] font-medium text-white hover:opacity-90">
+                <LogOut size={16} /> <span className="hidden md:inline">Đăng xuất</span>
+              </button>
             </div>
-
-            {/* 3. GRID SHOWCASE - THOUGHTFUL SPACING */}
-            <div className="max-w-[1800px] mx-auto px-6 md:px-16 py-32 md:py-48">
-                <div ref={addToRefs} className="reveal-item mb-20 flex flex-col md:flex-row justify-between items-end gap-6">
-                    <div className="max-w-2xl">
-                        <h2 className="text-4xl md:text-5xl font-bold tracking-tighter uppercase mb-6">Danh sách <span className="font-light italic">Hiện có.</span></h2>
-                        <p className="text-sm text-gray-400 leading-relaxed font-medium">Một sự tuyển chọn tinh tế những bất động sản tốt nhất, mỗi nơi phản ánh một sự pha trộn độc đáo của kiến trúc, công nghệ và sự thoải mái tinh tế.</p>
-                    </div>
-                    <div className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">
-                        Hiển thị {filtered.length} kết quả duy nhất
-                    </div>
-                </div>
-
-                {loading ? (
-                    <div className="flex justify-center py-48">
-                        <div className="w-8 h-8 border-2 border-black border-t-transparent animate-spin"></div>
-                    </div>
-                ) : filtered.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-24">
-                        {filtered.map((item, i) => (
-                            <ListingCard
-                                key={item.listing_id}
-                                item={item}
-                                index={i}
-                                isSaved={savedIds.includes(item.listing_id)}
-                                onToggle={handleToggleSave}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="py-48 text-center bg-gray-50 border border-dashed border-gray-100">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-30 italic">Không tìm thấy phòng phù hợp.</p>
-                        <button onClick={() => { setSearchTerm(''); setSelectedCategory('all'); }} className="mt-8 text-[11px] font-black uppercase tracking-widest border-b border-black pb-1 hover:opacity-50 transition-all">Xóa bộ lọc</button>
-                    </div>
-                )}
+          ) : user ? (
+            <div className="flex items-center gap-3">
+              <Link to={`/${user.role}/profile`} className="flex items-center gap-2 rounded-[8px] border border-[#e2e8f0] px-4 py-2 text-[14px] font-medium text-[#191b23] hover:border-[var(--primary)] hover:text-[var(--primary)]">
+                <User size={16} /> {user.full_name || user.fullName || 'Tài khoản'}
+              </Link>
+              <button onClick={handleLogout} className="inline-flex items-center gap-2 rounded-[8px] bg-[#0c1a3a] px-4 py-2 text-[14px] font-medium text-white hover:opacity-90">
+                <LogOut size={16} /> Đăng xuất
+              </button>
             </div>
-
-            {/* 4. SERVICE COMMITMENTS - LUXURY ICONS */}
-            <div className="bg-white border-y border-gray-100 py-32">
-                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-16 lg:gap-2">
-                    <CommitmentCard
-                        icon={ShieldCheck}
-                        title="Tuyển chọn khắt khe"
-                        desc="Chỉ 1% tài sản đáp ứng các tiêu chí nghiêm ngặt của chúng tôi về chất lượng và sự xuất sắc trong quản lý."
-                    />
-                    <CommitmentCard
-                        icon={Clock}
-                        title="Hỗ trợ 24/7"
-                        desc="Đội ngũ kỹ thuật và hỗ trợ tận tâm đảm bảo sự an tâm của bạn suốt ngày đêm."
-                    />
-                    <CommitmentCard
-                        icon={Award}
-                        title="Xác minh thông minh"
-                        desc="Mọi đơn vị đều được AI kiểm duyệt tính chính xác, từ giá cả đến tính minh bạch trong đo lường tiện ích."
-                    />
-                </div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <Link to="/login" className="rounded-[8px] px-4 py-2 text-[14px] font-medium text-[#191b23] transition-colors hover:bg-[#f3f3fe]">Đăng nhập</Link>
+              <Link to="/register" className="rounded-[8px] bg-[var(--primary)] px-5 py-2 text-[14px] font-medium text-white shadow-sm transition-opacity hover:opacity-90">Đăng ký</Link>
             </div>
-
-            {/* 5. MINIMALIST TESTIMONIALS */}
-            <div className="py-32 overflow-hidden">
-                <div className="max-w-[1700px] mx-auto px-6 md:px-12">
-                    <div ref={addToRefs} className="reveal-item text-center mb-20">
-                        <h3 className="text-2xl font-bold uppercase tracking-[0.1em] mb-4">Góc nhìn khách hàng.</h3>
-                        <div className="w-16 h-px bg-black mx-auto"></div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-20 lg:gap-40 max-w-6xl mx-auto">
-                        {TESTIMONIALS.map((t, i) => (
-                            <div key={t.id} ref={addToRefs} className="reveal-item text-center " style={{ transitionDelay: `${i * 200}ms` }}>
-                                <p className="text-lg md:text-xl text-black font-light leading-relaxed mb-10 italic">"{t.text}"</p>
-                                <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-black italic">— {t.name}, {t.role}</h4>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* 6. CALL TO ACTION - CLEAN FINISH */}
-            <div className="bg-black py-40 text-center px-6 relative">
-                <div className="max-w-3xl mx-auto relative z-10 animate-in fade-in duration-1000">
-                    <h2 className="text-4xl md:text-6xl font-bold text-white mb-10 tracking-tighter uppercase leading-tight">
-                        Trải nghiệm <br />
-                        <span className="font-light italic text-gray-400">Tương lai của cuộc sống.</span>
-                    </h2>
-                    <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-                        <Link to="/register" className="w-full md:w-auto bg-white text-black px-12 py-5 text-xs font-bold uppercase tracking-[0.3em] hover:opacity-80 transition-opacity">
-                            Đăng ký thành viên
-                        </Link>
-                        <Link to="/login" className="w-full md:w-auto border border-white/20 text-white px-12 py-5 text-xs font-bold uppercase tracking-[0.3em] hover:bg-white/10 transition-colors">
-                            Truy cập bộ sưu tập
-                        </Link>
-                    </div>
-                </div>
-            </div>
-
+          )}
         </div>
-    );
+      </nav>
+
+      <main>
+        <section className="relative overflow-hidden">
+          <div className="absolute inset-0">
+            <img src={heroImage} alt="Discover rooms hero" className="h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0c1a3a]/85 via-[#0c1a3a]/55 to-transparent" />
+          </div>
+          <div className="relative mx-auto flex min-h-[500px] max-w-[1280px] items-center px-4 py-16 md:px-8">
+            <div className="max-w-2xl">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur">
+                <Sparkles size={14} /> Danh sách phòng
+              </span>
+              <h1 className="mb-5 text-[32px] font-bold leading-[40px] tracking-[-0.01em] text-white md:text-[48px] md:leading-[56px]">{heroTitle}</h1>
+              <p className="mb-8 max-w-xl text-[16px] leading-7 text-white/80 md:text-[18px] md:leading-8">{heroSubtitle}</p>
+              <div className="rounded-[14px] border border-white/15 bg-white p-2 shadow-[0_10px_15px_-3px_rgba(0,0,0,0.12)]">
+                <div className="grid gap-2 md:grid-cols-[1fr_1fr_auto]">
+                  <div className="flex items-center gap-3 rounded-[8px] border border-[#e2e8f0] px-4 py-3">
+                    <MapPin size={18} className="text-[#737686]" />
+                    <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Khu vực (Quận, Phường...)" className="w-full border-none bg-transparent p-0 text-[16px] outline-none placeholder:text-[#737686]" />
+                  </div>
+                  <div className="flex items-center gap-3 rounded-[8px] border border-[#e2e8f0] px-4 py-3">
+                    <SlidersHorizontal size={18} className="text-[#737686]" />
+                    <select value={selectedPrice} onChange={(e) => setSelectedPrice(e.target.value)} className="w-full border-none bg-transparent p-0 text-[16px] outline-none">
+                      {PRICE_RANGES.map(range => <option key={range.id} value={range.id}>{range.label}</option>)}
+                    </select>
+                  </div>
+                  <button onClick={() => document.getElementById('discover')?.scrollIntoView({ behavior: 'smooth' })} className="rounded-[8px] bg-[var(--primary)] px-6 py-3 text-[14px] font-semibold text-white transition-opacity hover:opacity-90">
+                    Tìm kiếm ngay
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div className="sticky top-16 z-40 border-b border-[#e2e8f0] bg-white/95 backdrop-blur-xl">
+          <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-4 py-4 md:px-8">
+            <div className="flex items-center gap-3 overflow-x-auto no-scrollbar">
+              <button onClick={resetFilters} className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--primary)] bg-[var(--primary)]/5 px-4 py-2 text-[14px] font-semibold text-[var(--primary)]">
+                <Filter size={18} /> Tất cả bộ lọc
+              </button>
+              <div className="h-6 w-px shrink-0 bg-[#c3c6d7]" />
+              {ROOM_TYPES.map(type => (
+                <button key={type.id} onClick={() => setSelectedRoomType(type.id)} className={`shrink-0 rounded-full border px-4 py-2 text-[14px] font-medium transition-colors ${selectedRoomType === type.id ? 'border-[var(--primary)] bg-[var(--primary)]/5 text-[var(--primary)]' : 'border-[#c3c6d7] hover:border-[var(--primary)] hover:text-[var(--primary)]'}`}>
+                  {type.label}
+                </button>
+              ))}
+              <div className="h-6 w-px shrink-0 bg-[#c3c6d7]" />
+              {categories.slice(0, 8).map(cat => (
+                <button key={cat.category_id} onClick={() => setSelectedCategory(String(cat.category_id))} className={`shrink-0 rounded-full border px-4 py-2 text-[14px] font-medium transition-colors ${selectedCategory === String(cat.category_id) ? 'border-[var(--primary)] bg-[var(--primary)]/5 text-[var(--primary)]' : 'border-[#c3c6d7] hover:border-[var(--primary)] hover:text-[var(--primary)]'}`}>
+                  {cat.name}
+                </button>
+              ))}
+            </div>
+            <div className="hidden items-center gap-2 lg:flex">
+              <span className="text-[14px] text-[#737686]">Sắp xếp:</span>
+              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="cursor-pointer border-none bg-transparent text-[14px] font-semibold outline-none">
+                <option value="newest">Mới nhất</option>
+                <option value="price_asc">Giá thấp đến cao</option>
+                <option value="price_desc">Giá cao đến thấp</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <section id="discover" className="mx-auto max-w-[1280px] px-4 py-8 md:px-8 md:py-10 pb-24 md:pb-10">
+          <div className="grid gap-8 lg:grid-cols-[280px_1fr_280px]">
+            <aside className="hidden lg:block">
+              <div className="sticky top-[140px] space-y-6">
+                <div className="rounded-[14px] border border-[#e2e8f0] bg-white p-6">
+                  <h3 className="mb-4 text-[24px] font-semibold leading-8 text-[#191b23]">Khoảng giá</h3>
+                  <div className="space-y-3">
+                    {PRICE_RANGES.map(range => (
+                      <label key={range.id} className="group flex cursor-pointer items-center gap-3">
+                        <input type="radio" name="price" checked={selectedPrice === range.id} onChange={() => setSelectedPrice(range.id)} className="h-4 w-4 border-[#c3c6d7] text-[var(--primary)] focus:ring-[var(--primary)]" />
+                        <span className={`text-[14px] transition-colors group-hover:text-[var(--primary)] ${selectedPrice === range.id ? 'font-semibold text-[#191b23]' : 'text-[#434655]'}`}>{range.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-[14px] border border-[#e2e8f0] bg-white p-6">
+                  <h3 className="mb-4 text-[24px] font-semibold leading-8 text-[#191b23]">Tiện nghi</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {AMENITIES.map(am => {
+                      const Icon = am.icon;
+                      const active = selectedAmenities.includes(am.id);
+                      return (
+                        <button
+                          key={am.id}
+                          onClick={() => setSelectedAmenities(prev => prev.includes(am.id) ? prev.filter(x => x !== am.id) : [...prev, am.id])}
+                          className={`inline-flex items-center gap-2 rounded-[8px] border px-3 py-2 text-[14px] transition-colors ${active ? 'border-[var(--primary)] bg-[var(--primary)]/5 text-[var(--primary)]' : 'border-[#c3c6d7] hover:border-[var(--primary)]'}`}
+                        >
+                          <Icon size={14} /> {am.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="rounded-[14px] border border-[#e2e8f0] bg-white p-6">
+                  <h3 className="mb-4 text-[24px] font-semibold leading-8 text-[#191b23]">Loại hình</h3>
+                  <div className="space-y-3">
+                    {ROOM_TYPES.filter(t => t.id !== 'all').map(type => (
+                      <label key={type.id} className="group flex cursor-pointer items-center gap-3">
+                        <input type="radio" name="roomTypeSide" checked={selectedRoomType === type.id} onChange={() => setSelectedRoomType(type.id)} className="h-4 w-4 border-[#c3c6d7] text-[var(--primary)] focus:ring-[var(--primary)]" />
+                        <span className={`text-[14px] transition-colors group-hover:text-[var(--primary)] ${selectedRoomType === type.id ? 'font-semibold text-[#191b23]' : 'text-[#434655]'}`}>{type.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-[14px] border border-[#e2e8f0] bg-white p-6">
+                  <h3 className="mb-4 text-[24px] font-semibold leading-8 text-[#191b23]">Danh mục</h3>
+                  <div className="space-y-2">
+                    <button onClick={() => setSelectedCategory('all')} className={`block w-full rounded-[8px] border px-3 py-2 text-left text-[14px] transition-colors ${selectedCategory === 'all' ? 'border-[var(--primary)] bg-[var(--primary)]/5 text-[var(--primary)] font-semibold' : 'border-[#e2e8f0] text-[#434655] hover:border-[var(--primary)] hover:text-[var(--primary)]'}`}>Tất cả</button>
+                    {categories.map(cat => (
+                      <div key={cat.category_id} className="space-y-2">
+                        <button onClick={() => setSelectedCategory(String(cat.category_id))} className={`block w-full rounded-[8px] border px-3 py-2 text-left text-[14px] transition-colors ${selectedCategory === String(cat.category_id) ? 'border-[var(--primary)] bg-[var(--primary)]/5 text-[var(--primary)] font-semibold' : 'border-[#e2e8f0] text-[#434655] hover:border-[var(--primary)] hover:text-[var(--primary)]'}`}>{cat.name}</button>
+                        {(cat.children || []).length > 0 && (
+                          <div className="pl-3">
+                            {(cat.children || []).map(sub => (
+                              <button key={sub.category_id} onClick={() => setSelectedCategory(String(sub.category_id))} className={`block w-full rounded-[8px] px-3 py-2 text-left text-[13px] transition-colors ${selectedCategory === String(sub.category_id) ? 'bg-[#f3f3fe] text-[var(--primary)] font-semibold' : 'text-[#737686] hover:text-[var(--primary)]'}`}>
+                                {sub.name}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </aside>
+
+            <main>
+              <div className="mb-8 flex flex-col gap-4 border-b border-[#e2e8f0] pb-6 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <p className="mb-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[#737686]">{filtered.length} kết quả</p>
+                  <h2 className="text-[30px] font-semibold leading-10 text-[#191b23] md:text-[36px] md:leading-[44px]">Danh sách hiện có</h2>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#737686]">Hiển thị</span>
+                  {[6, 12, 24, 48].map(size => (
+                    <button
+                      key={size}
+                      onClick={() => setItemsPerPage(size)}
+                      className={`h-10 w-10 rounded-full border text-[12px] font-semibold transition-colors ${itemsPerPage === size ? 'border-[var(--primary)] bg-[var(--primary)] text-white' : 'border-[#e2e8f0] text-[#434655] hover:border-[var(--primary)] hover:text-[var(--primary)]'}`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {loading ? (
+                <div className="flex items-center justify-center py-24"><div className="h-10 w-10 animate-spin rounded-full border-2 border-[var(--primary)] border-t-transparent" /></div>
+              ) : visibleListings.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                    {visibleListings.map(item => (
+                      <ListingCard
+                        key={item.listing_id}
+                        item={item}
+                        saved={savedIds.includes(item.listing_id)}
+                        onToggleSave={async (listingId) => {
+                          if (!user) {
+                            toast.error('Vui lòng đăng nhập để lưu tin');
+                            return;
+                          }
+                          try {
+                            await dispatch(toggleSaveListing(listingId)).unwrap();
+                          } catch {
+                            toast.error('Có lỗi xảy ra');
+                          }
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="mt-8 grid gap-4 rounded-[14px] border border-[#e2e8f0] bg-white p-5 md:grid-cols-3">
+                    <div>
+                      <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#737686]">Danh mục đang lọc</p>
+                      <p className="mt-1 text-[16px] font-semibold text-[#191b23]">{selectedCategory === 'all' ? 'Tất cả danh mục' : (categories.find(cat => String(cat.category_id) === String(selectedCategory))?.name || 'Danh mục')}</p>
+                    </div>
+                    <div>
+                      <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#737686]">Loại hình</p>
+                      <p className="mt-1 text-[16px] font-semibold text-[#191b23]">{ROOM_TYPES.find(t => t.id === selectedRoomType)?.label || 'Tất cả'}</p>
+                    </div>
+                    <div>
+                      <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#737686]">Bộ lọc tiện nghi</p>
+                      <p className="mt-1 text-[16px] font-semibold text-[#191b23]">{selectedAmenities.length > 0 ? `${selectedAmenities.length} tiện nghi` : 'Không giới hạn'}</p>
+                    </div>
+                  </div>
+
+                  {totalPages > 1 && (
+                    <div className="mt-10 flex items-center justify-center gap-2">
+                      <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#e2e8f0] text-[#191b23] transition-colors hover:border-[var(--primary)] hover:text-[var(--primary)] disabled:cursor-not-allowed disabled:opacity-40">
+                        <ChevronLeft size={18} />
+                      </button>
+                      {Array.from({ length: totalPages }).map((_, index) => {
+                        const page = index + 1;
+                        if (totalPages > 7 && page !== 1 && page !== totalPages && Math.abs(page - currentPage) > 2) {
+                          if (page === 2 || page === totalPages - 1) return <span key={page} className="px-1 text-[#c3c6d7]">…</span>;
+                          return null;
+                        }
+                        return (
+                          <button
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={`inline-flex h-11 w-11 items-center justify-center rounded-full border text-[14px] font-semibold transition-colors ${currentPage === page ? 'border-[var(--primary)] bg-[var(--primary)] text-white' : 'border-[#e2e8f0] text-[#434655] hover:border-[var(--primary)] hover:text-[var(--primary)]'}`}
+                          >
+                            {page}
+                          </button>
+                        );
+                      })}
+                      <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)} className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#e2e8f0] text-[#191b23] transition-colors hover:border-[var(--primary)] hover:text-[var(--primary)] disabled:cursor-not-allowed disabled:opacity-40">
+                        <ChevronRight size={18} />
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="rounded-[14px] border border-dashed border-[#c3c6d7] bg-white p-12 text-center">
+                  <p className="mb-2 text-[18px] font-semibold text-[#191b23]">Không tìm thấy phòng phù hợp</p>
+                  <p className="text-[14px] text-[#737686]">Thử xóa bộ lọc hoặc thay đổi từ khóa tìm kiếm.</p>
+                  <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                    <button onClick={resetFilters} className="rounded-[8px] bg-[var(--primary)] px-5 py-3 text-[14px] font-semibold text-white">Xóa bộ lọc</button>
+                    <Link to="/tenant/saved" className="rounded-[8px] border border-[#e2e8f0] px-5 py-3 text-[14px] font-semibold text-[#191b23] transition-colors hover:border-[var(--primary)] hover:text-[var(--primary)]">Tin đã lưu</Link>
+                    <Link to="/tenant/bookings" className="rounded-[8px] border border-[#e2e8f0] px-5 py-3 text-[14px] font-semibold text-[#191b23] transition-colors hover:border-[var(--primary)] hover:text-[var(--primary)]">Lịch hẹn</Link>
+                  </div>
+                </div>
+              )}
+            </main>
+
+            <aside className="hidden lg:block">
+              <div className="sticky top-[140px] space-y-6">
+                {sidebarBanners.length > 0 ? sidebarBanners.slice(0, 3).map(banner => {
+                  const images = splitImages(banner.image_url);
+                  const cover = images[0] || defaultHeroImage;
+                  return (
+                    <Link key={banner.request_id} to={`/tenant/room/${banner.room_id}`} className="group block overflow-hidden rounded-[14px] border border-[#e2e8f0] bg-white">
+                      <div className="relative aspect-[3/4] overflow-hidden bg-slate-100">
+                        <img src={cover} alt={banner.listing_title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0c1a3a]/75 via-transparent to-transparent" />
+                        <span className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-[#0c1a3a] backdrop-blur">
+                          <Star size={12} className="fill-[#943700] text-[#943700]" /> Featured
+                        </span>
+                      </div>
+                      <div className="p-4">
+                        <p className="mb-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#737686]">{banner.building_name}</p>
+                        <h4 className="line-clamp-2 text-[16px] font-semibold leading-6 text-[#191b23] group-hover:text-[var(--primary)]">{banner.listing_title}</h4>
+                      </div>
+                    </Link>
+                  );
+                }) : (
+                  <div className="rounded-[14px] border border-dashed border-[#c3c6d7] bg-white p-6 text-center text-[14px] text-[#737686]">Chưa có banner nổi bật.</div>
+                )}
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="commitments" className="border-y border-[#e2e8f0] bg-white py-16">
+          <div className="mx-auto max-w-[1280px] px-4 md:px-8">
+            <div className="mb-10 text-center">
+              <h2 className="text-[30px] font-semibold leading-10 text-[#191b23] md:text-[36px] md:leading-[44px]">Cam kết dịch vụ từ SmartProp</h2>
+              <p className="mx-auto mt-3 max-w-2xl text-[16px] leading-7 text-[#434655]">Chúng tôi mang lại trải nghiệm thuê nhà minh bạch, an toàn và thuận tiện cho người thuê.</p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {COMMITMENTS.map(({ icon: Icon, title, desc }) => (
+                <div key={title} className="rounded-[14px] border border-[#e2e8f0] bg-[#faf8ff] p-6 text-center">
+                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#dae2ff] text-[#004ac6]"><Icon size={28} /></div>
+                  <h3 className="mb-2 text-[18px] font-semibold text-[#191b23]">{title}</h3>
+                  <p className="text-[14px] leading-6 text-[#434655]">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer id="footer" className="bg-[#0c1a3a] py-12 text-white">
+        <div className="mx-auto grid max-w-[1280px] gap-10 px-4 md:grid-cols-4 md:px-8">
+          <div className="md:col-span-2">
+            <div className="mb-4 text-[24px] font-semibold tracking-tight">SmartProp</div>
+            <p className="max-w-md text-[14px] leading-6 text-[#c7d3fd]">Hệ sinh thái công nghệ bất động sản giúp việc tìm kiếm và quản lý không gian sống trở nên dễ dàng hơn.</p>
+          </div>
+          <div>
+            <h4 className="mb-4 text-[14px] font-semibold uppercase tracking-[0.16em] text-[#dae2ff]">Khám phá</h4>
+            <ul className="space-y-3 text-[14px] text-[#c7d3fd]">
+              <li><a className="transition-colors hover:text-white" href="#discover">Danh sách phòng</a></li>
+              <li><a className="transition-colors hover:text-white" href="#commitments">Cam kết</a></li>
+              <li><a className="transition-colors hover:text-white" href="#footer">Liên hệ</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="mb-4 text-[14px] font-semibold uppercase tracking-[0.16em] text-[#dae2ff]">Liên hệ</h4>
+            <ul className="space-y-3 text-[14px] text-[#c7d3fd]">
+              <li>info@proptech.com</li>
+              <li>1900 6789</li>
+            </ul>
+          </div>
+        </div>
+        <div className="mx-auto mt-10 max-w-[1280px] border-t border-white/10 px-4 pt-6 text-center text-[12px] text-[#c7d3fd] md:px-8">© 2024 SmartProp. All rights reserved.</div>
+      </footer>
+    </div>
+  );
 };
 
 export default DiscoverRooms;

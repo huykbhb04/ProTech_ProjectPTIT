@@ -1,4 +1,5 @@
--- Migration: Add CCCD images and personal information to contracts table
+-- Migration to add CCCD and Handover details
+USE init_schema;
 -- This allows storing tenant and landlord identity verification documents
 
 ALTER TABLE contracts

@@ -22,11 +22,28 @@ exports.getActiveListings = async (req, res) => {
 
 exports.getLandlordListings = async (req, res) => {
     try {
-        const listings = await Listing.getByLandlord(req.user.userId);
+        const userId = req.user.user_id || req.user.userId;
+        const listings = await Listing.getByLandlord(userId);
         res.json(listings);
     } catch (error) {
         console.error('Error fetching landlord listings:', error);
         res.status(500).json({ message: 'Server error fetching landlord listings', error: error.message });
+    }
+};
+
+exports.getLandlordListingsPaginated = async (req, res) => {
+    try {
+        const { page = 1, limit = 10, status = '', search = '' } = req.query;
+        const result = await Listing.getByLandlordPaginated(req.user.userId, {
+            page: parseInt(page),
+            limit: Math.min(50, parseInt(limit)),
+            status,
+            search
+        });
+        res.json(result);
+    } catch (error) {
+        console.error('Error fetching paginated landlord listings:', error);
+        res.status(500).json({ message: 'Lỗi tải danh sách tin đăng', error: error.message });
     }
 };
 
@@ -57,5 +74,15 @@ exports.getListingByRoom = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error fetching listing' });
+    }
+};
+
+exports.incrementView = async (req, res) => {
+    try {
+        await Listing.incrementView(req.params.id);
+        res.json({ message: 'View incremented' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error incrementing view' });
     }
 };

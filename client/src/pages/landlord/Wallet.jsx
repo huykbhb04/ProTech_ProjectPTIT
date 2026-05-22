@@ -1,502 +1,405 @@
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
-    CreditCard,
     Wallet as WalletIcon,
-    History,
-    Zap,
-    ArrowUpRight,
-    CheckCircle2,
-    AlertTriangle,
+    Plus,
+    ChevronLeft,
+    ChevronRight,
+    CircleCheck,
+    TriangleAlert,
     Clock,
     Star,
-    ChevronRight,
+    X,
+    Loader,
+    Banknote,
     QrCode,
-    Plus,
-    Calendar
+    MessageCircleMore,
+    Copy,
+    Check,
 } from 'lucide-react';
 import monetizationService from '../../services/monetizationService';
 import listingService from '../../services/listingService';
 
-const Wallet = () => {
-    const { token } = useSelector((state) => state.auth);
-    const [wallet, setWallet] = useState({ balance: 0, history: [] });
-    const [listings, setListings] = useState([]);
-    const [packages, setPackages] = useState([]);
-    const [services, setServices] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [showTopUp, setShowTopUp] = useState(false);
+const LIMIT = 10;
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [walletData, listingsData, packagesData, servicesData] = await Promise.all([
-                    monetizationService.getWalletInfo(token),
-                    listingService.getLandlordListings(token),
-                    monetizationService.getPackages(token),
-                    monetizationService.getPremiumServices(token)
-                ]);
-                setWallet(walletData);
-                setListings(listingsData);
-                setPackages(packagesData);
-                setServices(servicesData);
-            } catch (error) {
-                console.error('Error fetching monetization data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, [token]);
+const fmt = (v) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(v || 0);
 
-    const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
-    };
+const StatBox = ({ label, value, borderRight }) => (
+    <div className="flex flex-col items-center justify-center px-4" style={{ borderRight: borderRight ? '1px solid #bec9c3' : 'none' }}>
+        <p className="text-[20px] font-bold text-[#181d1a]">{value}</p>
+        <p className="mt-1 text-center text-[11.5px] text-[#6f7a74]">{label}</p>
+    </div>
+);
 
-    const getDaysRemaining = (expiresAt) => {
-        if (!expiresAt) return 0;
-        const diff = new Date(expiresAt) - new Date();
-        return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
-    };
+const BuildingRow = ({ building, onClick }) => {
+    const name = building.name || building.building_name || 'Không có tên';
+    const address = building.address || building.full_address || building.location || 'Chưa có địa chỉ';
+    const image = building.image || building.cover_image || building.images?.[0];
+    const occupancy = Number(building.occupancy_rate || building.occupancy || 0);
+    const statusColor = occupancy > 80 ? '#16a34a' : occupancy > 50 ? '#eab308' : '#dc2626';
+    const statusBg = occupancy > 80 ? 'rgba(22, 163, 74, 0.1)' : occupancy > 50 ? 'rgba(234, 179, 8, 0.1)' : 'rgba(220, 38, 38, 0.1)';
+    const statusLabel = occupancy > 80 ? 'Tốt' : occupancy > 50 ? 'Bảo trì' : 'Cảnh báo';
 
-    const StatusBadge = ({ listing }) => {
-        const days = getDaysRemaining(listing.expires_at);
-        const isPremium = listing.premium_until && new Date(listing.premium_until) > new Date();
-
-        return (
-            <div className="flex flex-wrap gap-2">
-                {listing.status === 'active' && days > 0 ? (
-                    <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-green-200 flex items-center gap-1">
-                        <CheckCircle2 size={12} /> Hiển thị
-                    </span>
-                ) : (
-                    <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-red-200 flex items-center gap-1">
-                        <AlertTriangle size={12} /> {days === 0 ? 'Hết hạn' : 'Đã ẩn'}
-                    </span>
-                )}
-                {isPremium && (
-                    <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-yellow-200 flex items-center gap-1">
-                        <Star size={12} fill="currentColor" /> VIP {listing.premium_badge?.split('_').join(' ').toUpperCase()}
-                    </span>
-                )}
+    return (
+        <button
+            type="button"
+            className="flex w-full items-center gap-4 border-b p-4 text-left transition-all hover:bg-[#f9fbfc]"
+            style={{ borderColor: '#bec9c3' }}
+            onClick={onClick}
+        >
+            {image ? (
+                <img src={image} alt={name} className="h-[60px] w-[60px] rounded-lg object-cover" />
+            ) : (
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg bg-[#ebefeb]">
+                    <WalletIcon className="h-6 w-6 text-[#6f7a74]" />
+                </div>
+            )}
+            <div className="min-w-0 flex-1">
+                <h5 className="truncate text-[14px] font-semibold text-[#181d1a]">{name}</h5>
+                <p className="truncate text-[11.5px] text-[#6f7a74]">{address}</p>
             </div>
-        );
-    };
+            <div className="flex w-48 flex-col items-end gap-1">
+                <div className="flex items-center gap-2">
+                    <span className="rounded-full px-2 py-0.5 text-[11px] font-semibold" style={{ backgroundColor: statusBg, color: statusColor }}>
+                        {statusLabel}
+                    </span>
+                    <span className="text-[11px] text-[#6f7a74]">{occupancy}%</span>
+                </div>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#ebefeb]">
+                    <div className="h-full rounded-full" style={{ width: `${occupancy}%`, backgroundColor: statusColor }} />
+                </div>
+            </div>
+            <span className="rounded-lg p-2 text-[#6f7a74] transition-colors hover:bg-[#ebefeb]">⋮</span>
+        </button>
+    );
+};
 
-    const [showRenewalModal, setShowRenewalModal] = useState(false);
-    const [selectedListingForRenewal, setSelectedListingForRenewal] = useState(null);
-    const [selectedPackageForRenewal, setSelectedPackageForRenewal] = useState(null);
+const TransactionRow = ({ item, onClick }) => {
+    const isPositive = item.payment_type === 'wallet_topup' || item.type === 'topup' || Number(item.amount || 0) > 0;
+    const title = item.listing_title || item.description || item.title || (isPositive ? 'Nạp tiền vào ví' : 'Thanh toán');
 
-    const handleRenewClick = (listing) => {
-        setSelectedListingForRenewal(listing);
-        setSelectedPackageForRenewal(null);
-        setShowRenewalModal(true);
-    };
+    return (
+        <tr className="cursor-pointer transition-colors hover:bg-[#f9fbfc]" onClick={onClick}>
+            <td className="px-4 py-4">
+                <p className="text-[14px] font-semibold text-[#181d1a]">{title}</p>
+                <p className="text-[11px] text-[#6f7a74]">
+                    {item.created_at ? new Date(item.created_at).toLocaleString('vi-VN') : ''}
+                </p>
+            </td>
+            <td className="px-4 py-4 text-right">
+                <p className="text-[14px] font-bold" style={{ color: isPositive ? '#16a34a' : '#dc2626' }}>
+                    {isPositive ? '+' : '-'}{fmt(Math.abs(item.amount || 0))}
+                </p>
+            </td>
+        </tr>
+    );
+};
 
-    const handleRenewalPayment = async () => {
-        if (!selectedListingForRenewal || !selectedPackageForRenewal) return;
+const TopUpModal = ({ isOpen, onClose, onSubmit, amount, setAmount, loading }) => {
+    const [method, setMethod] = useState('vietqr');
+    const [copied, setCopied] = useState(false);
+    const [paymentData, setPaymentData] = useState(null);
 
+    if (!isOpen) return null;
+
+    const presets = [100000, 200000, 500000, 1000000];
+    const bankAccount = '1080938386';
+    const bankName = 'Techcombank';
+    const bankOwner = 'BUI DUC HUY';
+    const momoPhone = '0901234567';
+    const transferContent = paymentData?.transactionRef || `NAP ${amount || 0}`;
+
+    const copyContent = async () => {
         try {
-            // Check if wallet has enough balance
-            if (wallet.balance < selectedPackageForRenewal.price) {
-                alert('Số dư ví không đủ. Vui lòng nạp thêm tiền!');
-                return;
-            }
-
-            await monetizationService.processPayment({
-                listingId: selectedListingForRenewal.listing_id,
-                paymentType: 'package',
-                referenceId: selectedPackageForRenewal.package_id,
-                amount: selectedPackageForRenewal.price,
-                paymentMethod: 'wallet',
-                roomId: selectedListingForRenewal.room_id // Optional: might be needed for context
-            }, token);
-
-            alert('Gia hạn tin đăng thành công!');
-            setShowRenewalModal(false);
-
-            // Refresh data
-            const [walletData, listingsData] = await Promise.all([
-                monetizationService.getWalletInfo(token),
-                listingService.getLandlordListings(token)
-            ]);
-            setWallet(walletData);
-            setListings(listingsData);
-
-        } catch (error) {
-            console.error('Renewal failed:', error);
-            alert('Gia hạn thất bại: ' + (error.response?.data?.message || 'Lỗi hệ thống'));
+            await navigator.clipboard.writeText(paymentData?.transferContent || transferContent);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1500);
+        } catch (e) {
+            console.error(e);
         }
     };
 
-    if (loading) return <div className="flex items-center justify-center min-h-[60vh] text-indigo-600 font-bold">Đang tải dữ liệu ví...</div>;
+    return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+            <div className="relative w-full max-w-4xl overflow-hidden rounded-[24px] bg-white shadow-2xl">
+                <div className="flex items-center justify-between border-b border-[#e2e8f0] bg-[#f8f9ff] px-6 py-4">
+                    <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#5c403c]">Nạp tiền vào ví</p>
+                        <h3 className="text-[20px] font-bold text-[#0b1c30]">Chọn phương thức thanh toán</h3>
+                    </div>
+                    <button onClick={onClose} className="rounded-lg p-2 hover:bg-[#eff4ff]"><X className="h-5 w-5 text-[#5c403c]" /></button>
+                </div>
+
+                <div className="grid gap-6 p-6 lg:grid-cols-2">
+                    <div className="space-y-5">
+                        <div>
+                            <label className="mb-2 block text-[12px] font-semibold uppercase tracking-[0.16em] text-[#5c403c]">Số tiền</label>
+                            <input type="number" min="1000" step="1000" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full rounded-2xl border border-[#e6bdb8] px-4 py-3 text-sm outline-none focus:border-[#dc2626]" placeholder="Nhập số tiền" />
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">{presets.map((item) => (<button key={item} type="button" onClick={() => setAmount(String(item))} className="rounded-2xl border border-[#e6bdb8] px-4 py-3 text-sm font-semibold text-[#0b1c30] hover:border-[#dc2626] hover:bg-[#fef2f2]">{fmt(item)}</button>))}</div>
+                        <div className="rounded-2xl border border-[#e2e8f0] bg-[#f8f9ff] p-4">
+                            <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#5c403c]">Phương thức thanh toán</p>
+                            <div className="space-y-2">
+                                <label className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 ${method === 'vietqr' ? 'border-[#dc2626] bg-[#fef2f2]' : 'border-[#e2e8f0] bg-white'}`}>
+                                    <input type="radio" name="pay-method" checked={method === 'vietqr'} onChange={() => setMethod('vietqr')} />
+                                    <QrCode className="h-5 w-5 text-[#dc2626]" />
+                                    <div><p className="font-semibold text-[#0b1c30]">VietQR</p><p className="text-[12px] text-[#5c403c]">Quét mã QR để chuyển khoản nhanh</p></div>
+                                </label>
+                                <label className={`flex cursor-pointer items-center gap-3 rounded-xl border p-4 ${method === 'momo' ? 'border-[#dc2626] bg-[#fef2f2]' : 'border-[#e2e8f0] bg-white'}`}>
+                                    <input type="radio" name="pay-method" checked={method === 'momo'} onChange={() => setMethod('momo')} />
+                                    <MessageCircleMore className="h-5 w-5 text-[#dc2626]" />
+                                    <div><p className="font-semibold text-[#0b1c30]">MoMo</p><p className="text-[12px] text-[#5c403c]">Thanh toán bằng ví MoMo</p></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="rounded-[20px] border border-[#e2e8f0] bg-[#f8f9ff] p-5">{method === 'vietqr' ? <div className="space-y-4"><div className="flex items-center justify-between"><div><p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#5c403c]">VietQR</p><h4 className="text-[18px] font-bold text-[#0b1c30]">Quét mã để nạp tiền</h4></div><span className="rounded-full bg-[#fef2f2] px-3 py-1 text-[11px] font-bold text-[#dc2626]">Ưu tiên</span></div><div className="flex min-h-[260px] items-center justify-center rounded-2xl border border-dashed border-[#e6bdb8] bg-white p-6"><div className="text-center"><div className="mx-auto mb-4 flex h-40 w-40 items-center justify-center rounded-2xl border border-[#e2e8f0] bg-[#f8f9ff]"><img src={paymentData?.qrCodeUrl || `https://img.vietqr.io/image/TCB-1080938386-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(transferContent)}`} alt="VietQR" className="max-h-36 w-full object-contain" /></div><p className="text-[12px] text-[#5c403c]">Quét mã VietQR để chuyển khoản vào Techcombank.</p></div></div><div className="rounded-2xl border border-[#e2e8f0] bg-white p-4 text-sm text-[#5c403c]"><p className="font-semibold text-[#0b1c30]">Thông tin chuyển khoản</p><p>Ngân hàng: {bankName}</p><p>Chủ tài khoản: {bankOwner}</p><p>Số tài khoản: {bankAccount}</p><div className="mt-2 flex items-center gap-2"><code className="rounded bg-[#f8f9ff] px-2 py-1 text-[12px]">{transferContent}</code><button onClick={copyContent} className="rounded-lg border border-[#e6bdb8] px-3 py-2 text-[12px] font-semibold text-[#0b1c30]">{copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}</button></div></div></div> : <div className="space-y-4"><div className="flex items-center justify-between"><div><p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#5c403c]">MoMo</p><h4 className="text-[18px] font-bold text-[#0b1c30]">Thanh toán qua MoMo</h4></div><span className="rounded-full bg-[#fef2f2] px-3 py-1 text-[11px] font-bold text-[#dc2626]">Chuyển hướng</span></div><div className="rounded-2xl border border-[#e2e8f0] bg-white p-5"><p className="text-sm text-[#5c403c]">Người dùng sẽ được chuyển đến cổng MoMo để xác nhận thanh toán.</p><div className="mt-4 rounded-2xl bg-[#f8f9ff] p-4 text-sm text-[#5c403c]"><p><strong>Số điện thoại MoMo:</strong> {momoPhone}</p><p className="mt-1"><strong>Nội dung:</strong> {transferContent}</p></div></div></div>}</div>
+                </div>
+                <div className="flex gap-3 border-t border-[#e2e8f0] px-6 py-4"><button onClick={onClose} className="flex-1 rounded-2xl border border-[#e6bdb8] px-5 py-3 font-semibold text-[#5c403c] hover:bg-[#f8f9ff]">Hủy</button><button onClick={async () => { const result = await onSubmit(method); if (result) setPaymentData(result); }} disabled={loading || !Number(amount)} className="flex-1 rounded-2xl bg-[#dc2626] px-5 py-3 font-semibold text-white hover:bg-[#b91c1c] disabled:opacity-50">{loading ? 'Đang xử lý...' : method === 'vietqr' ? 'Tạo QR thanh toán' : 'Thanh toán MoMo'}</button></div>
+            </div>
+        </div>
+    );
+};
+
+const Wallet = () => {
+    const { token } = useSelector((s) => s.auth);
+    const [wallet, setWallet] = useState({ balance: 0, history: [] });
+    const [packages, setPackages] = useState([]);
+    const [services, setServices] = useState([]);
+    const [loadingMeta, setLoadingMeta] = useState(true);
+    const [listings, setListings] = useState([]);
+    const [listingPage, setListingPage] = useState(1);
+    const [listingTotal, setListingTotal] = useState(0);
+    const [listingLoading, setListingLoading] = useState(false);
+    const [txPage, setTxPage] = useState(1);
+    const [txTotal, setTxTotal] = useState(0);
+    const [txLoading, setTxLoading] = useState(false);
+    const [selectedTx, setSelectedTx] = useState(null);
+    const [showTopUp, setShowTopUp] = useState(false);
+    const [topUpAmount, setTopUpAmount] = useState('500000');
+    const [topUpLoading, setTopUpLoading] = useState(false);
+
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const [w, pkgs, svcs] = await Promise.all([
+                    monetizationService.getWalletInfo(token),
+                    monetizationService.getPackages(token),
+                    monetizationService.getPremiumServices(token),
+                ]);
+                setWallet(w);
+                setPackages(pkgs || []);
+                setServices(svcs || []);
+            } catch (e) {
+                console.error(e);
+            } finally {
+                setLoadingMeta(false);
+            }
+        };
+        load();
+    }, [token]);
+
+    const fetchListings = async (page) => {
+        setListingLoading(true);
+        try {
+            const res = await listingService.getLandlordListingsPaginated({ page, limit: LIMIT });
+            setListings(res.listings || []);
+            setListingTotal(res.total || 0);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setListingLoading(false);
+        }
+    };
+
+    const fetchTransactions = async (page) => {
+        setTxLoading(true);
+        try {
+            const res = await monetizationService.getWalletHistoryPaginated(token, page, LIMIT);
+            setWallet(prev => ({ ...prev, history: res.history || [] }));
+            setTxTotal(res.total || 0);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setTxLoading(false);
+        }
+    };
+
+    useEffect(() => { fetchListings(listingPage); }, [listingPage]);
+    useEffect(() => { fetchTransactions(txPage); }, [txPage]);
+
+    useEffect(() => {
+        if (showTopUp) return;
+    }, [showTopUp]);
+
+    const handleTopUp = async (method) => {
+        try {
+            setTopUpLoading(true);
+            const amount = Number(topUpAmount);
+            if (!Number.isFinite(amount) || amount <= 0) return null;
+
+            const payload = {
+                amount,
+                method,
+                orderInfo: `Nap tien vi ${amount}`,
+            };
+
+            const res = await monetizationService.topUpWallet(token, payload);
+
+            if (method === 'momo' && res.payUrl) {
+                window.location.href = res.payUrl;
+                return res;
+            }
+
+            setWallet((prev) => ({ ...prev, pending_topup: res }));
+            return res;
+        } catch (e) {
+            console.error(e);
+            return null;
+        } finally {
+            setTopUpLoading(false);
+        }
+    };
+
+    if (loadingMeta) {
+        return (
+            <div className="flex min-h-[60vh] items-center justify-center">
+                <Loader className="h-6 w-6 animate-spin text-[#bec9c3]" />
+            </div>
+        );
+    }
+
+    const realTxCount = wallet.history?.length || txTotal || 0;
+    const monthlyExpense = wallet.history?.filter(t => t.payment_type !== 'wallet_topup')?.reduce((sum, t) => sum + (t.amount || 0), 0) || 0;
+    const monthlyIncome = wallet.history?.filter(t => t.payment_type === 'wallet_topup')?.reduce((sum, t) => sum + (t.amount || 0), 0) || 0;
+
+    const stats = {
+        txCount: realTxCount,
+        expense: fmt(monthlyExpense),
+        income: fmt(monthlyIncome),
+    };
+
+    const transactionsToShow = wallet.history || [];
 
     return (
-        <div className="space-y-8 pb-20 max-w-7xl mx-auto">
-            {/* Header / Wallet Card */}
-            <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-2 bg-gradient-to-br from-indigo-700 via-indigo-600 to-blue-600 p-8 rounded-3xl shadow-2xl relative overflow-hidden text-white group">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl transition-transform group-hover:scale-110"></div>
-                    <div className="relative z-10">
-                        <div className="flex justify-between items-start mb-10">
+        <div className="min-h-screen bg-[#f7faf6] px-6 pb-20 pt-20 font-['Be_Vietnam_Pro',sans-serif]">
+            <div className="mx-auto max-w-[1280px]">
+                <div className="mb-6 flex items-end justify-between">
+                    <div>
+                        <p className="mb-1 text-[11.5px] font-semibold uppercase tracking-wider text-[#6f7a74]">Tài chính</p>
+                        <h1 className="text-[24px] font-semibold leading-8 text-[#181d1a]">Ví & Thanh toán</h1>
+                    </div>
+                </div>
+
+                <div className="mb-8 grid grid-cols-12 gap-6">
+                    <div className="col-span-12 flex min-h-[240px] flex-col justify-between rounded-xl p-8 text-white lg:col-span-7" style={{ background: 'linear-gradient(to bottom right, #085041, #1d9e75)' }}>
+                        <div className="flex items-start justify-between">
                             <div>
-                                <p className="text-indigo-100 text-xs font-black uppercase tracking-[0.2em] mb-2">Số dư hiện tại</p>
-                                <h1 className="text-5xl font-black tracking-tight">{formatCurrency(wallet.balance)}</h1>
+                                <p className="mb-1 text-[14px] font-semibold opacity-80">Số dư khả dụng</p>
+                                <h3 className="text-[48px] font-bold">{fmt(wallet.balance)}</h3>
                             </div>
-                            <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20">
-                                <WalletIcon size={32} />
-                            </div>
+                            <Banknote className="h-12 w-12 opacity-40" />
                         </div>
-                        <div className="flex gap-4">
-                            <button
-                                onClick={() => setShowTopUp(true)}
-                                className="bg-white text-indigo-700 px-8 py-3 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-indigo-50 transition-all shadow-lg active:scale-95 flex items-center gap-2"
-                            >
-                                <Plus size={18} /> Nạp tiền vào ví
+                        <div className="mt-6 flex gap-3">
+                            <button onClick={() => setShowTopUp(true)} className="flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-[14px] font-semibold text-[#0f6e56] transition-all hover:opacity-90">
+                                <Plus className="h-4 w-4" /> Nạp tiền
                             </button>
-                            <button className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-3 rounded-2xl font-bold text-sm hover:bg-white/20 transition-all active:scale-95">
-                                Xuất lịch sử
+                            <button className="rounded-lg border border-white/30 px-6 py-3 text-[14px] font-semibold text-white transition-all hover:bg-white/10">
+                                Rút tiền
                             </button>
                         </div>
                     </div>
-                </div>
 
-                <div className="bg-white p-6 rounded-3xl border shadow-sm flex flex-col justify-between overflow-hidden relative group">
-                    <div className="absolute bottom-0 right-0 w-32 h-32 bg-indigo-50 rounded-tl-full blur-2xl -mb-16 -mr-16 group-hover:bg-indigo-100 transition-colors"></div>
-                    <div className="relative z-10">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="p-3 bg-indigo-100 text-indigo-600 rounded-2xl">
-                                <Zap size={24} />
-                            </div>
-                            <div>
-                                <h3 className="font-black text-gray-800 tracking-tight">Thống kê tin</h3>
-                                <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Hiệu năng quảng cáo</p>
-                            </div>
-                        </div>
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-end border-b border-gray-50 pb-3">
-                                <span className="text-gray-500 font-medium">Đang hiển thị</span>
-                                <span className="text-2xl font-black text-indigo-600">{listings.filter(l => l.status === 'active' && getDaysRemaining(l.expires_at) > 0).length}</span>
-                            </div>
-                            <div className="flex justify-between items-end border-b border-gray-50 pb-3">
-                                <span className="text-gray-500 font-medium">Sắp hết hạn</span>
-                                <span className="text-2xl font-black text-orange-500">{listings.filter(l => getDaysRemaining(l.expires_at) > 0 && getDaysRemaining(l.expires_at) <= 5).length}</span>
-                            </div>
+                    <div className="col-span-12 flex items-center justify-center rounded-xl border bg-white lg:col-span-5" style={{ borderColor: '#bec9c3', minHeight: '240px' }}>
+                        <div className="grid h-full w-full grid-cols-3">
+                            <StatBox label="Giao dịch tháng này" value={stats.txCount} borderRight />
+                            <StatBox label="Chi tiêu tháng này" value={stats.expense} borderRight />
+                            <StatBox label="Thu nhập" value={stats.income} />
                         </div>
                     </div>
-                    <button className="mt-6 w-full py-3 bg-gray-50 text-gray-600 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-gray-100 transition-colors relative z-10">
-                        Phân tích chuyên sâu
-                    </button>
-                </div>
-            </div>
-
-            {/* Listing Management Progress bars */}
-            <div className="bg-white rounded-3xl border shadow-sm overflow-hidden">
-                <div className="p-6 border-b flex justify-between items-center bg-gray-50/50">
-                    <h3 className="font-black text-gray-800 tracking-tight flex items-center gap-2 uppercase text-sm">
-                        <Clock size={18} className="text-indigo-600" /> QUẢN LÝ THỜI HẠN TIN ĐĂNG
-                    </h3>
-                    <p className="text-[10px] text-gray-400 font-bold">Cập nhật lúc: {new Date().toLocaleTimeString()}</p>
-                </div>
-                <div className="divide-y">
-                    {listings.length > 0 ? listings.map(listing => {
-                        const days = getDaysRemaining(listing.expires_at);
-                        const progress = Math.min(100, (days / 30) * 100); // Base on 30 days for visual
-                        return (
-                            <div key={listing.listing_id} className="p-6 flex flex-col md:flex-row md:items-center gap-6 group hover:bg-gray-50/80 transition-colors">
-                                <div className="md:w-1/3">
-                                    <h4 className="font-black text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-1">{listing.title}</h4>
-                                    <p className="text-xs text-gray-400 mt-1 flex items-center gap-1 font-medium">
-                                        <ArrowUpRight size={12} /> {listing.building_name} - Phòng {listing.room_number}
-                                    </p>
-                                    <div className="mt-3">
-                                        <StatusBadge listing={listing} />
-                                    </div>
-                                </div>
-                                <div className="flex-1 space-y-2">
-                                    <div className="flex justify-between items-end">
-                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Tiến độ gói tin</p>
-                                        <p className="text-sm font-black text-indigo-700">Còn {days} ngày</p>
-                                    </div>
-                                    <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-50">
-                                        <div
-                                            className={`h-full transition-all duration-1000 ${days > 10 ? 'bg-indigo-500' : days > 3 ? 'bg-orange-500' : 'bg-red-500'}`}
-                                            style={{ width: `${progress}%` }}
-                                        ></div>
-                                    </div>
-                                    <p className="text-[10px] text-gray-400 text-right">Hết hạn: {listing.expires_at ? new Date(listing.expires_at).toLocaleDateString('vi-VN') : 'N/A'}</p>
-                                </div>
-                                <div className="md:w-48 flex gap-2">
-                                    <button
-                                        onClick={() => handleRenewClick(listing)}
-                                        className="flex-1 py-2 bg-indigo-50 text-indigo-700 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-indigo-100 transition-all active:scale-95"
-                                    >
-                                        Gia hạn
-                                    </button>
-                                    <button className="flex-1 py-2 border border-gray-200 text-gray-500 rounded-xl text-xs font-bold hover:bg-white transition-all">VIP</button>
-                                </div>
-                            </div>
-                        );
-                    }) : (
-                        <div className="p-12 text-center text-gray-400 italic">Chưa có tin đăng nào cần quản lý thời hạn.</div>
-                    )}
-                </div>
-            </div>
-
-            {/* Pricing Tables */}
-            <div className="grid lg:grid-cols-2 gap-8">
-                {/* Packages Table */}
-                <div className="space-y-6">
-                    <h3 className="font-black text-gray-800 tracking-tight flex items-center gap-2 uppercase text-sm px-2">
-                        <Calendar size={18} className="text-indigo-600" /> BẢNG GIÁ GÓI TIN ĐĂNG
-                    </h3>
-                    <div className="grid md:grid-cols-3 gap-4">
-                        {packages.map(pkg => (
-                            <div key={pkg.package_id} className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:border-indigo-500 hover:shadow-xl hover:shadow-indigo-50 transition-all flex flex-col justify-between group">
-                                <div>
-                                    <h4 className="font-black text-sm text-gray-800 mb-2 leading-tight">{pkg.name}</h4>
-                                    <p className="text-[10px] text-gray-400 leading-relaxed mb-6 font-medium uppercase tracking-[0.05em]">{pkg.description}</p>
-                                    <p className="text-2xl font-black text-indigo-700 mb-1">{formatCurrency(pkg.price)}</p>
-                                    <p className="text-[10px] text-gray-400 font-bold italic">/{pkg.duration_days} ngày hiển thị</p>
-                                </div>
-                                <button className="mt-8 w-full py-2.5 bg-indigo-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.1em] shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 active:scale-95">Chọn gói</button>
-                            </div>
-                        ))}
-                    </div>
                 </div>
 
-                {/* Services Table */}
-                <div className="space-y-6">
-                    <h3 className="font-black text-gray-800 tracking-tight flex items-center gap-2 uppercase text-sm px-2">
-                        <Star size={18} className="text-yellow-500" fill="currentColor" /> DỊCH VỤ GIÁ TRỊ GIA TĂNG (VIP)
-                    </h3>
-                    <div className="space-y-4">
-                        {services.map(svc => (
-                            <div key={svc.service_id} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex justify-between items-center group hover:bg-indigo-50/30 transition-all hover:border-indigo-200">
-                                <div className="flex gap-4 items-center">
-                                    <div className={`p-3 rounded-2xl shadow-sm ${svc.badge_type === 'featured' ? 'bg-orange-100 text-orange-600' :
-                                        svc.badge_type === 'top_rank' ? 'bg-indigo-100 text-indigo-600' : 'bg-red-100 text-red-600'
-                                        }`}>
-                                        <Zap size={24} fill="currentColor" />
-                                    </div>
-                                    <div>
-                                        <h4 className="font-black text-gray-800 tracking-tight">{svc.name}</h4>
-                                        <p className="text-[10px] text-gray-400 font-medium">{svc.description}</p>
-                                    </div>
-                                </div>
-                                <div className="text-right flex items-center gap-6">
-                                    <div>
-                                        <p className="font-black text-indigo-600">{formatCurrency(svc.price_per_day)}</p>
-                                        <p className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Mỗi ngày</p>
-                                    </div>
-                                    <button className="p-2 bg-white text-indigo-600 border border-indigo-100 rounded-xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm active:scale-90">
-                                        <Plus size={20} />
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Payment History Table */}
-            <div className="bg-white rounded-3xl border shadow-sm overflow-hidden">
-                <div className="p-6 border-b bg-gray-50/50">
-                    <h3 className="font-black text-gray-800 tracking-tight flex items-center gap-2 uppercase text-sm">
-                        <History size={18} className="text-indigo-600" /> BIẾN ĐỘNG SỐ DƯ
-                    </h3>
-                </div>
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                        <thead className="bg-gray-50/80 text-[10px] font-black uppercase text-gray-400 tracking-widest">
-                            <tr>
-                                <th className="px-6 py-4">Thời gian</th>
-                                <th className="px-6 py-4">Loại giao dịch</th>
-                                <th className="px-6 py-4">Nội dung</th>
-                                <th className="px-6 py-4">Số tiền</th>
-                                <th className="px-6 py-4 text-center">Trạng thái</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y text-sm">
-                            {wallet.history.map(item => (
-                                <tr key={item.payment_id} className="hover:bg-gray-50/50 transition-colors">
-                                    <td className="px-6 py-4 font-medium text-gray-500">{new Date(item.created_at).toLocaleString('vi-VN')}</td>
-                                    <td className="px-6 py-4">
-                                        <span className={`px-2 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border ${item.payment_type === 'wallet_topup' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-indigo-50 text-indigo-700 border-indigo-100'
-                                            }`}>
-                                            {item.payment_type === 'wallet_topup' ? 'Nạp tiền' : 'Chi trả gói'}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <p className="font-bold text-gray-800">{item.listing_title || 'Nạp tiền vào ví'}</p>
-                                        <p className="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-tighter">REF: {item.transaction_ref}</p>
-                                    </td>
-                                    <td className="px-6 py-4 font-black">
-                                        <span className={item.payment_type === 'wallet_topup' ? 'text-green-600' : 'text-red-600'}>
-                                            {item.payment_type === 'wallet_topup' ? '+' : '-'}{formatCurrency(item.amount)}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="flex justify-center">
-                                            {item.status === 'completed' ?
-                                                <CheckCircle2 size={16} className="text-green-500" /> :
-                                                <AlertTriangle size={16} className="text-orange-500" />
-                                            }
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                            {wallet.history.length === 0 && (
-                                <tr>
-                                    <td colSpan="5" className="px-6 py-12 text-center text-gray-400 italic">Chưa có lịch sử giao dịch.</td>
-                                </tr>
+                <div className="mb-8 grid grid-cols-12 gap-6">
+                    <div className="col-span-12 lg:col-span-8">
+                        <div className="mb-4 flex items-center justify-between">
+                            <h4 className="text-[20px] font-semibold text-[#181d1a]">Quản lý Tòa nhà & Thanh toán</h4>
+                            <button className="text-[14px] font-semibold text-[#005440] hover:underline">Xem tất cả</button>
+                        </div>
+                        <div className="overflow-hidden rounded-xl border bg-white" style={{ borderColor: '#bec9c3' }}>
+                            {listingLoading ? (
+                                <div className="p-6 text-sm text-[#6f7a74]">Đang tải tòa nhà...</div>
+                            ) : listings.length > 0 ? (
+                                listings.map((b, i) => <BuildingRow key={b.id || i} building={b} onClick={() => {}} />)
+                            ) : (
+                                <div className="p-6 text-sm text-[#6f7a74]">Chưa có dữ liệu tòa nhà.</div>
                             )}
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
+
+                    <div className="col-span-12 lg:col-span-4">
+                        <div className="mb-4 flex items-center justify-between">
+                            <h4 className="text-[20px] font-semibold text-[#181d1a]">Lịch sử giao dịch</h4>
+                        </div>
+                        <div className="overflow-hidden rounded-xl border bg-white" style={{ borderColor: '#bec9c3' }}>
+                            {txLoading ? (
+                                <div className="p-6 text-sm text-[#6f7a74]">Đang tải giao dịch...</div>
+                            ) : (
+                                <>
+                                    <table className="w-full text-left">
+                                        <thead>
+                                            <tr className="border-b" style={{ backgroundColor: '#f1f4f1', borderColor: '#bec9c3' }}>
+                                                <th className="px-4 py-3 text-[11px] font-semibold text-[#6f7a74]">Chi tiết</th>
+                                                <th className="px-4 py-3 text-right text-[11px] font-semibold text-[#6f7a74]">Số tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y" style={{ borderColor: '#bec9c3' }}>
+                                            {transactionsToShow.length > 0 ? transactionsToShow.map(item => (
+                                                <TransactionRow key={item.payment_id} item={item} onClick={() => setSelectedTx(item)} />
+                                            )) : (
+                                                <tr><td colSpan={2} className="p-6 text-center text-sm text-[#6f7a74]">Chưa có giao dịch</td></tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                    <div className="flex items-center justify-between border-t px-6 py-4" style={{ borderColor: '#bec9c3', backgroundColor: '#f8fafc' }}>
+                                        <span className="text-[11px] text-[#6f7a74]">Tổng {txTotal} giao dịch</span>
+                                        <div className="flex items-center gap-2">
+                                            <button onClick={() => setTxPage(p => Math.max(1, p - 1))} disabled={txPage === 1} className="flex h-8 w-8 items-center justify-center rounded border disabled:opacity-30" style={{ borderColor: '#bec9c3' }}>
+                                                <ChevronLeft className="h-4 w-4 text-[#6f7a74]" />
+                                            </button>
+                                            <span className="min-w-8 rounded bg-[#0f6e56] px-3 py-1 text-center text-[11px] font-bold text-white">{txPage}</span>
+                                            <button onClick={() => setTxPage(p => p + 1)} className="flex h-8 w-8 items-center justify-center rounded border" style={{ borderColor: '#bec9c3' }}>
+                                                <ChevronRight className="h-4 w-4 text-[#6f7a74]" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+                    <div className="relative rounded-xl border bg-white p-6" style={{ borderColor: '#bec9c3' }}>
+                        <div className="mb-2 flex items-center gap-2 text-[#0f6e56]"><Star className="h-5 w-5" /> <span className="font-semibold">Cá nhân</span></div>
+                        <p className="text-sm text-[#6f7a74]">Quản lý cơ bản</p>
+                    </div>
+                    <div className="relative rounded-xl border bg-white p-6" style={{ borderColor: '#0f6e56' }}>
+                        <div className="mb-2 flex items-center gap-2 text-[#0f6e56]"><Star className="h-5 w-5" /> <span className="font-semibold">Chuyên nghiệp</span></div>
+                        <p className="text-sm text-[#6f7a74]">Tính năng nâng cao</p>
+                    </div>
+                    <div className="relative rounded-xl border bg-white p-6" style={{ borderColor: '#bec9c3' }}>
+                        <div className="mb-2 flex items-center gap-2 text-[#0f6e56]"><Star className="h-5 w-5" /> <span className="font-semibold">Doanh nghiệp</span></div>
+                        <p className="text-sm text-[#6f7a74]">Tùy chỉnh theo nhu cầu</p>
+                    </div>
                 </div>
             </div>
 
-            {/* Renewal Modal */}
-            {showRenewalModal && selectedListingForRenewal && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200 flex flex-col max-h-[90vh]">
-                        <div className="p-6 border-b flex justify-between items-center bg-gray-50/50">
-                            <div>
-                                <h2 className="text-xl font-black text-gray-900 tracking-tight">Gia hạn tin đăng</h2>
-                                <p className="text-xs text-gray-500 mt-1">Chọn gói gia hạn cho: <span className="font-bold text-indigo-600">{selectedListingForRenewal.title}</span></p>
-                            </div>
-                            <button onClick={() => setShowRenewalModal(false)} className="text-gray-400 hover:text-gray-600 transition">
-                                <Plus size={24} className="rotate-45" />
-                            </button>
-                        </div>
+            <button onClick={() => setShowTopUp(true)} className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#0f6e56] text-white shadow-lg transition-transform hover:scale-105">
+                <Plus className="h-7 w-7" />
+            </button>
 
-                        <div className="p-6 overflow-y-auto flex-1">
-                            {/* Listing Summary */}
-                            <div className="bg-indigo-50 p-4 rounded-2xl mb-6 flex gap-4 items-center">
-                                <div className="p-3 bg-white rounded-xl shadow-sm text-indigo-600">
-                                    <Clock size={20} />
-                                </div>
-                                <div className="flex-1">
-                                    <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1">Trạng thái hiện tại</p>
-                                    <p className="text-sm font-bold text-gray-800">
-                                        Hết hạn: {selectedListingForRenewal.expires_at ? new Date(selectedListingForRenewal.expires_at).toLocaleDateString('vi-VN') : 'Chưa kích hoạt'}
-                                    </p>
-                                </div>
-                                <div className="text-right">
-                                    <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1">Số dư ví</p>
-                                    <p className={`text-lg font-black ${wallet.balance > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                        {formatCurrency(wallet.balance)}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <h3 className="text-sm font-black text-gray-800 mb-4 flex items-center gap-2">
-                                <Calendar size={16} className="text-indigo-600" /> CHỌN GÓI GIA HẠN
-                            </h3>
-
-                            <div className="grid md:grid-cols-2 gap-4">
-                                {packages.map(pkg => (
-                                    <div
-                                        key={pkg.package_id}
-                                        onClick={() => setSelectedPackageForRenewal(pkg)}
-                                        className={`cursor-pointer p-4 rounded-2xl border-2 transition-all relative ${selectedPackageForRenewal?.package_id === pkg.package_id
-                                                ? 'border-indigo-600 bg-indigo-50/50 shadow-md ring-2 ring-indigo-200 ring-offset-2'
-                                                : 'border-gray-100 hover:border-indigo-200 hover:bg-gray-50'
-                                            }`}
-                                    >
-                                        {selectedPackageForRenewal?.package_id === pkg.package_id && (
-                                            <div className="absolute top-3 right-3 text-indigo-600">
-                                                <CheckCircle2 size={20} fill="currentColor" className="text-white" />
-                                            </div>
-                                        )}
-                                        <h4 className="font-black text-gray-900 mb-1">{pkg.name}</h4>
-                                        <p className="text-xs text-gray-500 mb-3 line-clamp-2">{pkg.description}</p>
-                                        <div className="flex justify-between items-end">
-                                            <span className="text-lg font-black text-indigo-700">{formatCurrency(pkg.price)}</span>
-                                            <span className="text-xs font-bold text-gray-400 bg-white px-2 py-1 rounded-lg border">{pkg.duration_days} ngày</span>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="p-6 border-t bg-gray-50 flex justify-between items-center gap-4">
-                            <div className="flex-1">
-                                {selectedPackageForRenewal && (
-                                    <p className="text-xs text-gray-600">
-                                        Tổng thanh toán: <span className="font-black text-lg text-indigo-700 block">{formatCurrency(selectedPackageForRenewal.price)}</span>
-                                    </p>
-                                )}
-                            </div>
-                            <div className="flex gap-3">
-                                <button
-                                    onClick={() => setShowRenewalModal(false)}
-                                    className="px-6 py-3 bg-white border border-gray-200 text-gray-600 rounded-xl font-bold text-sm hover:bg-gray-50 transition-all"
-                                >
-                                    Hủy
-                                </button>
-                                <button
-                                    disabled={!selectedPackageForRenewal}
-                                    onClick={handleRenewalPayment}
-                                    className="px-8 py-3 bg-indigo-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                                >
-                                    <CreditCard size={18} /> Xác nhận thanh toán
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Simulated Top Up Modal */}
-            {showTopUp && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200">
-                        <div className="p-8 text-center">
-                            <h2 className="text-2xl font-black text-gray-900 tracking-tight mb-2">NẠP TIỀN QUA VIETQR</h2>
-                            <p className="text-sm text-gray-500 font-medium mb-8">Dùng ứng dụng ngân hàng quét mã để nạp tiền (Demo)</p>
-
-                            <div className="mx-auto w-56 h-56 bg-gray-50 p-4 rounded-3xl border border-gray-100 flex items-center justify-center mb-8 relative group">
-                                <QrCode size={180} className="text-indigo-900 transition-transform group-hover:scale-95 duration-500" />
-                                <div className="absolute inset-x-8 top-1/2 h-0.5 bg-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.5)] animate-bounce"></div>
-                            </div>
-
-                            <div className="bg-indigo-50 p-4 rounded-2xl mb-8 flex justify-between items-center text-left">
-                                <div>
-                                    <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1">Số tiền nạp</p>
-                                    <p className="text-xl font-black text-indigo-700">500.000 VNĐ</p>
-                                </div>
-                                <div className="text-right">
-                                    <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1">Thời hạn</p>
-                                    <p className="text-xs font-bold text-indigo-700">Hiệu lực trong 5:00</p>
-                                </div>
-                            </div>
-
-                            <div className="flex gap-4">
-                                <button
-                                    onClick={() => setShowTopUp(false)}
-                                    className="flex-1 py-3 bg-gray-100 text-gray-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-gray-200 transition-all"
-                                >
-                                    Đóng
-                                </button>
-                                <button
-                                    onClick={async () => {
-                                        await monetizationService.processPayment({
-                                            paymentType: 'wallet_topup',
-                                            amount: 500000,
-                                            paymentMethod: 'vietqr'
-                                        }, token);
-                                        window.location.reload();
-                                    }}
-                                    className="flex-1 py-3 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all active:scale-95"
-                                >
-                                    Giả lập thành công
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <TopUpModal isOpen={showTopUp} onClose={() => setShowTopUp(false)} onSubmit={handleTopUp} amount={topUpAmount} setAmount={setTopUpAmount} loading={topUpLoading} />
         </div>
     );
 };

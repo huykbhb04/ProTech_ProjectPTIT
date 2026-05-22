@@ -13,9 +13,9 @@ import {
     X,
     Image as ImageIcon,
     ExternalLink,
-    AlertCircle,
-    CheckCircle2,
-    Loader2,
+    CircleAlert,
+    CircleCheck,
+    Loader,
     Tv,
     Bed as BedIcon,
     Wind,
@@ -38,7 +38,7 @@ import LocationPicker from '../../components/LocationPicker';
 const AMENITIES_LIST = [
     { id: 'fridge', name: 'Tủ lạnh', icon: Refrigerator },
     { id: 'air_conditioner', name: 'Điều hòa', icon: Wind },
-    { id: 'washing_machine', name: 'Máy giặt', icon: Loader2 },
+    { id: 'washing_machine', name: 'Máy giặt', icon: Loader },
     { id: 'television', name: 'Tivi', icon: Tv },
     { id: 'bed', name: 'Giường', icon: BedIcon },
     { id: 'wardrobe', name: 'Tủ quần áo', icon: FileText },
@@ -94,16 +94,16 @@ const AmenityVerifyItem = ({ amenity, onVerified, isVerified, currentImageUrl })
                 {isVerified ? (
                     <div className="flex items-center gap-2">
                         <img src={currentImageUrl} className="w-8 h-8 rounded object-cover border" alt="verified" />
-                        <CheckCircle2 size={16} className="text-green-600" />
+                        <CircleCheck size={16} className="text-green-600" />
                     </div>
                 ) : (
                     <label className="cursor-pointer bg-white border px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest text-indigo-600 hover:bg-indigo-50 transition shadow-sm">
-                        {verifying ? <Loader2 size={12} className="animate-spin" /> : 'Chụp ảnh'}
+                        {verifying ? <Loader size={12} className="animate-spin" /> : 'Chụp ảnh'}
                         <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} disabled={verifying} />
                     </label>
                 )}
             </div>
-            {error && <p className="text-[9px] text-red-500 font-bold mt-2 flex items-center gap-1"><AlertCircle size={10} /> {error}</p>}
+            {error && <p className="text-[9px] text-red-500 font-bold mt-2 flex items-center gap-1"><CircleAlert size={10} /> {error}</p>}
         </div>
     );
 };
@@ -152,7 +152,7 @@ const AIAmenityVerifier = ({ amenityId, onVerified }) => {
             <label className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-600 rounded-xl text-[10px] font-black uppercase tracking-widest cursor-pointer hover:bg-indigo-100 transition shadow-sm border border-indigo-100">
                 {verifying ? (
                     <>
-                        <Loader2 size={14} className="animate-spin" />
+                        <Loader size={14} className="animate-spin" />
                         Đang xác thực...
                     </>
                 ) : (
@@ -306,7 +306,7 @@ const RoomListingTab = ({ room }) => {
                                 disabled={isGeneratingAI}
                                 className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg text-[10px] font-black uppercase tracking-widest shadow-md hover:shadow-lg hover:from-indigo-700 hover:to-purple-700 transition-all active:scale-95 disabled:opacity-50"
                             >
-                                {isGeneratingAI ? <Loader2 size={12} className="animate-spin" /> : <Sparkles size={12} />}
+                                {isGeneratingAI ? <Loader size={12} className="animate-spin" /> : <Sparkles size={12} />}
                                 {isGeneratingAI ? 'Đang viết...' : 'AI Gợi ý mô tả'}
                             </button>
                         </div>
@@ -403,7 +403,7 @@ const RoomListingTab = ({ room }) => {
                                     >
                                         <amenity.icon size={16} />
                                         <span className="text-[10px] font-black uppercase tracking-tight">{amenity.name}</span>
-                                        {isChecked && <CheckCircle2 size={12} className="ml-auto" />}
+                                        {isChecked && <CircleCheck size={12} className="ml-auto" />}
                                     </div>
                                 );
                             })}
@@ -468,7 +468,7 @@ const RoomListingTab = ({ room }) => {
                                         <div key={amenity.id} className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-100 rounded-xl shadow-sm">
                                             <amenity.icon size={14} className="text-indigo-600" />
                                             <span className="text-[10px] font-black uppercase text-gray-700">{amenity.name}</span>
-                                            {amenities[amenity.id].verified && <CheckCircle2 size={10} className="text-green-500" />}
+                                            {amenities[amenity.id].verified && <CircleCheck size={10} className="text-green-500" />}
                                         </div>
                                     ));
                                 })()}
@@ -683,7 +683,7 @@ const RoomDetailModal = ({ room, onClose, onUpdate }) => {
                                 onClick={handleSaveEdit}
                                 className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 active:scale-95"
                             >
-                                <CheckCircle2 size={16} /> Lưu thay đổi
+                                <CircleCheck size={16} /> Lưu thay đổi
                             </button>
                         ) : (
                             <button
@@ -924,7 +924,7 @@ const RoomDetailModal = ({ room, onClose, onUpdate }) => {
                                                         </div>
                                                         {editForm.amenities[amenity.id].verified && (
                                                             <span className="bg-green-100 text-green-700 text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full flex items-center gap-1">
-                                                                <CheckCircle2 size={10} /> Đã xác thực
+                                                                <CircleCheck size={10} /> Đã xác thực
                                                             </span>
                                                         )}
                                                     </div>
@@ -972,7 +972,7 @@ const RoomDetailModal = ({ room, onClose, onUpdate }) => {
                                                                 </div>
                                                                 {verifyData.verified && (
                                                                     <div className="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-black uppercase tracking-widest rounded-full flex items-center gap-1">
-                                                                        <CheckCircle2 size={10} /> AI Verified
+                                                                        <CircleCheck size={10} /> AI Verified
                                                                     </div>
                                                                 )}
                                                             </div>
@@ -1443,15 +1443,21 @@ const BuildingDetail = () => {
                         </p>
                     </div>
                 </div>
-                <div className="flex gap-3">
-                    <div className="text-center px-4 py-2 bg-white/50 rounded-xl">
-                        <p className="text-xs text-gray-500 uppercase">Số phòng</p>
-                        <p className="font-bold text-xl">{rooms.length}</p>
+                <div className="grid grid-cols-3 gap-3">
+                    <div className="text-center px-4 py-3 bg-white/50 rounded-xl">
+                        <p className="text-xs text-gray-500 uppercase">Tổng phòng</p>
+                        <p className="font-bold text-xl text-gray-800">{currentBuilding.statistics?.totalRooms || rooms.length}</p>
                     </div>
-                    <div className="text-center px-4 py-2 bg-white/50 rounded-xl">
-                        <p className="text-xs text-gray-500 uppercase">Trống</p>
+                    <div className="text-center px-4 py-3 bg-green-50/70 rounded-xl border border-green-100">
+                        <p className="text-xs text-green-600 uppercase">Trống</p>
                         <p className="font-bold text-xl text-green-600">
-                            {rooms.filter(r => r.status === 'available').length}
+                            {currentBuilding.statistics?.availableRooms || rooms.filter(r => r.status === 'available').length}
+                        </p>
+                    </div>
+                    <div className="text-center px-4 py-3 bg-red-50/70 rounded-xl border border-red-100">
+                        <p className="text-xs text-red-600 uppercase">Đã thuê</p>
+                        <p className="font-bold text-xl text-red-600">
+                            {currentBuilding.statistics?.occupiedRooms || rooms.filter(r => r.status === 'occupied').length}
                         </p>
                     </div>
                 </div>
@@ -1644,7 +1650,7 @@ const BuildingDetail = () => {
                                             >
                                                 <amenity.icon size={14} />
                                                 {amenity.name}
-                                                {isVerified && <CheckCircle2 size={12} />}
+                                                {isVerified && <CircleCheck size={12} />}
                                             </button>
                                         );
                                     })}
@@ -1677,7 +1683,7 @@ const BuildingDetail = () => {
                                     disabled={isCreating || newRoom.images.length < 3 || Object.keys(newRoom.amenities).length === 0}
                                     className="bg-indigo-600 text-white px-10 py-3 rounded-2xl font-black text-sm shadow-xl shadow-indigo-200 hover:bg-indigo-700 disabled:opacity-50 disabled:shadow-none transition-all flex items-center gap-2"
                                 >
-                                    {isCreating ? <Loader2 size={18} className="animate-spin" /> : 'Lưu & Khởi tạo phòng'}
+                                    {isCreating ? <Loader size={18} className="animate-spin" /> : 'Lưu & Khởi tạo phòng'}
                                 </button>
                             </div>
                         </form>

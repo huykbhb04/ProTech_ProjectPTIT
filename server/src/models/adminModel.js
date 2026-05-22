@@ -12,7 +12,7 @@ class Admin {
         const { name, duration_days, price, description } = data;
         const [result] = await db.execute(
             'INSERT INTO listing_packages (name, duration_days, price, description, is_active) VALUES (?, ?, ?, ?, TRUE)',
-            [name, duration_days, price, description]
+            [name ?? null, duration_days ?? null, price ?? null, description ?? null]
         );
         return result.insertId;
     }
@@ -21,7 +21,7 @@ class Admin {
         const { name, duration_days, price, description } = data;
         await db.execute(
             'UPDATE listing_packages SET name = ?, duration_days = ?, price = ?, description = ? WHERE package_id = ?',
-            [name, duration_days, price, description, packageId]
+            [name ?? null, duration_days ?? null, price ?? null, description ?? null, packageId ?? null]
         );
     }
 
@@ -47,7 +47,7 @@ class Admin {
         const { name, badge_type, price_per_day, description } = data;
         const [result] = await db.execute(
             'INSERT INTO premium_services (name, badge_type, price_per_day, description, is_active) VALUES (?, ?, ?, ?, TRUE)',
-            [name, badge_type, price_per_day, description]
+            [name ?? null, badge_type ?? null, price_per_day ?? null, description ?? null]
         );
         return result.insertId;
     }
@@ -56,7 +56,7 @@ class Admin {
         const { name, badge_type, price_per_day, description } = data;
         await db.execute(
             'UPDATE premium_services SET name = ?, badge_type = ?, price_per_day = ?, description = ? WHERE service_id = ?',
-            [name, badge_type, price_per_day, description, serviceId]
+            [name ?? null, badge_type ?? null, price_per_day ?? null, description ?? null, serviceId ?? null]
         );
     }
 

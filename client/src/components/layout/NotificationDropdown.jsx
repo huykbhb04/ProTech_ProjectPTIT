@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bell, Calendar, Info, AlertTriangle, CheckCircle2, ChevronRight } from 'lucide-react';
+import { Bell, Calendar, Info, TriangleAlert, CircleCheck, ChevronRight } from 'lucide-react';
 import notificationService from '../../services/notificationService';
 import { Link } from 'react-router-dom';
 
@@ -59,7 +59,7 @@ const NotificationDropdown = ({ user }) => {
         switch (type) {
             case 'booking': return <Calendar size={16} className="text-indigo-600" />;
             case 'bill': return <Info size={16} className="text-green-600" />;
-            case 'alert': return <AlertTriangle size={16} className="text-amber-600" />;
+            case 'alert': return <TriangleAlert size={16} className="text-amber-600" />;
             default: return <Bell size={16} className="text-gray-600" />;
         }
     };

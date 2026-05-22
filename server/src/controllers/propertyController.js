@@ -16,16 +16,7 @@ exports.createBuilding = async (req, res) => {
             coordinates
         });
 
-        // Construct the object to return to frontend immediately
-        const newBuilding = {
-            building_id: buildingId,
-            landlord_id: landlordId,
-            name,
-            address,
-            type,
-            description,
-            total_floors: totalFloors
-        };
+        const newBuilding = await Property.getBuildingById(buildingId);
 
         res.status(201).json(newBuilding);
     } catch (error) {
@@ -52,7 +43,9 @@ exports.getBuilding = async (req, res) => {
         if (!building) {
             return res.status(404).json({ message: 'Building not found' });
         }
-        res.json(building);
+        const stats = await Property.getBuildingStatistics(id);
+        const rooms = await Property.getRoomsByBuilding(id);
+        res.json({ ...building, statistics: stats, rooms });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error fetching building details' });

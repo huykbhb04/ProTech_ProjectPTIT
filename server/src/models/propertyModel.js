@@ -21,18 +21,101 @@ class Property {
     }
 
     static async getBuildingsByLandlord(landlordId) {
-        const query = 'SELECT building_id, landlord_id, name, address_full as address, type, description, total_floors, coordinates FROM buildings WHERE landlord_id = ?';
+        const query = `
+            SELECT 
+                b.building_id,
+                b.landlord_id,
+                b.name,
+                b.address_full as address,
+                b.type,
+                b.description,
+                b.total_floors,
+                b.coordinates,
+                COUNT(r.room_id) as room_count,
+                SUM(CASE WHEN r.status = 'available' THEN 1 ELSE 0 END) as available_count,
+                SUM(CASE WHEN r.status = 'occupied' THEN 1 ELSE 0 END) as occupied_count,
+                SUM(CASE WHEN r.status = 'deposited' THEN 1 ELSE 0 END) as deposited_count,
+                SUM(CASE WHEN r.status = 'maintenance' THEN 1 ELSE 0 END) as maintenance_count
+            FROM buildings b
+            LEFT JOIN rooms r ON b.building_id = r.building_id
+            WHERE b.landlord_id = ?
+            GROUP BY b.building_id, b.landlord_id, b.name, b.address_full, b.type, b.description, b.total_floors, b.coordinates
+            ORDER BY b.building_id DESC
+        `;
         const [rows] = await db.execute(query, [landlordId]);
         return rows.map(r => ({
             ...r,
+            room_count: Number(r.room_count || 0),
+            available_count: Number(r.available_count || 0),
+            occupied_count: Number(r.occupied_count || 0),
+            deposited_count: Number(r.deposited_count || 0),
+            maintenance_count: Number(r.maintenance_count || 0),
             coordinates: typeof r.coordinates === 'string' ? JSON.parse(r.coordinates) : r.coordinates
         }));
     }
 
     static async getBuildingById(id) {
-        const query = 'SELECT * FROM buildings WHERE building_id = ?';
+        const query = `
+            SELECT 
+                b.building_id,
+                b.landlord_id,
+                b.name,
+                b.address_full as address,
+                b.type,
+                b.description,
+                b.total_floors,
+                b.coordinates,
+                COUNT(r.room_id) as room_count,
+                SUM(CASE WHEN r.status = 'available' THEN 1 ELSE 0 END) as available_count,
+                SUM(CASE WHEN r.status = 'occupied' THEN 1 ELSE 0 END) as occupied_count,
+                SUM(CASE WHEN r.status = 'deposited' THEN 1 ELSE 0 END) as deposited_count,
+                SUM(CASE WHEN r.status = 'maintenance' THEN 1 ELSE 0 END) as maintenance_count
+            FROM buildings b
+            LEFT JOIN rooms r ON b.building_id = r.building_id
+            WHERE b.building_id = ?
+            GROUP BY b.building_id, b.landlord_id, b.name, b.address_full, b.type, b.description, b.total_floors, b.coordinates
+        `;
         const [rows] = await db.execute(query, [id]);
-        return rows[0];
+        if (rows.length === 0) return null;
+        const building = rows[0];
+        if (building.coordinates && typeof building.coordinates === 'string') {
+            try {
+                building.coordinates = JSON.parse(building.coordinates);
+            } catch (e) {
+                // Keep as string if parse fails
+            }
+        }
+        building.room_count = Number(building.room_count || 0);
+        building.available_count = Number(building.available_count || 0);
+        building.occupied_count = Number(building.occupied_count || 0);
+        building.deposited_count = Number(building.deposited_count || 0);
+        building.maintenance_count = Number(building.maintenance_count || 0);
+        return building;
+    }
+
+    static async getBuildingStatistics(buildingId) {
+        const statsQuery = `
+            SELECT 
+                COUNT(*) as totalRooms,
+                SUM(CASE WHEN status = 'available' THEN 1 ELSE 0 END) as availableRooms,
+                SUM(CASE WHEN status = 'occupied' THEN 1 ELSE 0 END) as occupiedRooms,
+                SUM(CASE WHEN status = 'maintenance' THEN 1 ELSE 0 END) as maintenanceRooms,
+                SUM(CASE WHEN status = 'deposited' THEN 1 ELSE 0 END) as depositedRooms,
+                SUM(base_price) as totalPotentialRent,
+                SUM(CASE WHEN status = 'occupied' THEN base_price ELSE 0 END) as currentRent
+            FROM rooms
+            WHERE building_id = ?
+        `;
+        const [stats] = await db.execute(statsQuery, [buildingId]);
+        return {
+            totalRooms: Number(stats[0]?.totalRooms || 0),
+            availableRooms: Number(stats[0]?.availableRooms || 0),
+            occupiedRooms: Number(stats[0]?.occupiedRooms || 0),
+            maintenanceRooms: Number(stats[0]?.maintenanceRooms || 0),
+            depositedRooms: Number(stats[0]?.depositedRooms || 0),
+            totalPotentialRent: Number(stats[0]?.totalPotentialRent || 0),
+            currentRent: Number(stats[0]?.currentRent || 0)
+        };
     }
 
     static async getRoomById(id) {
@@ -65,7 +148,12 @@ class Property {
     }
 
     static async getRoomsByBuilding(buildingId) {
-        const query = 'SELECT * FROM rooms WHERE building_id = ?';
+        const query = `
+            SELECT r.*, b.name as building_name, b.address_full as address
+            FROM rooms r
+            JOIN buildings b ON r.building_id = b.building_id
+            WHERE r.building_id = ?
+        `;
         const [rows] = await db.execute(query, [buildingId]);
         return rows;
     }

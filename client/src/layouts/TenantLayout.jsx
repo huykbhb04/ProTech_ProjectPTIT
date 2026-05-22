@@ -1,26 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { 
+    Home, Search, CreditCard, MessageSquare, User,
+    LogOut, Bell, Heart, Calendar, X, Users
+} from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../features/auth/authSlice';
 import { resetSavedListings } from '../features/savedListings/savedListingsSlice';
-import {
-    Home,
-    Search,
-    CreditCard,
-    MessageSquare,
-    User,
-    LogOut,
-    Bell,
-    Heart,
-    UserPlus,
-    LogIn,
-    Filter,
-    MapPin,
-    PlusSquare,
-    ChevronRight,
-    ChevronLeft
-} from 'lucide-react';
-
 import TopNavbar from '../components/layout/TopNavbar';
 
 const TenantLayout = () => {
@@ -28,137 +14,162 @@ const TenantLayout = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
-    const [isExpanded, setIsExpanded] = useState(false);
 
     const onLogout = () => {
-        dispatch(logout());
-        dispatch(reset());
-        dispatch(resetSavedListings());
-        navigate('/');
+        dispatch(logout()); dispatch(reset()); dispatch(resetSavedListings()); navigate('/');
     };
 
-    const navItems = user ? [
-        { icon: <Home size={24} />, label: 'Tổng quan', path: '/tenant/dashboard' },
-        { icon: <Search size={24} />, label: 'Tìm phòng', path: '/tenant/discover' },
-        { icon: <UserPlus size={24} />, label: 'Tìm bạn', path: '/tenant/roommates' },
-        { icon: <CreditCard size={24} />, label: 'Hóa đơn', path: '/tenant/bills' },
-        { icon: <MessageSquare size={24} />, label: 'AI Chat', path: '/tenant/chat' },
-        { icon: <User size={24} />, label: 'Cá nhân', path: '/tenant/profile' }
-    ] : [
-        { icon: <Search size={24} />, label: 'Tìm phòng', path: '/tenant/discover' }
+    const navItems = [
+        { icon: Home, label: 'Tổng quan', path: '/tenant/dashboard' },
+        { icon: Search, label: 'Tìm phòng', path: '/tenant/discover' },
+        { icon: Users, label: 'Tìm bạn', path: '/tenant/roommates' },
+        { icon: CreditCard, label: 'Hóa đơn', path: '/tenant/bills' },
+        { icon: MessageSquare, label: 'AI Chat', path: '/tenant/chat' },
+        { icon: Calendar, label: 'Lịch hẹn', path: '/tenant/bookings' },
+        { icon: Heart, label: 'Đã lưu', path: '/tenant/saved', badge: state => state.savedListings?.savedIds?.length || 0 },
+        { icon: User, label: 'Cá nhân', path: '/tenant/profile' },
     ];
 
-    // Close sidebar on route change
-    useEffect(() => {
-        setIsExpanded(false);
-    }, [location.pathname]);
+    const SidebarHeader = ({ showClose }) => (
+        <div className="flex h-14 items-center justify-between px-4 border-b border-gray-100 flex-shrink-0">
+            <span className="text-base font-black tracking-tighter uppercase">
+                SmartProp
+            </span>
+            {showClose && (
+                <button onClick={() => setIsSidebarOpen(false)} className="p-1 text-gray-400 hover:text-black">
+                    <X size={18} />
+                </button>
+            )}
+        </div>
+    );
+
+    const UserInfo = ({ linkPath }) => (
+        <div className="px-4 py-4 border-b border-gray-50 flex-shrink-0">
+            <Link to={linkPath} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <div className="h-9 w-9 overflow-hidden rounded-full border-2 border-gray-100 flex-shrink-0">
+                    <img
+                        src={user?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.full_name || 'T')}&background=4f46e5&color=fff`}
+                        alt="Avatar" className="w-full h-full object-cover"
+                    />
+                </div>
+                <div className="min-w-0">
+                    <p className="text-sm font-bold text-black truncate">{user?.full_name}</p>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-indigo-600">Người thuê</span>
+                </div>
+            </Link>
+        </div>
+    );
+
+    const NavList = ({ onLinkClick }) => {
+        const { savedIds } = useSelector((state) => state.savedListings);
+
+        return (
+            <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5 scrollbar-hide">
+                {navItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = location.pathname === item.path;
+                    const badgeValue = item.badge ? item.badge({ savedListings: { savedIds } }) : 0;
+                    return (
+                        <Link key={item.path} to={item.path}
+                            onClick={onLinkClick}
+                            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wide transition-all duration-200 ${
+                                isActive
+                                    ? 'bg-indigo-600 text-white shadow-sm'
+                                    : 'text-gray-500 hover:bg-gray-50 hover:text-black'
+                            }`}
+                        >
+                            <Icon size={15} className={`flex-shrink-0 ${isActive ? 'text-indigo-200' : 'text-gray-400'}`} />
+                            <span className="flex-1">{item.label}</span>
+                            {item.label === 'Đã lưu' && badgeValue > 0 && (
+                                <span className={`min-w-5 rounded-full px-1.5 py-0.5 text-[9px] font-black leading-none ${isActive ? 'bg-white text-indigo-600' : 'bg-indigo-600 text-white'}`}>
+                                    {badgeValue}
+                                </span>
+                            )}
+                        </Link>
+                    );
+                })}
+            </nav>
+        );
+    };
+
+    const LogoutBtn = () => (
+        <div className="p-3 border-t border-gray-100 flex-shrink-0">
+            <button onClick={onLogout}
+                className="flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-[11px] font-bold uppercase tracking-wide text-red-500 hover:bg-red-50 hover:text-red-600 transition-all">
+                <LogOut size={15} /> Đăng xuất
+            </button>
+        </div>
+    );
+
+    const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-50 bg-[url('https://images.unsplash.com/photo-1554133682-674839f11883?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-fixed bg-center">
-            {/* Overlay backdrop */}
-            <div className="fixed inset-0 bg-white/60 backdrop-blur-sm z-0 pointer-events-none"></div>
-
+        <div className="flex flex-col min-h-screen bg-white">
             <TopNavbar user={user} onLogout={onLogout} />
 
-            <div className="flex flex-1 relative z-10 overflow-hidden">
-                {/* Desktop Sidebar (Auth-gated & Click-to-reveal) */}
+            <div className="flex flex-1 relative">
+                {/* Desktop Sidebar (hover-to-reveal) - SAME PATTERN AS LANDLORD & ADMIN */}
                 {user && (
-                    <div className="fixed inset-y-0 left-0 z-50 hidden md:block pt-20">
-                        {/* Mask / Overlay when expanded */}
-                        {isExpanded && (
-                            <div
-                                className="fixed inset-0 bg-black/5 backdrop-blur-[1px] z-[-1]"
-                                onClick={() => setIsExpanded(false)}
-                            ></div>
-                        )}
-
-                        <aside className={`h-full w-64 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] glass flex flex-col border-r border-white/30 shadow-[20px_0_50px_rgba(0,0,0,0.1)] relative ${isExpanded ? 'translate-x-0' : '-translate-x-full'}`}>
-                            {/* Glowing effect inside sidebar */}
-                            <div className="absolute top-20 -left-10 w-40 h-40 bg-indigo-500/20 blur-[80px] rounded-full pointer-events-none opacity-50"></div>
-
-                            <div className="flex h-full flex-col relative z-10">
-                                {/* User Info */}
-                                <div className="p-6 text-center">
-                                    <Link to="/tenant/profile" className="mx-auto h-20 w-20 overflow-hidden rounded-full border-4 border-white shadow-xl mb-4 block group relative">
-                                        <img src={user?.avatar_url || `https://ui-avatars.com/api/?name=${user?.full_name}&background=6366f1&color=fff`} alt="Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                                    </Link>
-                                    <p className="font-black text-gray-800 tracking-tight">{user.full_name}</p>
-                                    <div className="mt-1 inline-block px-3 py-1 bg-indigo-100 text-indigo-700 text-[10px] font-bold rounded-full uppercase">Người thuê</div>
-                                </div>
-
-                                {/* Navigation */}
-                                <nav className="flex-1 space-y-2 px-4 py-4">
-                                    {navItems.map((item) => {
-                                        const isActive = location.pathname === item.path;
-                                        return (
-                                            <Link
-                                                key={item.path}
-                                                to={item.path}
-                                                className={`group flex items-center rounded-2xl px-4 py-3 text-sm font-bold transition-all duration-300 ${isActive
-                                                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200 translate-x-1'
-                                                    : 'text-gray-500 hover:bg-white/50 hover:text-indigo-600'
-                                                    }`}
-                                            >
-                                                <span className={`${isActive ? 'text-white' : 'text-gray-400 group-hover:text-indigo-500'} mr-3`}>
-                                                    {item.icon}
-                                                </span>
-                                                {item.label}
-                                            </Link>
-                                        );
-                                    })}
-                                </nav>
-
-                                {/* Logout */}
-                                <div className="p-4 border-t border-white/20">
-                                    <button
-                                        onClick={onLogout}
-                                        className="flex w-full items-center rounded-2xl px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 transition-colors"
-                                    >
-                                        <LogOut className="mr-3 h-5 w-5" />
-                                        Đăng xuất
-                                    </button>
-                                </div>
+                    <div className="fixed inset-y-0 left-0 z-50 group hidden lg:block">
+                        <div className="absolute inset-y-0 left-0 w-1.5 bg-indigo-200 group-hover:bg-transparent transition-colors duration-500 rounded-r-full" />
+                        <aside className="h-full w-64 flex flex-col -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white border-r border-gray-100 shadow-sm relative">
+                            <SidebarHeader />
+                            <UserInfo linkPath="/tenant/profile" />
+                            <NavList />
+                            <LogoutBtn />
+                            <div className="absolute top-1/2 -right-3 w-6 h-12 bg-white flex items-center justify-center rounded-full border border-gray-100 shadow-md group-hover:opacity-0 transition-opacity -translate-y-1/2 pointer-events-none">
+                                <div className="w-1 h-4 bg-indigo-200 rounded-full" />
                             </div>
-
-                            {/* Toggle Button (Arrow) */}
-                            <button
-                                onClick={() => setIsExpanded(!isExpanded)}
-                                className="absolute top-1/2 -right-4 w-8 h-12 bg-white flex items-center justify-center rounded-xl border border-gray-100 shadow-xl text-indigo-600 hover:bg-indigo-50 hover:scale-110 active:scale-95 transition-all translate-y-[-50%] z-50 group"
-                            >
-                                <ChevronRight className={`w-5 h-5 transition-transform duration-500 ${isExpanded ? 'rotate-180' : ''}`} />
-                                {!isExpanded && (
-                                    <div className="absolute right-full mr-2 px-2 py-1 bg-indigo-600 text-white text-[10px] font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                                        Mở Menu
-                                    </div>
-                                )}
-                            </button>
                         </aside>
                     </div>
                 )}
 
-                {/* Main Content Area */}
-                <div className="flex flex-1 flex-col z-10 pb-20 md:pb-0 overflow-y-auto min-h-screen scrollbar-hide">
-                    {/* Page Content */}
-                    <main className="flex-1 w-full">
+                {/* Main Content */}
+                <div className="flex flex-1 flex-col pb-16 md:pb-0 overflow-y-auto min-h-[calc(100vh-80px)] scrollbar-hide">
+                    <main className="flex-1 w-full bg-white">
                         <Outlet />
                     </main>
                 </div>
             </div>
 
+            {/* Mobile Top Bar */}
+            <header className="flex h-14 items-center justify-between border-b border-gray-100 bg-white lg:hidden px-4 sticky top-0 z-40">
+                <span className="text-base font-black tracking-tighter uppercase">
+                    SmartProp
+                </span>
+                <button onClick={() => setIsSidebarOpen(true)} className="p-2 text-gray-500 hover:text-black">
+                    <Bell size={20} />
+                </button>
+            </header>
+
+            {/* Mobile Drawer */}
+            {isSidebarOpen && (
+                <div className="fixed inset-0 z-50 lg:hidden">
+                    <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setIsSidebarOpen(false)} />
+                    <aside className="absolute left-0 top-0 h-full w-64 flex flex-col bg-white border-r border-gray-100 shadow-xl">
+                        <SidebarHeader showClose />
+                        <UserInfo linkPath="/tenant/profile" />
+                        <NavList onLinkClick={() => setIsSidebarOpen(false)} />
+                        <LogoutBtn />
+                    </aside>
+                </div>
+            )}
+
             {/* Mobile Bottom Nav */}
-            <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-2xl border-t border-gray-100 flex justify-around items-center py-3 px-2 shadow-[0_-5px_30px_rgba(0,0,0,0.08)] md:hidden">
-                {navItems.map((item) => {
+            <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-100 flex justify-around items-center py-2.5 px-2 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] md:hidden">
+                {navItems.slice(0, 5).map((item) => {
+                    const Icon = item.icon;
                     const isActive = location.pathname === item.path;
                     return (
-                        <Link
-                            key={item.label}
-                            to={item.path}
-                            className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive ? 'text-indigo-600' : 'text-gray-400'}`}
+                        <Link key={item.label} to={item.path}
+                            className={`flex flex-col items-center gap-0.5 px-2 transition-all duration-200 ${
+                                isActive ? 'text-indigo-600' : 'text-gray-400'
+                            }`}
                         >
-                            <div className={`${isActive ? 'bg-indigo-100 p-2.5 rounded-2xl shadow-inner' : 'p-2.5'}`}>
-                                {item.icon}
+                            <div className={`${isActive ? 'bg-indigo-50 p-2 rounded-xl' : 'p-2'} transition-all`}>
+                                <Icon size={20} />
                             </div>
-                            <span className="text-[9px] font-black uppercase tracking-widest">{item.label}</span>
+                            <span className="text-[8px] font-black uppercase tracking-widest">{item.label}</span>
                         </Link>
                     );
                 })}

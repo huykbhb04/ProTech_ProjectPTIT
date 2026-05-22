@@ -59,14 +59,42 @@ class Monetization {
 
     static async getPaymentHistory(userId) {
         const [rows] = await db.execute(
-            `SELECT p.*, l.title as listing_title 
-            FROM listing_payments p 
-            LEFT JOIN room_listings l ON p.listing_id = l.listing_id 
-            WHERE p.user_id = ? 
+            `SELECT p.*, COALESCE(l.title, CONCAT('Listing #', p.listing_id)) AS listing_title
+            FROM listing_payments p
+            LEFT JOIN room_listings l ON p.listing_id = l.listing_id
+            WHERE p.user_id = ?
             ORDER BY p.created_at DESC`,
             [userId]
         );
         return rows;
+    }
+
+    static async getPaymentHistoryPaginated(userId, { page = 1, limit = 10 } = {}) {
+        const offset = (page - 1) * limit;
+
+        const [countRows] = await db.execute(
+            'SELECT COUNT(*) as total FROM listing_payments WHERE user_id = ?',
+            [userId]
+        );
+        const total = countRows[0]?.total || 0;
+
+        const [rows] = await db.execute(
+            `SELECT p.*, COALESCE(l.title, CONCAT('Listing #', p.listing_id)) AS listing_title
+            FROM listing_payments p
+            LEFT JOIN room_listings l ON p.listing_id = l.listing_id
+            WHERE p.user_id = ?
+            ORDER BY p.created_at DESC
+            LIMIT ? OFFSET ?`,
+            [userId, limit, offset]
+        );
+
+        return {
+            history: rows,
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
     // 5. Apply Monetization to Listing

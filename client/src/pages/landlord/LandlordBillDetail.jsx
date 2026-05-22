@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
     FileText, Calendar, DollarSign, ArrowLeft,
-    CheckCircle2, XCircle, AlertCircle, Image as ImageIcon,
+    CircleCheck, CircleX, CircleAlert, Image as ImageIcon,
     ExternalLink, CreditCard
 } from 'lucide-react';
 import api from '../../services/api';
@@ -209,7 +209,7 @@ const LandlordBillDetail = () => {
                             </div>
                         ) : (
                             <div className="flex flex-col items-center justify-center py-8 text-gray-500 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
-                                <AlertCircle className="w-8 h-8 mb-2" />
+                                <CircleAlert className="w-8 h-8 mb-2" />
                                 <p>Chưa có thông tin thanh toán từ người thuê</p>
                             </div>
                         )}
@@ -256,7 +256,7 @@ const LandlordBillDetail = () => {
                                 >
                                     {processing ? 'Đang xử lý...' : (
                                         <>
-                                            <CheckCircle2 size={18} /> Xác nhận đã nhận tiền
+                                            <CircleCheck size={18} /> Xác nhận đã nhận tiền
                                         </>
                                     )}
                                 </button>
@@ -271,7 +271,7 @@ const LandlordBillDetail = () => {
                                 >
                                     {processing ? 'Đang xử lý...' : (
                                         <>
-                                            <CheckCircle2 size={18} /> Xác nhận đã nhận tiền
+                                            <CircleCheck size={18} /> Xác nhận đã nhận tiền
                                         </>
                                     )}
                                 </button>

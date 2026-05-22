@@ -6,6 +6,10 @@ const { protect } = require('../middleware/authMiddleware');
 router.get('/packages', protect, monetizationController.getPackages);
 router.get('/premium-services', protect, monetizationController.getPremiumServices);
 router.get('/wallet', protect, monetizationController.getWalletInfo);
+router.get('/wallet/paginated', protect, monetizationController.getWalletHistoryPaginated);
+router.get('/listing-renewal-quote/:listingId', protect, monetizationController.getRenewalQuote);
+router.post('/wallet/topup', protect, monetizationController.topUpWallet);
+router.post('/wallet/topup/momo/ipn', monetizationController.handleMomoIpn);
 router.post('/pay', protect, monetizationController.processPayment);
 
 module.exports = router;
