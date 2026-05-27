@@ -229,7 +229,7 @@ const UserManagement = () => {
                             </div>
 
                             <Field label="Email">
-                                <input type="email" name="email" value={formData.email} onChange={onInput} required className="input-minimal" placeholder="user@smartprop.com" autoComplete="off" />
+                                <input type="email" name="email" value={formData.email} onChange={onInput} required className="input-minimal" placeholder="user@proptech.com" autoComplete="off" />
                             </Field>
 
                             <div className="grid grid-cols-2 gap-4">

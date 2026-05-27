@@ -59,7 +59,7 @@ const BookingModal = ({ isOpen, onClose, roomId, roomNumber, buildingName, onSuc
     // VietQR settings
     const adminBankId = 'MB'; 
     const adminAccountNo = '6868686868'; 
-    const adminAccountName = 'ADMIN SMARTPROP';
+    const adminAccountName = 'ADMIN PROPTECH';
     const amount = 200000;
     const qrInfo = `COC XEM PHONG ${roomNumber} ${bookingDate}`;
     const qrUrl = `https://img.vietqr.io/image/${adminBankId}-${adminAccountNo}-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(qrInfo)}&accountName=${encodeURIComponent(adminAccountName)}`;

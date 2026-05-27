@@ -27,7 +27,12 @@ function Register() {
 
     useEffect(() => {
         if (isError) toast.error(message);
-        if (isSuccess || user) navigate('/');
+        if (isSuccess) {
+            toast.success('Đăng ký tài khoản thành công! Vui lòng đăng nhập.');
+            navigate('/login');
+        } else if (user) {
+            navigate('/');
+        }
         dispatch(reset());
     }, [user, isError, isSuccess, message, navigate, dispatch]);
 
@@ -61,10 +66,9 @@ function Register() {
             setOtpSent(true);
             setStep(2);
             if (res?.debugOtp) {
-                toast.success(`OTP debug: ${res.debugOtp}`);
-            } else {
-                toast.success('Đã gửi mã xác thực đến email');
+                console.log(`[Dev Mode] OTP: ${res.debugOtp}`);
             }
+            toast.success('Đã gửi mã xác thực đến email');
         } catch (error) {
             toast.error(error.response?.data?.message || 'Không thể gửi OTP');
         }
@@ -96,13 +100,11 @@ function Register() {
             </div>
 
             <div className="relative z-10 w-full lg:w-1/2 flex flex-col justify-between p-10 lg:p-20 hidden lg:flex">
-                <Link to="/" className="text-2xl font-black tracking-tighter uppercase text-indigo-400">SmartProp</Link>
+                <Link to="/" className="text-2xl font-black tracking-tighter uppercase text-indigo-400">PropTech</Link>
                 <div className="animate-in fade-in slide-in-from-bottom-10 duration-1000">
                     <p className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 mb-6">Gia nhập cộng đồng</p>
-                    <h1 className="text-6xl font-black leading-[0.9] tracking-tighter uppercase">
-                        KẾT NỐI <br />
-                        <span className="font-light italic text-gray-400">Thành công.</span>
-                    </h1>
+                    <h1 className="text-6xl font-black leading-none tracking-tighter uppercase">KẾT NỐI</h1>
+                    <p className="text-5xl font-light italic text-gray-400 mt-3 tracking-tight uppercase">Thành công.</p>
                 </div>
                 <div className="flex items-center gap-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
                     <ShieldCheck size={16} />
@@ -173,7 +175,7 @@ function Register() {
                     </div>
 
                     <div className="mt-16 text-center opacity-30">
-                        <p className="text-[9px] font-bold uppercase tracking-[0.4em]">© 2026 SmartProp Ecosystem</p>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.4em]">© 2026 PropTech Ecosystem</p>
                     </div>
                 </div>
             </div>

@@ -26,7 +26,7 @@ const EditListing = () => {
   const [room, setRoom] = useState(null);
   const [listing, setListing] = useState(null);
   const [renewDays, setRenewDays] = useState(30);
-  const [form, setForm] = useState({ title: '', description: '', rent_price: 0, deposit_amount: 0 });
+  const [form, setForm] = useState({ title: '', description: '', rent_price: 0, deposit_amount: 0, electricity_price: 0, water_price: 0, service_price: 0 });
 
   useEffect(() => {
     const load = async () => {
@@ -43,7 +43,10 @@ const EditListing = () => {
           title: listingData?.title || `Phòng ${roomDetails?.room_number || roomId} tại ${roomDetails?.building_name || 'Tòa nhà'}`,
           description: listingData?.description || roomDetails?.description || '',
           rent_price: listingData?.rent_price || basePrice,
-          deposit_amount: listingData?.deposit_amount || basePrice
+          deposit_amount: listingData?.deposit_amount || basePrice,
+          electricity_price: listingData?.electricity_price || roomDetails?.electricity_price || 0,
+          water_price: listingData?.water_price || roomDetails?.water_price || 0,
+          service_price: listingData?.service_price || roomDetails?.service_price || 0
         });
         if (buildingId) {
           dispatch(getBuilding(buildingId));
@@ -61,7 +64,14 @@ const EditListing = () => {
   }, [roomId, buildingId, dispatch]);
 
   const relatedRooms = useMemo(() => (Array.isArray(rooms) ? rooms : []).filter(r => String(r.building_id) === String(buildingId)), [rooms, buildingId]);
-  const canSubmit = useMemo(() => form.title.trim() && form.description.trim() && Number(form.rent_price) > 0, [form]);
+  const canSubmit = useMemo(() => 
+    form.title.trim() && 
+    form.description.trim() && 
+    Number(form.rent_price) > 0 &&
+    Number(form.electricity_price) > 0 &&
+    Number(form.water_price) > 0, 
+    [form]
+  );
   const isPremium = !!listing?.premium_until && new Date(listing.premium_until) > new Date();
 
   const handleSubmit = async (e) => {
@@ -82,9 +92,9 @@ const EditListing = () => {
           rent_price: Number(form.rent_price),
           deposit_amount: Number(form.deposit_amount),
           category_id: null,
-          electricity_price: room?.electricity_price || 0,
-          water_price: room?.water_price || 0,
-          service_price: room?.service_price || 0,
+          electricity_price: Number(form.electricity_price),
+          water_price: Number(form.water_price),
+          service_price: Number(form.service_price),
           amenities: room?.amenities || {}
         };
         const res = await listingService.createListing(payload);
@@ -173,7 +183,7 @@ const EditListing = () => {
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-[#1e293b]">Giá thuê</label>
+                  <label className="mb-2 block text-sm font-semibold text-[#1e293b]">Giá thuê (VNĐ/tháng)</label>
                   <input
                     type="number"
                     value={form.rent_price}
@@ -182,11 +192,45 @@ const EditListing = () => {
                   />
                 </div>
                 <div>
-                  <label className="mb-2 block text-sm font-semibold text-[#1e293b]">Tiền cọc</label>
+                  <label className="mb-2 block text-sm font-semibold text-[#1e293b]">Tiền cọc (VNĐ)</label>
                   <input
                     type="number"
                     value={form.deposit_amount}
                     onChange={(e) => setForm(prev => ({ ...prev, deposit_amount: e.target.value }))}
+                    className="w-full rounded-2xl border border-[#e2e8f0] px-4 py-3 outline-none focus:border-indigo-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-3">
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-[#1e293b]">Giá điện (đ/kWh)</label>
+                  <input
+                    type="number"
+                    required
+                    min="1"
+                    value={form.electricity_price}
+                    onChange={(e) => setForm(prev => ({ ...prev, electricity_price: e.target.value }))}
+                    className="w-full rounded-2xl border border-[#e2e8f0] px-4 py-3 outline-none focus:border-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-[#1e293b]">Giá nước (đ/m³ hoặc đ/tháng)</label>
+                  <input
+                    type="number"
+                    required
+                    min="1"
+                    value={form.water_price}
+                    onChange={(e) => setForm(prev => ({ ...prev, water_price: e.target.value }))}
+                    className="w-full rounded-2xl border border-[#e2e8f0] px-4 py-3 outline-none focus:border-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-[#1e293b]">Phí dịch vụ cố định (đ/tháng)</label>
+                  <input
+                    type="number"
+                    value={form.service_price}
+                    onChange={(e) => setForm(prev => ({ ...prev, service_price: e.target.value }))}
                     className="w-full rounded-2xl border border-[#e2e8f0] px-4 py-3 outline-none focus:border-indigo-500"
                   />
                 </div>

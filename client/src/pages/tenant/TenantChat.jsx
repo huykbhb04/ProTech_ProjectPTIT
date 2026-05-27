@@ -145,7 +145,7 @@ const TenantChat = () => {
             setMessages([{
                 id: Date.now(),
                 role: 'assistant',
-                content: `Xin chào ${user?.full_name || 'bạn'}! 👋\n\nTôi là trợ lý AI của SmartProp. Tôi có thể giúp bạn:\n\n• Tìm kiếm phòng trọ phù hợp\n• So sánh giá và khu vực\n• Tư vấn về hợp đồng thuê nhà\n• Giải đáp thắc mắc về quy trình thuê\n\nBạn cần tôi hỗ trợ gì hôm nay?`,
+                content: `Xin chào ${user?.full_name || 'bạn'}! 👋\n\nTôi là trợ lý AI của PropTech. Tôi có thể giúp bạn:\n\n• Tìm kiếm phòng trọ phù hợp\n• So sánh giá và khu vực\n• Tư vấn về hợp đồng thuê nhà\n• Giải đáp thắc mắc về quy trình thuê\n\nBạn cần tôi hỗ trợ gì hôm nay?`,
                 timestamp: new Date().toISOString()
             }]);
         }
@@ -263,7 +263,7 @@ const TenantChat = () => {
                     </div>
                     <div>
                         <h1 className="text-lg font-black text-gray-900">AI Assistant</h1>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">SmartProp</p>
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">PropTech</p>
                     </div>
                 </div>
                 <button 

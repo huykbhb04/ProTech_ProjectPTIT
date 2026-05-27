@@ -75,7 +75,7 @@ const SeoManager = () => {
                                 <label className="input-label">Meta Title</label>
                                 <input value={formData.meta_title}
                                     onChange={e => setFormData({ ...formData, meta_title: e.target.value })}
-                                    className="input-box" placeholder="Smart PropTech - Thuê trọ thông minh" />
+                                    className="input-box" placeholder="PropTech - Thuê trọ thông minh" />
                                 <p className="meta-text mt-1">{formData.meta_title.length}/60 ký tự</p>
                             </div>
                             <div>

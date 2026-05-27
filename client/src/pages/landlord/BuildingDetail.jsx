@@ -244,6 +244,14 @@ const RoomListingTab = ({ room }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (formData.electricity_price <= 0) {
+            alert('Giá điện phải lớn hơn 0đ/kWh');
+            return;
+        }
+        if (formData.water_price <= 0) {
+            alert('Giá nước phải lớn hơn 0đ');
+            return;
+        }
         try {
             if (listing) {
                 await listingService.updateListing(listing.listing_id, { ...formData, status: listing.status });
@@ -556,6 +564,14 @@ const RoomDetailModal = ({ room, onClose, onUpdate }) => {
     });
 
     const handleSaveEdit = async () => {
+        if (editForm.electricityPrice <= 0) {
+            alert('Giá điện phải lớn hơn 0đ/kWh');
+            return;
+        }
+        if (editForm.waterPrice <= 0) {
+            alert('Giá nước phải lớn hơn 0đ');
+            return;
+        }
         try {
             await onUpdate(room.room_id, editForm);
             setIsEditing(false);
@@ -1387,6 +1403,14 @@ const BuildingDetail = () => {
         e.preventDefault();
 
         // Validation
+        if (newRoom.electricityPrice <= 0) {
+            alert('Giá điện phải lớn hơn 0đ/kWh');
+            return;
+        }
+        if (newRoom.waterPrice <= 0) {
+            alert('Giá nước phải lớn hơn 0đ');
+            return;
+        }
         if (newRoom.images.length < 3) {
             alert('Yêu cầu chụp ít nhất 3 ảnh phòng!');
             return;

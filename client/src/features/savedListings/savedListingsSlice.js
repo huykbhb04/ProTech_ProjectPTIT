@@ -64,7 +64,7 @@ const savedListingsSlice = createSlice({
                     state.savedIds = state.savedIds.filter(id => id !== listingId);
                 }
             })
-            .addCase('auth/logout/fulfilled', (state) => {
+            .addCase('auth/logout', (state) => {
                 state.savedIds = [];
             })
             .addCase('auth/login/fulfilled', (state) => {

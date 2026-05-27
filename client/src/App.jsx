@@ -26,7 +26,7 @@ function App() {
   }
 
   if (user && (user.role === 'tenant' || user.role === 'guest')) {
-    return <Navigate to="/tenant/dashboard" replace />;
+    return <Navigate to="/tenant/discover" replace />;
   }
 
   return (
@@ -37,7 +37,7 @@ function App() {
         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm z-0"></div>
 
         <div className="z-10 text-center text-white p-8 glass rounded-2xl max-w-2xl mx-4">
-          <h1 className="text-5xl font-bold mb-6">Smart PropTech</h1>
+          <h1 className="text-5xl font-bold mb-6">PropTech</h1>
           <p className="text-xl mb-8 text-gray-100">Hệ sinh thái Quản lý & Cho thuê Nhà trọ Thông minh ứng dụng AI</p>
 
           <div className="flex justify-center gap-4">

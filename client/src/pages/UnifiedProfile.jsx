@@ -15,6 +15,7 @@ const UnifiedProfile = () => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [error, setError] = useState(false);
 
     // Form state
     const [formData, setFormData] = useState({
@@ -43,6 +44,7 @@ const UnifiedProfile = () => {
     const fetchProfile = async () => {
         try {
             setLoading(true);
+            setError(false);
             const data = await userService.getProfile();
             setProfile(data);
             const formatDateForInput = (dateValue) => {
@@ -65,7 +67,9 @@ const UnifiedProfile = () => {
                 date_of_birth: data.date_of_birth ? formatDateForInput(data.date_of_birth) : '',
                 address: data.address || ''
             });
-        } catch (error) {
+        } catch (err) {
+            console.error('Lỗi khi tải profile:', err);
+            setError(true);
             toast.error('Lỗi khi tải thông tin cá nhân');
         } finally {
             setLoading(false);
@@ -152,6 +156,26 @@ const UnifiedProfile = () => {
     if (loading) return (
         <div className="min-h-screen flex items-center justify-center">
             <Loader className="animate-spin text-indigo-600" size={48} />
+        </div>
+    );
+
+    if (error || !profile) return (
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center space-y-6 p-8">
+                <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto">
+                    <CircleAlert size={40} className="text-red-400" />
+                </div>
+                <div>
+                    <h2 className="text-xl font-black text-gray-900 mb-2">Không thể tải thông tin</h2>
+                    <p className="text-gray-500 text-sm">Đã xảy ra lỗi khi tải thông tin cá nhân. Vui lòng thử lại.</p>
+                </div>
+                <button
+                    onClick={fetchProfile}
+                    className="px-8 py-3 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all active:scale-95"
+                >
+                    Thử lại
+                </button>
+            </div>
         </div>
     );
 
@@ -288,7 +312,7 @@ const UnifiedProfile = () => {
                             </div>
                             <p className="text-gray-600 font-medium">Sử dụng AI để tự động trích xuất thông tin từ CCCD và xác thực tài khoản của bạn. Giúp tăng uy tín khi thuê phòng.</p>
                             <button
-                                onClick={() => toast.info('Tính năng xác thực đang được mở...')}
+                                onClick={() => toast('Tính năng xác thực đang được mở...', { icon: '🔒' })}
                                 className="px-8 py-4 glass text-indigo-600 rounded-2xl font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all transition-duration-500"
                             >
                                 Bắt đầu xác thực ngay

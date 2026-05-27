@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Provider, useSelector } from 'react-redux';
 import { store } from './store';
 import App from './App.jsx';
@@ -35,9 +35,10 @@ import TenantContractView from './pages/tenant/TenantContractView.jsx';
 import TenantBills from './pages/tenant/TenantBills.jsx';
 import TenantBillDetail from './pages/tenant/TenantBillDetail.jsx';
 import TenantChat from './pages/tenant/TenantChat.jsx';
-import UnifiedProfile from './pages/UnifiedProfile.jsx';
 import SavedListings from './pages/tenant/SavedListings.jsx';
 import RoommateMatching from './pages/tenant/RoommateMatching.jsx';
+import ServicesPrice from './pages/tenant/ServicesPrice.jsx';
+import UnifiedProfile from './pages/UnifiedProfile.jsx';
 
 import AdminLayout from './layouts/AdminLayout.jsx';
 import AdminDashboard from './pages/admin/Dashboard.jsx';
@@ -51,15 +52,16 @@ import UserManagement from './pages/admin/UserManagement.jsx';
 // ProtectedRoute: ngăn người dùng không đúng role truy cập trang
 const ProtectedRoute = ({ allowedRoles, children }) => {
   const { user } = useSelector((state) => state.auth);
+  const location = useLocation();
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />;
     if (user.role === 'landlord') return <Navigate to="/landlord/dashboard" replace />;
-    return <Navigate to="/tenant/dashboard" replace />;
+    return <Navigate to="/tenant/discover" replace />;
   }
 
   return children;
@@ -130,6 +132,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
             {/* DiscoverRooms — public route */}
             <Route path="/tenant/discover" element={<DiscoverRooms />} />
+            <Route path="/services-price" element={<ServicesPrice />} />
+            <Route path="/tenant/services-price" element={<ServicesPrice />} />
 
             {/* Admin Routes */}
             <Route

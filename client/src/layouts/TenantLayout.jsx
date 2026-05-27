@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { 
     Home, Search, CreditCard, MessageSquare, User,
-    LogOut, Bell, Heart, Calendar, X, Users
+    LogOut, Bell, Heart, Calendar, X, Users, Menu
 } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../features/auth/authSlice';
@@ -32,11 +32,14 @@ const TenantLayout = () => {
 
     const SidebarHeader = ({ showClose }) => (
         <div className="flex h-14 items-center justify-between px-4 border-b border-gray-100 flex-shrink-0">
-            <span className="text-base font-black tracking-tighter uppercase">
-                SmartProp
-            </span>
+            <Link to="/" className="flex flex-col items-start min-w-fit group shrink-0">
+                <div className="flex items-center">
+                    <span className="text-lg font-black tracking-tighter uppercase text-indigo-600">PropTech</span>
+                </div>
+                <span className="text-[8px] font-bold text-gray-500 uppercase tracking-tight -mt-0.5">Nền tảng thuê phòng thông minh</span>
+            </Link>
             {showClose && (
-                <button onClick={() => setIsSidebarOpen(false)} className="p-1 text-gray-400 hover:text-black">
+                <button onClick={() => setIsSidebarOpen(false)} className="p-1 text-gray-400 hover:text-black hover:bg-gray-50 rounded-lg transition-colors">
                     <X size={18} />
                 </button>
             )}
@@ -102,30 +105,26 @@ const TenantLayout = () => {
     );
 
     const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+    const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = React.useState(true);
 
     return (
         <div className="flex flex-col min-h-screen bg-white">
-            <TopNavbar user={user} onLogout={onLogout} />
+            <div className="hidden lg:block">
+                <TopNavbar user={user} onLogout={onLogout} toggleSidebar={() => setIsDesktopSidebarOpen(!isDesktopSidebarOpen)} />
+            </div>
 
             <div className="flex flex-1 relative">
-                {/* Desktop Sidebar (hover-to-reveal) - SAME PATTERN AS LANDLORD & ADMIN */}
+                {/* Desktop Sidebar (toggled via header hamburger menu) */}
                 {user && (
-                    <div className="fixed inset-y-0 left-0 z-50 group hidden lg:block">
-                        <div className="absolute inset-y-0 left-0 w-1.5 bg-indigo-200 group-hover:bg-transparent transition-colors duration-500 rounded-r-full" />
-                        <aside className="h-full w-64 flex flex-col -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-white border-r border-gray-100 shadow-sm relative">
-                            <SidebarHeader />
-                            <UserInfo linkPath="/tenant/profile" />
-                            <NavList />
-                            <LogoutBtn />
-                            <div className="absolute top-1/2 -right-3 w-6 h-12 bg-white flex items-center justify-center rounded-full border border-gray-100 shadow-md group-hover:opacity-0 transition-opacity -translate-y-1/2 pointer-events-none">
-                                <div className="w-1 h-4 bg-indigo-200 rounded-full" />
-                            </div>
-                        </aside>
-                    </div>
+                    <aside className={`fixed inset-y-0 left-0 z-40 w-64 pt-[72px] flex flex-col bg-white border-r border-gray-100 shadow-sm transition-transform duration-300 ease-in-out hidden lg:flex ${isDesktopSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                        <UserInfo linkPath="/tenant/profile" />
+                        <NavList />
+                        <LogoutBtn />
+                    </aside>
                 )}
 
                 {/* Main Content */}
-                <div className="flex flex-1 flex-col pb-16 md:pb-0 overflow-y-auto min-h-[calc(100vh-80px)] scrollbar-hide">
+                <div className={`flex flex-1 flex-col pb-16 md:pb-0 overflow-y-auto min-h-[calc(100vh-80px)] scrollbar-hide transition-all duration-300 ${isDesktopSidebarOpen && user ? 'lg:pl-64' : 'lg:pl-0'}`}>
                     <main className="flex-1 w-full bg-white">
                         <Outlet />
                     </main>
@@ -133,13 +132,32 @@ const TenantLayout = () => {
             </div>
 
             {/* Mobile Top Bar */}
-            <header className="flex h-14 items-center justify-between border-b border-gray-100 bg-white lg:hidden px-4 sticky top-0 z-40">
-                <span className="text-base font-black tracking-tighter uppercase">
-                    SmartProp
-                </span>
-                <button onClick={() => setIsSidebarOpen(true)} className="p-2 text-gray-500 hover:text-black">
-                    <Bell size={20} />
-                </button>
+            <header className="flex h-16 items-center justify-between border-b border-gray-100 bg-white lg:hidden px-4 sticky top-0 z-40 shadow-sm">
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => setIsSidebarOpen(true)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 border border-gray-200 rounded-lg transition-all cursor-pointer"
+                        aria-label="Open Menu"
+                    >
+                        <Menu size={18} />
+                        <span className="text-xs font-bold uppercase tracking-wider">Tiện ích</span>
+                    </button>
+                    <Link to="/" className="flex flex-col items-start min-w-fit group shrink-0">
+                        <div className="flex items-center">
+                            <span className="text-xl font-black tracking-tighter uppercase text-indigo-600">PropTech</span>
+                        </div>
+                        <span className="text-[8px] font-bold text-gray-500 uppercase tracking-tight -mt-1 hidden sm:block">Nền tảng thuê phòng thông minh</span>
+                    </Link>
+                </div>
+                <div className="flex items-center gap-3">
+                    <Link to="/tenant/profile" className="w-8 h-8 rounded-full border border-indigo-100 overflow-hidden shrink-0 shadow-sm">
+                        <img
+                            src={user?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.full_name || 'T')}&background=4f46e5&color=fff`}
+                            alt="Avatar"
+                            className="w-full h-full object-cover"
+                        />
+                    </Link>
+                </div>
             </header>
 
             {/* Mobile Drawer */}

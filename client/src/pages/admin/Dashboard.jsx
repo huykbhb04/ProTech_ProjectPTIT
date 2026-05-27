@@ -250,34 +250,12 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30]" style={{ fontFamily: 'Be Vietnam Pro, sans-serif' }}>
-            <aside className="fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col bg-[#1a0a0a] shadow-xl">
-                <div className="px-8 py-8">
-                    <h1 className="text-[24px] font-bold text-white">PropManage</h1>
-                    <p className="mt-1 text-[12px] font-semibold tracking-[0.18em] text-white/40">HỆ THỐNG QUẢN TRỊ</p>
-                </div>
-                <nav className="flex-1 overflow-y-auto px-3 custom-scrollbar">
-                    <SidebarItem to="/admin" icon={LayoutDashboard} label="Bảng điều khiển" active />
-                    <SidebarItem to="/admin/properties" icon={Building2} label="Bất động sản" />
-                    <SidebarItem to="/admin/users" icon={UserRound} label="Khách thuê" />
-                    <SidebarItem to="/admin/payments" icon={HandCoins} label="Thanh toán" />
-                    <SidebarItem to="/admin/maintenance" icon={Wrench} label="Bảo trì" />
-                    <SidebarItem to="/admin/settings" icon={Settings} label="Cài đặt" />
-                </nav>
-                <div className="mt-auto border-t border-white/10 p-3">
-                    <Link to="/logout" className="flex items-center gap-4 px-4 py-3 text-white/60 transition-colors hover:text-[#dc2626]">
-                        <LogOut className="h-5 w-5" />
-                        <span className="text-[14px] font-semibold">Đăng xuất</span>
-                    </Link>
-                </div>
-            </aside>
-
-            <main className="ml-[260px] min-h-screen">
-                <TopBar />
-                <div className="space-y-8 px-8 py-8">
+        <div className="space-y-8 pb-10">
+            <TopBar />
+            <div className="space-y-8 px-4 py-6 lg:px-8">
                     <SectionTitle
                         title="Admin Dashboard"
-                        subtitle="Tổng quan hoạt động SmartProp"
+                        subtitle="Tổng quan hoạt động PropTech"
                         actions={[
                             <button key="export" className="flex items-center gap-2 rounded-lg border border-[#e6bdb8] bg-white px-4 py-3 text-[14px] font-semibold text-[#0b1c30] transition-colors hover:bg-[#eff4ff]">
                                 <Download className="h-4 w-4" /> Xuất báo cáo
@@ -518,8 +496,7 @@ const Dashboard = () => {
                         </aside>
                     </div>
                 </div>
-            </main>
-        </div>
+            </div>
     );
 };
 

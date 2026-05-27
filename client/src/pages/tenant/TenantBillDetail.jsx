@@ -245,7 +245,7 @@ const TenantBillDetail = () => {
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2 mb-1">
                                     <div className="w-6 h-6 bg-black" />
-                                    <span className="text-lg font-black text-black tracking-tight">SmartProp Invoice</span>
+                                    <span className="text-lg font-black text-black tracking-tight">PropTech Invoice</span>
                                 </div>
                                 <p className="section-label">Mã hóa đơn: #BILL-{(bill.bill_id || bill.id || '').toString().padStart(6, '0')}</p>
                             </div>
