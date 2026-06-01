@@ -27,6 +27,7 @@ import { toast } from 'react-hot-toast';
 import listingService from '../../services/listingService';
 import propertyService from '../../services/propertyService';
 import monetizationService from '../../services/monetizationService';
+import reportService from '../../services/reportService';
 import PromoteModal from '../../components/landlord/PromoteModal';
 import { Spinner } from '../../components/ui/Loading';
 
@@ -271,6 +272,130 @@ const RenewalModal = ({ isOpen, onClose, listing, onConfirm, plans = [], walletB
   );
 };
 
+const DisputeModal = ({ isOpen, onClose, listing, onConfirm }) => {
+  const [explanation, setExplanation] = useState('');
+  const [proofUrl, setProofUrl] = useState('');
+  const [proofs, setProofs] = useState([]);
+
+  if (!isOpen || !listing) return null;
+
+  const handleAddProof = () => {
+    if (proofUrl.trim()) {
+      setProofs([...proofs, proofUrl.trim()]);
+      setProofUrl('');
+    }
+  };
+
+  const handleAddSampleProof = () => {
+    setProofs([...proofs, 'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?w=600&auto=format&fit=crop']);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!explanation.trim()) {
+      toast.error('Vui lòng nhập nội dung giải trình');
+      return;
+    }
+    onConfirm({ explanation, proofImages: proofs });
+  };
+
+  return (
+    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/55 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-lg overflow-hidden rounded-[24px] bg-white shadow-2xl animate-in zoom-in duration-200">
+        <div className="border-b border-red-100 bg-gradient-to-r from-red-600 to-rose-500 px-6 py-5 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold">Khiếu nại tin đăng</h3>
+              <p className="mt-0.5 text-xs text-white/80">Yêu cầu khôi phục hiển thị cho tin trọ bị khóa/ẩn</p>
+            </div>
+            <button type="button" onClick={onClose} className="rounded-full bg-white/10 p-2 text-white hover:bg-white/20"><X size={16} /></button>
+          </div>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div>
+            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Tin đăng bị khiếu nại</p>
+            <p className="text-sm font-bold text-slate-800 mt-1">{listing.title}</p>
+            <p className="text-xs text-slate-500">{listing.building_name} · Phòng {listing.room_number}</p>
+          </div>
+
+          <div className="space-y-1">
+            <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Nội dung giải trình</label>
+            <textarea
+              required
+              rows="4"
+              value={explanation}
+              onChange={(e) => setExplanation(e.target.value)}
+              placeholder="Nhập lý do chi tiết, đối chất phản ánh sai sự thật và cam kết thông tin chính xác..."
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 outline-none placeholder:text-gray-400 text-slate-800 font-semibold"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider">Hình ảnh bằng chứng (Hợp đồng, Ảnh thực tế...)</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={proofUrl}
+                onChange={(e) => setProofUrl(e.target.value)}
+                placeholder="Dán URL hình ảnh minh chứng"
+                className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-red-500 outline-none text-slate-800"
+              />
+              <button
+                type="button"
+                onClick={handleAddProof}
+                className="px-4 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold transition-all"
+              >
+                Thêm
+              </button>
+            </div>
+            
+            <div className="flex flex-wrap gap-2 pt-1">
+              {proofs.map((url, i) => (
+                <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-200 bg-slate-50">
+                  <img src={url} alt="Proof" className="w-full h-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setProofs(proofs.filter((_, idx) => idx !== i))}
+                    className="absolute top-0.5 right-0.5 bg-red-600 text-white rounded-full p-0.5 hover:bg-red-700"
+                  >
+                    <X size={8} />
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddSampleProof}
+                className="w-16 h-16 rounded-lg border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400 hover:text-slate-600 hover:border-slate-400 transition-colors"
+                title="Thêm mẫu thử nhanh"
+              >
+                <Plus size={16} />
+                <span className="text-[8px] font-bold mt-1">Ảnh mẫu</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="pt-4 flex justify-end gap-3 border-t border-slate-100">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50"
+            >
+              Hủy
+            </button>
+            <button
+              type="submit"
+              className="rounded-xl bg-red-600 hover:bg-red-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-red-600/15"
+            >
+              Gửi khiếu nại
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const Listings = () => {
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
@@ -292,6 +417,30 @@ const Listings = () => {
   const [walletBalance, setWalletBalance] = useState(0);
   const [renewalPlans, setRenewalPlans] = useState([]);
   const [plansLoading, setPlansLoading] = useState(false);
+  const [showDisputeModal, setShowDisputeModal] = useState(false);
+  const [selectedDisputeListing, setSelectedDisputeListing] = useState(null);
+
+  const handleOpenDispute = (item) => {
+    setSelectedDisputeListing(item);
+    setShowDisputeModal(true);
+  };
+
+  const handleConfirmDispute = async ({ explanation, proofImages }) => {
+    try {
+      await reportService.submitDispute({
+        listingId: selectedDisputeListing.listing_id,
+        explanation,
+        proofImages
+      });
+      toast.success('Gửi khiếu nại thành công! Vui lòng chờ ban quản trị duyệt.');
+      setShowDisputeModal(false);
+      setSelectedDisputeListing(null);
+      await fetchListings();
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || 'Không thể gửi khiếu nại.');
+    }
+  };
 
   const fetchListings = async () => {
     try { setListings(Array.isArray(await listingService.getLandlordListings()) ? await listingService.getLandlordListings() : []); }
@@ -451,27 +600,50 @@ const Listings = () => {
             <div className="flex-[1] px-3 text-center"><span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#9aa5b4]">Trạng thái</span></div>
             <div className="flex-[0.7] px-3 text-right"><span className="text-[11px] font-semibold uppercase tracking-[0.05em] text-[#9aa5b4]">Hành động</span></div>
           </div>
-
-          <div className="divide-y divide-[#f1f5f9]">
+          <div className="divide-y divide-[#e8ecf0]">
             {filteredListings.map((item, index) => {
+              const isVIP = item.premium_until && new Date(item.premium_until) > new Date();
+              const progressPercent = Math.min(100, Math.max(0, (getDaysRemaining(item.expires_at) / 30) * 100));
               const daysLeft = getDaysRemaining(item.expires_at);
-              const progressPercent = Math.min(100, (daysLeft / 30) * 100);
-              const isVIP = item.is_vip;
               const confirmed = item.confirmed_count || 0;
-              const pending = (item.booking_count || 0) - confirmed;
-              const cancelled = Math.max(0, 3 - confirmed - pending);
+              const pending = item.pending_count || 0;
+              const cancelled = item.cancelled_count || 0;
               return (
                 <div key={item.listing_id} className={`flex items-center px-4 py-3.5 transition-colors hover:bg-gray-50/50 ${isVIP && index === 0 ? 'bg-[#fffbeb]' : ''}`}>
                   <div className="flex-[2] flex items-center gap-3">
                     <div className="h-11 w-11 flex-shrink-0 overflow-hidden rounded-lg border border-[#f1f5f9] bg-gray-100">{item.images?.[0] ? <img src={item.images[0]} alt="" className="h-full w-full object-cover" /> : <div className="flex h-full w-full items-center justify-center"><Building2 size={18} className="text-gray-300" /></div>}</div>
-                    <div className="min-w-0 flex-1"><div className="flex items-center gap-2">{isVIP && <Star3D size={16} />}<p className="truncate text-sm font-semibold text-[#1e293b]">{item.title}</p></div><p className="mt-0.5 text-xs text-[#94a3b8]">{item.building_name} · {item.room_number}</p></div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        {isVIP && <Star3D size={16} />}
+                        <p className={`truncate text-sm font-semibold ${['hidden', 'locked'].includes(item.status) ? 'text-red-600' : 'text-[#1e293b]'}`}>
+                          {item.title}
+                        </p>
+                      </div>
+                      <p className="mt-0.5 text-xs text-[#94a3b8]">{item.building_name} · {item.room_number}</p>
+                      {['hidden', 'locked'].includes(item.status) && item.status_reason && (
+                        <div className="mt-1 flex flex-wrap items-center gap-2">
+                          <span className="text-[10px] font-bold text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.5 rounded">
+                            ⚠ {item.status_reason}
+                          </span>
+                          {item.status_reason !== 'Đang khiếu nại - Chờ Admin xét duyệt' && (
+                            <button
+                              type="button"
+                              onClick={() => handleOpenDispute(item)}
+                              className="text-[9px] font-extrabold uppercase tracking-wider text-white bg-red-600 hover:bg-red-700 px-2 py-0.5 rounded shadow transition-all active:scale-95 cursor-pointer"
+                            >
+                              Khiếu nại
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div className="flex-[1] px-3"><p className="text-sm font-bold text-[#3b2870]">{new Intl.NumberFormat('vi-VN').format(item.rent_price)}đ</p></div>
                   <div className="flex-[1] px-3"><div className="mb-1.5 flex items-center gap-1.5"><ShieldCheck size={12} className="text-[#94a3b8]" /><span className={`text-xs font-medium ${daysLeft > 5 ? 'text-[#1e293b]' : 'text-red-500'}`}>Còn {daysLeft} ngày</span></div><div className="h-1 w-20 overflow-hidden rounded-full bg-gray-100"><div className="h-full rounded-full bg-gradient-to-r from-[#1a6b5a] to-[#3aa882] transition-all duration-300" style={{ width: `${progressPercent}%` }} /></div></div>
                   <div className="flex-[0.8] px-3 text-center"><div className="flex items-center justify-center"><span className="text-sm font-bold text-[#1e293b]">{item.views?.toLocaleString() || 0}</span><MiniSparkline data={[12, 19, 15, 25, 22]} color="#1a6b5a" /></div><div className="mt-1"><MultiColorProgress values={[item.views || 0, 100, 50]} /></div></div>
                   <div className="flex-[0.8] px-3 text-center"><div className="flex items-center justify-center"><span className="text-sm font-bold text-[#1e293b]">{item.booking_count || 0}</span><MiniSparkline data={[5, 8, 6, 10, 7]} color="#8b6ec4" /></div><div className="mt-1"><MultiColorProgress values={[confirmed, pending, cancelled]} /></div></div>
                   <div className="flex-[0.7] px-3 text-center"><span className="inline-flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#1a6b5a] text-xs font-bold text-[#1a6b5a]">{confirmed}</span></div>
-                  <div className="flex-[1] px-3 text-center"><span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${item.status === 'active' ? 'border-[#bbf7d0] bg-[#dcfce7] text-[#16a34a]' : item.status === 'paused' ? 'border-[#fde68a] bg-[#fef3c7] text-[#b45309]' : 'bg-gray-100 text-gray-600'}`}>{item.status === 'active' ? 'HOẠT ĐỘNG' : item.status === 'paused' ? 'TẠM DỪNG' : item.status}</span>{isVIP && <div className="mt-1"><span className="inline-flex items-center gap-0.5 rounded-full bg-[#fef9c3] px-2 py-0.5 text-[10px] font-semibold text-[#b45309]"><Star size={8} fill="currentColor" /> VIP</span></div>}</div>
+                  <div className="flex-[1] px-3 text-center"><span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${item.status === 'active' ? 'border-[#bbf7d0] bg-[#dcfce7] text-[#16a34a]' : item.status === 'paused' ? 'border-[#fde68a] bg-[#fef3c7] text-[#b45309]' : item.status === 'hidden' ? 'border-red-200 bg-red-50 text-red-600' : item.status === 'locked' ? 'border-red-300 bg-red-100 text-red-800 font-bold' : 'bg-gray-100 text-gray-600'}`}>{item.status === 'active' ? 'HOẠT ĐỘNG' : item.status === 'paused' ? 'TẠM DỪNG' : item.status === 'hidden' ? 'TẠM ẨN' : item.status === 'locked' ? 'BỊ KHÓA' : item.status}</span>{isVIP && <div className="mt-1"><span className="inline-flex items-center gap-0.5 rounded-full bg-[#fef9c3] px-2 py-0.5 text-[10px] font-semibold text-[#b45309]"><Star size={8} fill="currentColor" /> VIP</span></div>}</div>
                   <div className="flex-[0.7] px-3 text-right"><div className="flex items-center justify-end gap-1"><button onClick={() => handleEdit(item)} className="rounded-lg p-1.5 text-[#94a3b8] transition-colors hover:bg-gray-100 hover:text-[#1a6b5a]" title="Chỉnh sửa"><Pencil size={15} /></button><button onClick={() => handleOpenRenew(item)} disabled={renewingListing === item.listing_id} className="rounded-lg p-1.5 text-[#94a3b8] transition-colors hover:bg-green-50 hover:text-[#0f6e56]" title="Gia hạn"><RotateCw size={15} /></button><button onClick={() => handleDuplicate(item)} className="rounded-lg p-1.5 text-[#94a3b8] transition-colors hover:bg-gray-100 hover:text-[#3b2870]" title="Sao chép"><Copy size={15} /></button><button onClick={() => handleDelete(item)} className="rounded-lg p-1.5 text-[#94a3b8] transition-colors hover:bg-red-50 hover:text-red-500" title="Xóa"><Trash2 size={15} /></button></div></div>
                 </div>
               );
@@ -480,7 +652,7 @@ const Listings = () => {
           </div>
         </div>
       </div>
-
+ 
       {isSelectRoomOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
           <div className="flex max-h-[75vh] w-full max-w-2xl flex-col overflow-hidden rounded-xl bg-white shadow-2xl">
@@ -492,7 +664,7 @@ const Listings = () => {
           </div>
         </div>
       )}
-
+ 
       {showRenewalModal && selectedRenewListing && (
         <RenewalModal
           isOpen={showRenewalModal}
@@ -504,7 +676,16 @@ const Listings = () => {
           loadingPlans={plansLoading}
         />
       )}
-
+ 
+      {showDisputeModal && selectedDisputeListing && (
+        <DisputeModal
+          isOpen={showDisputeModal}
+          onClose={() => { setShowDisputeModal(false); setSelectedDisputeListing(null); }}
+          listing={selectedDisputeListing}
+          onConfirm={handleConfirmDispute}
+        />
+      )}
+ 
       {isPromoteModalOpen && <PromoteModal isOpen={isPromoteModalOpen} onClose={() => setIsPromoteModalOpen(false)} listing={selectedListingToPromote} />}
     </div>
   );

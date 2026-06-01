@@ -214,6 +214,61 @@ const SatisfactionCard = ({ rating, reviewCount }) => (
     </div>
 );
 
+/* ── Reputation Score Card ── */
+const ReputationScoreCard = ({ score = 100 }) => {
+    let colorClass = 'bg-[#10b981]'; // green
+    let text = 'Rất uy tín';
+    let desc = 'Tin đăng của bạn đang được ưu tiên hiển thị ở vị trí cao trong kết quả tìm kiếm.';
+
+    if (score < 50) {
+        colorClass = 'bg-red-500';
+        text = 'Cảnh báo/Hạn chế';
+        desc = 'Điểm uy tín của bạn quá thấp. Tài khoản đã bị hạn chế đăng tin mới.';
+    } else if (score < 70) {
+        colorClass = 'bg-amber-500';
+        text = 'Trung bình';
+        desc = 'Tin đăng có thể bị giảm hiển thị. Vui lòng cải thiện chất lượng phục vụ và thông tin.';
+    } else if (score < 90) {
+        colorClass = 'bg-[#3b82f6]'; // blue
+        text = 'Khá uy tín';
+        desc = 'Tin đăng hiển thị bình thường trên trang chủ.';
+    }
+
+    return (
+        <div
+            className="rounded-[14px] p-5 border"
+            style={{ backgroundColor: '#ffffff', borderColor: '#bec9c3' }}
+        >
+            <div className="flex items-center justify-between">
+                <span className="text-[11.5px] font-semibold uppercase tracking-wider text-[#6f7a74]">Thang điểm uy tín</span>
+                <span className="text-[#6f7a74] text-xs font-semibold">Tối đa: 100</span>
+            </div>
+            
+            <div className="mt-4 flex items-center gap-4">
+                <div className="relative flex items-center justify-center shrink-0">
+                    <svg className="w-16 h-16 transform -rotate-90">
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="#ebefeb" strokeWidth="5" />
+                        <circle cx="32" cy="32" r="26" fill="none" stroke={score < 50 ? '#ef4444' : score < 70 ? '#f59e0b' : score < 90 ? '#3b82f6' : '#10b981'} strokeWidth="5" 
+                                strokeDasharray={163.36} 
+                                strokeDashoffset={163.36 - (score / 100) * 163.36}
+                                strokeLinecap="round" />
+                    </svg>
+                    <span className="absolute text-base font-bold text-slate-800">{score}</span>
+                </div>
+
+                <div className="min-w-0">
+                    <span className={`inline-block text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${colorClass}`}>
+                        {text}
+                    </span>
+                    <p className="mt-1.5 text-xs text-[#6f7a74] leading-relaxed">
+                        {desc}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 /* ── Top App Bar ── */
 const TopAppBar = ({ user }) => {
     const navigate = useNavigate();
@@ -363,6 +418,14 @@ const LandlordDashboard = () => {
             </section>
 
             {/* Alert Banner */}
+            {stats?.reputationScore !== undefined && stats.reputationScore < 50 && (
+                <AlertBanner
+                    type="error"
+                    message={`Cảnh báo: Điểm uy tín của bạn hiện đang là ${stats.reputationScore}/100. Tài khoản bị hạn chế đăng thêm tin mới do điểm dưới 50!`}
+                    actionText="Xem hồ sơ"
+                    onAction={() => navigate('/landlord/profile')}
+                />
+            )}
             {stats?.openRequests > 0 && (
                 <AlertBanner
                     type="warning"
@@ -520,6 +583,9 @@ const LandlordDashboard = () => {
                         location="Quận 1, TP.HCM"
                         stats="12 Tòa nhà • 450 Căn hộ"
                     />
+
+                    {/* Landlord Reputation Score */}
+                    <ReputationScoreCard score={stats?.reputationScore} />
 
                     {/* Tenant Satisfaction */}
                     <SatisfactionCard

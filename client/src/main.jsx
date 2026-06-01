@@ -48,6 +48,7 @@ import ThemeManager from './pages/admin/ThemeManager.jsx';
 import BannerManagement from './pages/admin/BannerManagement.jsx';
 import CategoryManagement from './pages/admin/CategoryManagement.jsx';
 import UserManagement from './pages/admin/UserManagement.jsx';
+import ReportManagement from './pages/admin/ReportManagement.jsx';
 
 // ProtectedRoute: ngăn người dùng không đúng role truy cập trang
 const ProtectedRoute = ({ allowedRoles, children }) => {
@@ -152,6 +153,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="seo" element={<SeoManager />} />
               <Route path="theme" element={<ThemeManager />} />
               <Route path="users" element={<UserManagement />} />
+              <Route path="reports" element={<ReportManagement />} />
               <Route path="logs" element={<div className="text-center mt-10 text-gray-500">Đang phát triển: System Logs</div>} />
             </Route>
           </Routes>

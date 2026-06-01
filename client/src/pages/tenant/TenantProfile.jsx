@@ -33,10 +33,6 @@ const TenantProfile = () => {
 
                     <div className="flex flex-col gap-3 mb-10 text-left max-w-sm mx-auto">
                         <div className="flex items-center gap-4 p-4 bg-white/40 rounded-2xl border border-white/50">
-                            <ShieldCheck className="text-green-600" size={24} />
-                            <span className="text-sm font-bold text-gray-800">Xác thực danh tính AI</span>
-                        </div>
-                        <div className="flex items-center gap-4 p-4 bg-white/40 rounded-2xl border border-white/50">
                             <CreditCard className="text-blue-600" size={24} />
                             <span className="text-sm font-bold text-gray-800">Quản lý phương thức thanh toán</span>
                         </div>

@@ -47,7 +47,7 @@ const savedListingsSlice = createSlice({
             })
             .addCase(fetchSavedIds.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.savedIds = action.payload;
+                state.savedIds = Array.isArray(action.payload) ? action.payload.map(Number) : [];
             })
             .addCase(fetchSavedIds.rejected, (state, action) => {
                 state.isLoading = false;
@@ -56,12 +56,13 @@ const savedListingsSlice = createSlice({
             })
             .addCase(toggleSaveListing.fulfilled, (state, action) => {
                 const { listingId, isSaved } = action.payload;
+                const id = Number(listingId);
                 if (isSaved) {
-                    if (!state.savedIds.includes(listingId)) {
-                        state.savedIds.push(listingId);
+                    if (!state.savedIds.includes(id)) {
+                        state.savedIds.push(id);
                     }
                 } else {
-                    state.savedIds = state.savedIds.filter(id => id !== listingId);
+                    state.savedIds = state.savedIds.filter(x => Number(x) !== id);
                 }
             })
             .addCase('auth/logout', (state) => {

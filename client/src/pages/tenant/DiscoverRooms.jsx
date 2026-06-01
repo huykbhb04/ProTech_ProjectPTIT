@@ -800,7 +800,7 @@ const DiscoverRooms = () => {
                       <ListingCard
                         key={item.listing_id}
                         item={item}
-                        saved={savedIds.includes(item.listing_id)}
+                        saved={savedIds.map(Number).includes(Number(item.listing_id))}
                         onToggleSave={async (listingId) => {
                           if (!user) {
                             toast.error('Vui lòng đăng nhập để lưu tin');

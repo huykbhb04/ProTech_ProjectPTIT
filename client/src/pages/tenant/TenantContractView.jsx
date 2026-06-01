@@ -64,12 +64,12 @@ const TenantContractView = () => {
                         <ArrowLeft size={16} />
                     </button>
                     <div>
-                        <p className="section-label mb-1">H\u1ee3p đ\u1ed3ng ch\u00ednh th\u1ee9c</p>
-                        <h1 className="page-title">M\u00e3 s\u1ed1: {contract.contract_id || `CT-${contract.id}`}</h1>
+                        <p className="section-label mb-1">Hợp đồng chính thức</p>
+                        <h1 className="page-title">Mã số: {contract.contract_id || `CT-${contract.id}`}</h1>
                     </div>
                 </div>
                 <button className="btn-primary">
-                    <Download size={14} /> T\u1ea3i b\u1ea3n g\u1ed1c (PDF)
+                    <Download size={14} /> Tải bản gốc (PDF)
                 </button>
             </div>
 
@@ -86,7 +86,7 @@ const TenantContractView = () => {
                         </div>
                         <div className="border border-white/10 p-5 text-center min-w-[180px]">
                             <p className="section-label text-white/40 mb-1">Giá thuê / tháng</p>
-                            <p className="text-2xl font-black">{new Intl.NumberFormat('vi-VN').format(contract.rent_price)}₫</p>
+                            <p className="text-2xl font-black">{new Intl.NumberFormat('vi-VN').format(contract.monthly_price)}₫</p>
                         </div>
                     </div>
 

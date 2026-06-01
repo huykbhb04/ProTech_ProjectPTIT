@@ -40,11 +40,10 @@ exports.createBooking = async (req, res) => {
             });
         }
 
-        // 2. Get viewing deposit config
-        const [configs] = await db.query('SELECT config_key, config_value FROM system_configs WHERE config_key IN (?, ?)', ['viewing_deposit_amount', 'viewing_deposit_commission']);
-        const depositAmount = parseFloat(configs.find(c => c.config_key === 'viewing_deposit_amount')?.config_value || 200000);
-        const commissionRate = parseFloat(configs.find(c => c.config_key === 'viewing_deposit_commission')?.config_value || 10);
-        const commissionAmount = (depositAmount * commissionRate) / 100;
+        // 2. No deposits for bookings anymore
+        const depositAmount = 0;
+        const commissionRate = 0;
+        const commissionAmount = 0;
 
         const bookingId = await Booking.create({
             roomId,
@@ -74,8 +73,8 @@ exports.createBooking = async (req, res) => {
         res.status(201).json({
             success: true,
             bookingId,
-            depositAmount,
-            message: 'Đã tạo yêu cầu xem phòng. Vui lòng thanh toán tiền cọc 200k để xác nhận lịch hẹn.'
+            depositAmount: 0,
+            message: 'Đặt lịch xem phòng thành công. Vui lòng chờ chủ trọ xác nhận lịch hẹn.'
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -83,90 +82,15 @@ exports.createBooking = async (req, res) => {
 };
 
 exports.adminConfirmPayment = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const booking = await Booking.findById(id);
-        if (!booking) {
-            return res.status(404).json({ message: 'Không tìm thấy đơn.' });
-        }
-
-        // 1. Update payment status
-        await db.execute('UPDATE bookings SET payment_status = "paid", payment_date = NOW() WHERE booking_id = ?', [id]);
-        
-        // 2. Update booking status to 'deposited' ONLY if it's currently 'pending'
-        // If it's already 'confirmed' by landlord, leave it as 'confirmed'
-        if (booking.status === 'pending') {
-            await db.execute('UPDATE bookings SET status = "deposited" WHERE booking_id = ?', [id]);
-        }
-        
-        // Notify tenant
-        await Notification.create(
-            booking.tenant_id,
-            'Thanh toán cọc thành công',
-            `Hệ thống đã xác nhận khoản cọc ${new Intl.NumberFormat('vi-VN').format(booking.deposit_amount)} VNĐ cho lịch xem phòng ${booking.room_number}.`,
-            'booking'
-        );
-
-        res.json({ success: true, message: 'Đã xác nhận thanh toán thành công.' });
-    } catch (error) {
-        console.error('Error in adminConfirmPayment:', error);
-        res.status(500).json({ message: error.message });
-    }
+    res.status(400).json({ success: false, message: 'Chức năng đặt cọc đã bị bãi bỏ.' });
 };
 
 exports.adminPayoutLandlord = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const booking = await Booking.findById(id);
-        if (!booking) return res.status(404).json({ message: 'Không tìm thấy đơn.' });
-
-        if (booking.payment_status !== 'paid') {
-            return res.status(400).json({ message: 'Khách chưa thanh toán, không thể thực hiện payout.' });
-        }
-
-        const payoutAmount = booking.deposit_amount - booking.commission_amount;
-
-        // Transactional update
-        const connection = await db.getConnection();
-        try {
-            await connection.beginTransaction();
-
-            // 1. Update booking
-            await connection.execute('UPDATE bookings SET payout_status = "paid", payout_date = NOW() WHERE booking_id = ?', [id]);
-
-            // 2. Add to landlord wallet
-            await connection.execute('UPDATE users SET wallet_balance = wallet_balance + ? WHERE user_id = ?', [payoutAmount, booking.landlord_id]);
-
-            await connection.commit();
-            res.json({ success: true, message: 'Đã thực hiện thanh toán cho Chủ trọ.' });
-        } catch (error) {
-            await connection.rollback();
-            throw error;
-        } finally {
-            connection.release();
-        }
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+    res.status(400).json({ success: false, message: 'Chức năng đặt cọc đã bị bãi bỏ.' });
 };
 
 exports.getAllBookingDeposits = async (req, res) => {
-    try {
-        const [bookings] = await db.query(`
-            SELECT b.*, r.room_number, bl.name as building_name, 
-                   ut.full_name as tenant_name, ul.full_name as landlord_name
-            FROM bookings b
-            JOIN rooms r ON b.room_id = r.room_id
-            JOIN buildings bl ON r.building_id = bl.building_id
-            JOIN users ut ON b.tenant_id = ut.user_id
-            JOIN users ul ON bl.landlord_id = ul.user_id
-            WHERE b.deposit_amount > 0
-            ORDER BY b.created_at DESC
-        `);
-        res.json(bookings);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+    res.json([]);
 };
 
 exports.getLandlordBookings = async (req, res) => {
@@ -298,6 +222,66 @@ exports.rejectBooking = async (req, res) => {
         res.json({ success: true, message: 'Đã từ chối lịch hẹn.' });
     } catch (error) {
         try { await connection.rollback(); } catch (_) {}
+        connection.release();
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.payDeposit = async (req, res) => {
+    res.status(400).json({ success: false, message: 'Chức năng đặt cọc đã bị bãi bỏ.' });
+};
+
+exports.cancelBooking = async (req, res) => {
+    const connection = await db.getConnection();
+    try {
+        const { id } = req.params;
+        const tenantId = req.user.user_id;
+
+        const booking = await Booking.findById(id);
+        if (!booking) {
+            connection.release();
+            return res.status(404).json({ message: 'Không tìm thấy thông tin đặt lịch.' });
+        }
+
+        if (booking.tenant_id !== tenantId) {
+            connection.release();
+            return res.status(403).json({ message: 'Bạn không có quyền hủy lịch hẹn này.' });
+        }
+
+        if (booking.status !== 'pending' && booking.status !== 'confirmed') {
+            connection.release();
+            return res.status(400).json({ message: 'Không thể hủy lịch hẹn ở trạng thái hiện tại.' });
+        }
+
+        const cancelLog = JSON.stringify({
+            action: 'cancelled',
+            cancelledBy: tenantId,
+            cancelledAt: new Date().toISOString(),
+            previousStatus: booking.status,
+        });
+
+        await connection.beginTransaction();
+        await connection.execute(
+            'UPDATE bookings SET status = "cancelled", confirm_log = ? WHERE booking_id = ?',
+            [cancelLog, id]
+        );
+
+        // Notify landlord
+        await Notification.create(
+            booking.landlord_id,
+            'Lịch xem phòng bị hủy',
+            `Khách hàng ${req.user.full_name} đã hủy lịch xem phòng ${booking.room_number} tại ${booking.building_name} (ngày ${booking.booking_date} lúc ${booking.booking_time}).`,
+            'booking'
+        );
+
+        await connection.commit();
+        connection.release();
+
+        res.json({ success: true, message: 'Đã hủy lịch hẹn thành công.' });
+    } catch (error) {
+        try {
+            await connection.rollback();
+        } catch (_) {}
         connection.release();
         res.status(500).json({ message: error.message });
     }

@@ -38,6 +38,7 @@ const AdminLayout = () => {
         { path: '/admin/dashboard', label: 'Thống kê', icon: TrendingUp },
         { path: '/admin/categories', label: 'Quản lý danh mục', icon: Folder },
         { path: '/admin/users', label: 'Quản lý người dùng', icon: Users },
+        { path: '/admin/reports', label: 'Quản lý phản ánh', icon: Shield },
         { path: '/admin/banners', label: 'Quản lí quảng cáo', icon: Megaphone },
         { path: '/admin/monetization', label: 'Cài đặt tiền tệ', icon: DollarSign },
         { path: '/admin/seo', label: 'Quản lí seo', icon: Search },

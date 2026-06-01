@@ -32,6 +32,10 @@ const bookingService = {
     payDeposit: async (id) => {
         const response = await api.post(`/bookings/${id}/pay-deposit`);
         return response.data;
+    },
+    cancelBooking: async (id) => {
+        const response = await api.put(`/bookings/${id}/cancel`);
+        return response.data;
     }
 };
 

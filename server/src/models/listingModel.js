@@ -20,10 +20,12 @@ class Listing {
                    b.name as building_name, b.address_full as address, b.type as type,
                    b.coordinates,
                    ps.badge_type as premium_badge,
-                   c.name as category_name, c.slug as category_slug, c.icon as category_icon, c.color as category_color
+                   c.name as category_name, c.slug as category_slug, c.icon as category_icon, c.color as category_color,
+                   u.reputation_score
             FROM room_listings rl
             JOIN rooms r ON rl.room_id = r.room_id
             JOIN buildings b ON r.building_id = b.building_id
+            JOIN users u ON b.landlord_id = u.user_id
             LEFT JOIN premium_services ps ON rl.premium_service_id = ps.service_id
             LEFT JOIN categories c ON rl.category_id = c.category_id
             WHERE rl.status = 'active' 
@@ -32,6 +34,7 @@ class Listing {
             ORDER BY 
               CASE WHEN rl.premium_until IS NOT NULL AND rl.premium_until > NOW() THEN 1 ELSE 0 END DESC,
               rl.premium_service_id DESC, 
+              u.reputation_score DESC,
               rl.created_at DESC
         `);
 
@@ -113,7 +116,7 @@ class Listing {
     }
 
     static async update(id, updateData) {
-        const { title, description, category_id, rent_price, deposit_amount, electricity_price, water_price, service_price, status, amenities, package_id, expires_at, premium_service_id, premium_until, max_occupants, allow_pets } = updateData;
+        const { title, description, category_id, rent_price, deposit_amount, electricity_price, water_price, service_price, status, status_reason, amenities, package_id, expires_at, premium_service_id, premium_until, max_occupants, allow_pets } = updateData;
         const fields = [];
         const values = [];
 
@@ -126,6 +129,7 @@ class Listing {
         if (water_price !== undefined) { fields.push('water_price = ?'); values.push(water_price || 0); }
         if (service_price !== undefined) { fields.push('service_price = ?'); values.push(service_price || 0); }
         if (status !== undefined) { fields.push('status = ?'); values.push(status); }
+        if (status_reason !== undefined) { fields.push('status_reason = ?'); values.push(status_reason); }
         if (amenities !== undefined) { fields.push('amenities = ?'); values.push(JSON.stringify(amenities || {})); }
         if (package_id !== undefined) { fields.push('package_id = ?'); values.push(package_id || null); }
         if (expires_at !== undefined) { fields.push('expires_at = ?'); values.push(expires_at || null); }

@@ -40,7 +40,7 @@ class Booking {
 
     static async getByLandlord(landlordId) {
         const query = `
-            SELECT b.*, r.room_number, bl.name as building_name, u.full_name as tenant_name, u.phone_number as tenant_phone
+            SELECT b.*, r.room_number, bl.name as building_name, bl.address_full as location_detail, u.full_name as tenant_name, u.phone_number as tenant_phone
             FROM bookings b
             JOIN rooms r ON b.room_id = r.room_id
             JOIN buildings bl ON r.building_id = bl.building_id
@@ -54,7 +54,7 @@ class Booking {
 
     static async getByTenant(tenantId) {
         const query = `
-            SELECT b.*, r.room_number, bl.name as building_name, u.full_name as landlord_name
+            SELECT b.*, r.room_number, bl.name as building_name, bl.address_full as location_detail, u.full_name as landlord_name
             FROM bookings b
             JOIN rooms r ON b.room_id = r.room_id
             JOIN buildings bl ON r.building_id = bl.building_id
@@ -68,7 +68,7 @@ class Booking {
 
     static async findById(bookingId) {
         const query = `
-            SELECT b.*, r.room_number, r.base_price as room_price, bl.name as building_name, bl.landlord_id, b.tenant_id
+            SELECT b.*, r.room_number, r.base_price as room_price, bl.name as building_name, bl.address_full as location_detail, bl.landlord_id, b.tenant_id
             FROM bookings b
             JOIN rooms r ON b.room_id = r.room_id
             JOIN buildings bl ON r.building_id = bl.building_id

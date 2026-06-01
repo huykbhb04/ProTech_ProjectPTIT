@@ -39,7 +39,6 @@ const MonetizationSettings = () => {
     const [activeTab, setActiveTab] = useState('packages');
     const [packages, setPackages] = useState([]);
     const [services, setServices] = useState([]);
-    const [deposits, setDeposits] = useState([]);
     const [systemConfigs, setSystemConfigs] = useState({});
     const [loading, setLoading] = useState(true);
     const [editingId, setEditingId] = useState(null);
@@ -52,16 +51,14 @@ const MonetizationSettings = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [pkgs, svcs, configs, deps] = await Promise.all([
+            const [pkgs, svcs, configs] = await Promise.all([
                 adminService.getAllPackages(token),
                 adminService.getAllPremiumServices(token),
                 adminService.getSystemConfigs(token),
-                adminService.getAllBookingDeposits(token),
             ]);
             setPackages(Array.isArray(pkgs) ? pkgs : []);
             setServices(Array.isArray(svcs) ? svcs : []);
             setSystemConfigs(configs || {});
-            setDeposits(Array.isArray(deps) ? deps : []);
         } catch (error) {
             console.error(error);
             toast.error('Không thể tải dữ liệu cấu hình.');
@@ -73,9 +70,8 @@ const MonetizationSettings = () => {
     const stats = useMemo(() => ({
         packageCount: packages.length,
         serviceCount: services.length,
-        depositCount: deposits.length,
         activePackages: packages.filter((p) => p.is_active).length,
-    }), [packages, services, deposits]);
+    }), [packages, services]);
 
     const handleCreatePackage = async () => { try { await adminService.createPackage(createForm, token); toast.success('Đã tạo gói tin'); setShowCreateModal(false); setCreateForm({}); await fetchData(); } catch { toast.error('Lỗi tạo gói tin'); } };
     const handleCreateService = async () => { try { await adminService.createPremiumService(createForm, token); toast.success('Đã tạo dịch vụ'); setShowCreateModal(false); setCreateForm({}); await fetchData(); } catch { toast.error('Lỗi tạo dịch vụ'); } };
@@ -87,8 +83,7 @@ const MonetizationSettings = () => {
     const handleDeletePackage = async (id) => { if (!confirm('Bạn có chắc muốn xóa gói tin này?')) return; try { await adminService.deletePackage(id, token); await fetchData(); } catch { toast.error('Lỗi xóa gói tin'); } };
     const handleDeleteService = async (id) => { if (!confirm('Bạn có chắc muốn xóa dịch vụ này?')) return; try { await adminService.deleteService(id, token); await fetchData(); } catch { toast.error('Lỗi xóa dịch vụ'); } };
 
-    const handleConfirmPayment = async (bookingId) => { if (!confirm('Xác nhận đã nhận được tiền cọc cho yêu cầu này?')) return; try { await adminService.confirmBookingPayment(bookingId, token); toast.success('Xác nhận thanh toán thành công!'); await fetchData(); } catch (error) { toast.error(error.response?.data?.message || 'Lỗi xác nhận thanh toán'); } };
-    const handlePayout = async (bookingId) => { if (!confirm('Thực hiện thanh toán tiền cọc cho chủ trọ?')) return; try { await adminService.payoutLandlord(bookingId, token); toast.success('Thanh toán cho chủ trọ thành công!'); await fetchData(); } catch (error) { toast.error(error.response?.data?.message || 'Lỗi thanh toán cho chủ trọ'); } };
+
     const handleUpdateConfig = async (key, value) => { try { await adminService.updateSystemConfig({ key, value }, token); toast.success('Cập nhật cấu hình thành công!'); await fetchData(); } catch { toast.error('Lỗi cập nhật cấu hình!'); } };
 
     if (loading) return <div className="flex min-h-[400px] items-center justify-center"><Loader size={24} className="animate-spin text-gray-300" /></div>;
@@ -114,7 +109,6 @@ const MonetizationSettings = () => {
                     {[
                         { id: 'packages', label: `Gói tin (${stats.packageCount})`, icon: Package },
                         { id: 'services', label: `Dịch vụ VIP (${stats.serviceCount})`, icon: Star },
-                        { id: 'deposits', label: `Quản lý cọc (${stats.depositCount})`, icon: DollarSign },
                         { id: 'system', label: 'Cài đặt chung', icon: Settings },
                     ].map(({ id, label, icon: Icon }) => (
                         <button key={id} onClick={() => setActiveTab(id)} className={`flex items-center gap-2 rounded-xl px-4 py-3 text-[14px] font-semibold transition-all ${activeTab === id ? 'bg-[#dc2626] text-white shadow-md' : 'bg-[#eff4ff] text-[#5c403c] hover:bg-[#e5eeff]'}`}>
@@ -151,16 +145,7 @@ const MonetizationSettings = () => {
                     </Card>
                 )}
 
-                {activeTab === 'deposits' && (
-                    <Card title="Lịch sử đặt cọc & hoàn tiền" subtitle="Xác nhận thanh toán và xử lý payout cho chủ trọ">
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left">
-                                <thead className="bg-[#f8f9ff] text-[10px] font-black uppercase tracking-[0.16em] text-[#5c403c]"><tr><th className="px-6 py-4">Khách hàng</th><th className="px-6 py-4">Bất động sản</th><th className="px-6 py-4">Số tiền</th><th className="px-6 py-4">Trạng thái</th><th className="px-6 py-4 text-right">Hành động</th></tr></thead>
-                                <tbody className="divide-y divide-[#e2e8f0]">{deposits.map((item) => (<tr key={item.booking_id} className="hover:bg-[#fef2f2]"><td className="px-6 py-4"><p className="font-semibold text-[#0b1c30]">{item.full_name}</p><p className="text-[12px] text-[#5c403c]">{item.phone_number}</p></td><td className="px-6 py-4 text-[#0b1c30]">{item.property_name || item.room_name || item.listing_title || '—'}</td><td className="px-6 py-4 font-bold text-[#0b1c30]">{formatCurrency(item.deposit_amount || item.amount)}</td><td className="px-6 py-4"><div className="flex flex-col gap-1">{item.is_verified ? <span className="inline-flex w-max items-center gap-1 rounded bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700"><CircleCheck className="h-3 w-3" />Đã xác minh</span> : <span className="inline-flex w-max items-center gap-1 rounded bg-yellow-100 px-2 py-0.5 text-[10px] font-bold text-yellow-700"><CircleAlert className="h-3 w-3" />Chờ xác minh</span>}{item.status_label && <span className="inline-flex w-max items-center gap-1 rounded bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700"><Clock3 className="h-3 w-3" />{item.status_label}</span>}</div></td><td className="px-6 py-4 text-right"><div className="flex justify-end gap-2"><button onClick={() => handleConfirmPayment(item.booking_id)} className="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white">Xác nhận đã nhận</button><button onClick={() => handlePayout(item.booking_id)} className="rounded-lg bg-blue-600 px-3 py-2 text-xs font-bold text-white">Payout</button></div></td></tr>))}</tbody>
-                            </table>
-                        </div>
-                    </Card>
-                )}
+
 
                 {activeTab === 'system' && (
                     <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">

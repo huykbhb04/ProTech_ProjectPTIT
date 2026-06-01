@@ -66,6 +66,10 @@ class Statistics {
         `;
         const [trendRows] = await db.execute(trendQuery, [landlordId]);
 
+        // 6. Landlord reputation score
+        const [userRows] = await db.execute('SELECT reputation_score FROM users WHERE user_id = ?', [landlordId]);
+        const reputationScore = userRows[0]?.reputation_score !== undefined ? userRows[0].reputation_score : 100;
+
         return {
             stats: {
                 totalRevenue,
@@ -74,7 +78,8 @@ class Statistics {
                 totalTenants,
                 openRequests,
                 urgentRequests,
-                totalRooms
+                totalRooms,
+                reputationScore
             },
             revenueTrend: trendRows
         };

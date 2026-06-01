@@ -162,7 +162,8 @@ const RoomDetail = () => {
     const [reportDesc, setReportDesc] = useState('');
     const [reportName, setReportName] = useState('');
     const [reportPhone, setReportPhone] = useState('');
-    const [captchaChecked, setCaptchaChecked] = useState(false);
+    const [captchaQuestion, setCaptchaQuestion] = useState({ num1: 0, num2: 0 });
+    const [captchaAnswer, setCaptchaAnswer] = useState('');
 
     const handleCopyLink = async () => {
         try {
@@ -174,24 +175,50 @@ const RoomDetail = () => {
         }
     };
 
-    const handleReportSubmit = (e) => {
+    const generateCaptcha = () => {
+        const num1 = Math.floor(Math.random() * 9) + 1;
+        const num2 = Math.floor(Math.random() * 9) + 1;
+        setCaptchaQuestion({ num1, num2 });
+        setCaptchaAnswer('');
+    };
+
+    const handleReportSubmit = async (e) => {
         e.preventDefault();
-        if (!captchaChecked) {
-            toast.error('Vui lòng xác thực bạn không phải là robot');
+        const expected = captchaQuestion.num1 + captchaQuestion.num2;
+        if (parseInt(captchaAnswer, 10) !== expected) {
+            toast.error('Mã xác thực (CAPTCHA) không chính xác!');
             return;
         }
-        toast.success('Gửi phản ánh thành công! Ban quản trị sẽ xác minh tin đăng này.');
-        setReportDesc('');
-        setReportName('');
-        setReportPhone('');
-        setCaptchaChecked(false);
-        setIsReportModalOpen(false);
+        try {
+            const res = await listingService.reportListing(listing.listing_id, {
+                reporterName: reportName,
+                reporterPhone: reportPhone,
+                reason: reportReason,
+                description: reportDesc
+            });
+            toast.success(res.message || 'Gửi phản ánh thành công! Ban quản trị sẽ xác minh tin đăng này.');
+            setReportDesc('');
+            setReportName('');
+            setReportPhone('');
+            setCaptchaAnswer('');
+            setIsReportModalOpen(false);
+
+            // If the listing was auto-hidden, we can redirect or reload
+            if (res.autoHidden) {
+                setTimeout(() => {
+                    navigate('/tenant/discover');
+                }, 2000);
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error(err.response?.data?.message || 'Có lỗi xảy ra khi gửi phản ánh');
+        }
     };
 
     const sameAreaRef = useRef(null);
     const newUpdatedRef = useRef(null);
 
-    const isSaved = listing ? savedIds.includes(listing.listing_id) : false;
+    const isSaved = listing ? savedIds.map(Number).includes(Number(listing.listing_id)) : false;
 
     const formatCompactPrice = (price) => {
         const p = Number(price || 0);
@@ -326,6 +353,12 @@ const RoomDetail = () => {
         check();
     }, [user, listing]);
 
+    useEffect(() => {
+        if (isReportModalOpen) {
+            generateCaptcha();
+        }
+    }, [isReportModalOpen]);
+
     const images = useMemo(() => {
         const imgs = splitImages(listing?.images);
         return imgs.length > 0 ? imgs : ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2670&auto=format&fit=crop'];
@@ -373,7 +406,7 @@ const RoomDetail = () => {
     const stats = [
         { label: 'Giá thuê hàng tháng', value: `${formatCurrency(listing.rent_price)} VNĐ`, accent: true },
         { label: 'Diện tích', value: `${listing.area || '—'} m²` },
-        { label: 'Tiền đặt cọc', value: `${formatCurrency(listing.deposit_amount || systemConfigs.viewing_deposit_amount)} VNĐ` },
+        { label: 'Tiền đặt cọc', value: listing.deposit_amount ? `${formatCurrency(listing.deposit_amount)} VNĐ` : 'Không yêu cầu' },
         { label: 'Số người ở', value: `Tối đa ${listing.max_occupants || 2} người` },
     ];
     const amenityEntries = Object.entries(amenities).filter(([, value]) => Boolean(value));
@@ -588,7 +621,7 @@ const RoomDetail = () => {
                             </div>
                             <div className="space-y-3">
                                 <button onClick={handleBooking} disabled={hasBooking} className={`flex w-full items-center justify-center gap-2 rounded-[14px] px-4 py-4 text-[14px] font-semibold transition-colors ${hasBooking ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-[#2563eb] text-white hover:opacity-90'}`}>
-                                    <Calendar size={18} /> Đặt lịch & Đặt cọc
+                                    <Calendar size={18} /> Đặt lịch xem phòng
                                 </button>
                                 <div className="grid grid-cols-2 gap-3">
                                     <a href={`tel:${listing.landlord_phone || ''}`} className="flex items-center justify-center gap-2 rounded-[14px] border border-[#c3c6d7] px-4 py-3 text-[14px] font-semibold text-[#004ac6] hover:bg-[#f3f3fe]">
@@ -853,27 +886,33 @@ const RoomDetail = () => {
                             </div>
 
                             <div className="pt-2">
-                                <div className="flex items-center justify-between border border-gray-200 rounded-lg p-3 bg-gray-50 max-w-[300px]">
-                                    <div className="flex items-center gap-3">
-                                        <input 
-                                            type="checkbox" 
-                                            id="captcha-check" 
-                                            checked={captchaChecked} 
-                                            onChange={(e) => setCaptchaChecked(e.target.checked)} 
-                                            className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer" 
-                                        />
-                                        <label htmlFor="captcha-check" className="text-xs font-bold text-gray-600 cursor-pointer select-none">
-                                            I'm not a robot
-                                        </label>
+                                <div className="border border-gray-200 rounded-xl p-3 bg-gray-50 max-w-[300px] space-y-2 shadow-sm">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-xs font-bold text-gray-700">Xác minh bảo mật (chống spam)</span>
+                                        <button 
+                                            type="button" 
+                                            onClick={generateCaptcha} 
+                                            className="text-blue-600 hover:text-blue-800 transition-colors p-1"
+                                            title="Lấy mã khác"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3-3 3 3" />
+                                            </svg>
+                                        </button>
                                     </div>
-                                    <div className="flex flex-col items-center">
-                                        <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" className="w-8 h-8 object-contain" alt="reCAPTCHA" />
-                                        <span className="text-[8px] text-gray-400 font-bold mt-1">reCAPTCHA</span>
-                                        <div className="flex gap-1 text-[7px] text-gray-400">
-                                            <a href="#" className="hover:underline">Privacy</a>
-                                            <span>-</span>
-                                            <a href="#" className="hover:underline">Terms</a>
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-black text-sm px-3 py-2 rounded-lg tracking-wider select-none min-w-[70px]">
+                                            {captchaQuestion.num1} + {captchaQuestion.num2}
                                         </div>
+                                        <span className="text-gray-500 font-bold">=</span>
+                                        <input 
+                                            type="number"
+                                            required
+                                            value={captchaAnswer}
+                                            onChange={(e) => setCaptchaAnswer(e.target.value)}
+                                            placeholder="Kết quả"
+                                            className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm font-bold text-center focus:ring-2 focus:ring-blue-500 outline-none"
+                                        />
                                     </div>
                                 </div>
                             </div>

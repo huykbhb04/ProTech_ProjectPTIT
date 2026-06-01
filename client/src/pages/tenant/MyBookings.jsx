@@ -75,18 +75,18 @@ const MyBookings = () => {
     }
   };
 
-  const handlePayDeposit = async () => {
-    if (!selectedBooking) return;
+  const handleCancelBooking = async (bookingId) => {
+    if (!window.confirm('Bạn có chắc chắn muốn hủy lịch hẹn này?')) return;
     try {
-      if (window.confirm('Xác nhận thanh toán tiền cọc từ ví của bạn?')) {
-        await bookingService.payDeposit(selectedBooking.booking_id);
-        toast.success('Thanh toán tiền cọc thành công!');
-        await fetchBookings();
-      }
+      await bookingService.cancelBooking(bookingId);
+      toast.success('Đã hủy lịch hẹn thành công');
+      fetchBookings();
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Lỗi thanh toán');
+      toast.error(error.response?.data?.message || 'Có lỗi xảy ra khi hủy lịch hẹn.');
     }
   };
+
+
 
   const stats = {
     total: bookings.length,
@@ -97,7 +97,8 @@ const MyBookings = () => {
 
   const filteredBookings = useMemo(() => {
     return bookings.filter((b) => {
-      const statusMatch = filter === 'all' || b.status === filter;
+      const statusMatch = filter === 'all' || 
+        (filter === 'rejected' ? (b.status === 'rejected' || b.status === 'cancelled') : b.status === filter);
       const q = searchTerm.trim().toLowerCase();
       const text = `${b.room_number || ''} ${b.building_name || ''} ${b.location_detail || ''}`.toLowerCase();
       const searchMatch = !q || text.includes(q);
@@ -331,6 +332,13 @@ const MyBookings = () => {
                       >
                         <FileText size={18} /> Ký hợp đồng online
                       </button>
+
+                      <button
+                        onClick={() => handleCancelBooking(selectedBooking.booking_id)}
+                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-white px-4 py-3 text-[14px] font-bold text-red-600 transition-colors hover:bg-red-50"
+                      >
+                        Hủy lịch hẹn
+                      </button>
                     </div>
                   ) : selectedBooking.status === 'pending' ? (
                     <div className="rounded-[24px] border border-amber-100 bg-amber-50 p-6 text-center">
@@ -339,37 +347,15 @@ const MyBookings = () => {
                       </div>
                       <h4 className="mb-2 text-[18px] font-bold text-amber-900">Đang chờ phản hồi</h4>
                       <p className="text-[14px] leading-6 text-amber-700">Chủ trọ sẽ nhận được thông báo về yêu cầu của bạn. Thông tin liên hệ sẽ hiển thị khi lịch được xác nhận.</p>
-                    </div>
-                  ) : selectedBooking.status === 'approved' ? (
-                    <div className="rounded-[24px] border border-[#c3c6d7] bg-[#f3f3fe] p-6 text-center">
-                      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white text-[#004ac6] shadow-sm ring-8 ring-[#dae2ff]">
-                        <CheckCircle2 size={30} />
-                      </div>
-                      <h4 className="mb-2 text-[18px] font-bold text-[#0c1a3a]">Yêu cầu đã được duyệt</h4>
-                      <p className="mb-5 text-[14px] leading-6 text-[#434655]">
-                        Vui lòng thanh toán tiền cọc {new Intl.NumberFormat('vi-VN').format(selectedBooking.deposit_amount || 0)}đ để giữ phòng.
-                      </p>
+                      
                       <button
-                        onClick={handlePayDeposit}
-                        className="w-full rounded-xl bg-[#004ac6] px-4 py-3 text-[14px] font-bold text-white transition-colors hover:bg-[#2563eb]"
+                        onClick={() => handleCancelBooking(selectedBooking.booking_id)}
+                        className="mt-4 w-full rounded-xl border border-red-200 bg-white px-4 py-3 text-[14px] font-bold text-red-600 transition-colors hover:bg-red-50"
                       >
-                        Thanh toán tiền cọc ngay
+                        Hủy lịch hẹn
                       </button>
                     </div>
-                  ) : selectedBooking.status === 'deposited' ? (
-                    <div className="rounded-[24px] border border-blue-100 bg-blue-50 p-6 text-center">
-                      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white text-blue-600 shadow-sm ring-8 ring-blue-50">
-                        <CreditCard size={30} />
-                      </div>
-                      <h4 className="mb-2 text-[18px] font-bold text-blue-900">Đã đặt cọc thành công</h4>
-                      <p className="mb-5 text-[14px] leading-6 text-blue-700">Hệ thống đang giữ tiền cọc của bạn. Vui lòng liên hệ chủ nhà để hoàn tất ký hợp đồng và dọn vào ở.</p>
-                      <Link to={`/tenant/room/${selectedBooking.room_id}`} className="mb-3 block rounded-xl border border-blue-200 bg-white px-4 py-3 text-[14px] font-bold text-blue-600 transition-colors hover:bg-blue-50">
-                        Xem lại thông tin phòng
-                      </Link>
-                      <button onClick={() => handleCreateContract(selectedBooking.booking_id)} className="w-full rounded-xl bg-blue-600 px-4 py-3 text-[14px] font-bold text-white transition-colors hover:bg-[#0c1a3a]">
-                        Tạo hợp đồng
-                      </button>
-                    </div>
+
                   ) : (
                     <div className="rounded-[24px] border border-[#c3c6d7] bg-[#faf8ff] p-6 text-center">
                       <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white text-[#737686] shadow-sm ring-8 ring-[#f3f3fe]">
@@ -385,25 +371,14 @@ const MyBookings = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              <div className="col-span-1 md:col-span-2 relative overflow-hidden rounded-[24px] bg-[#004ac6] p-6 text-white">
-                <div className="relative z-10 max-w-lg">
-                  <p className="text-[12px] font-bold uppercase tracking-widest text-white/70">Tổng quan hàng tháng</p>
-                  <h4 className="mt-2 text-[24px] font-semibold leading-8">{stats.confirmed + stats.pending} lịch hẹn sắp tới</h4>
-                  <p className="mt-2 text-[14px] leading-6 text-white/85">Bạn có các cuộc gặp gỡ đang chờ xử lý trong tháng này. Hãy chuẩn bị giấy tờ cần thiết trước khi đến xem phòng.</p>
-                </div>
-                <div className="absolute -right-8 -bottom-8 opacity-20">
-                  <Bell size={160} />
-                </div>
+            <div className="relative overflow-hidden rounded-[24px] bg-[#004ac6] p-6 text-white w-full">
+              <div className="relative z-10 max-w-lg">
+                <p className="text-[12px] font-bold uppercase tracking-widest text-white/70">Tổng quan hàng tháng</p>
+                <h4 className="mt-2 text-[24px] font-semibold leading-8">{stats.confirmed + stats.pending} lịch hẹn sắp tới</h4>
+                <p className="mt-2 text-[14px] leading-6 text-white/85">Bạn có các cuộc gặp gỡ đang chờ xử lý trong tháng này. Hãy chuẩn bị giấy tờ cần thiết trước khi đến xem phòng.</p>
               </div>
-
-              <div className="rounded-[24px] border border-[#c3c6d7] bg-white p-6 text-center">
-                <div className="mb-3 flex items-center justify-center text-[#004ac6]">
-                  <CheckCircle2 size={48} />
-                </div>
-                <p className="text-[14px] text-[#434655]">Tỉ lệ hoàn thành</p>
-                <h4 className="text-[30px] font-semibold leading-[38px] text-[#191b23]">94%</h4>
-                <p className="mt-1 text-[12px] text-[#515d81]">Gần như tuyệt vời!</p>
+              <div className="absolute -right-8 -bottom-8 opacity-20">
+                <Bell size={160} />
               </div>
             </div>
           </div>

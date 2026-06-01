@@ -20,6 +20,31 @@ const RoommateMatching = () => {
 
     const [matches, setMatches] = useState([]);
 
+    // Fetch user's existing roommate profile on mount
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const res = await api.get('/roommates/profile');
+                if (res.data && res.data.profile) {
+                    const savedProfile = res.data.profile;
+                    const vector = typeof savedProfile.lifestyle_vector === 'string'
+                        ? JSON.parse(savedProfile.lifestyle_vector)
+                        : savedProfile.lifestyle_vector;
+                    
+                    setProfile({
+                        budget_min: Number(savedProfile.budget_min) || 2000000,
+                        budget_max: Number(savedProfile.budget_max) || 5000000,
+                        traits: vector?.traits || [0, 0, 0, 0, 0],
+                        locations: vector?.locations || []
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching roommate profile:", error);
+            }
+        };
+        fetchProfile();
+    }, []);
+
     // Location Search State
     const [addressQuery, setAddressQuery] = useState('');
     const [addressSuggestions, setAddressSuggestions] = useState([]);

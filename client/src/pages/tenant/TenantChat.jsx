@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { 
     Send, Sparkles, Bot, User, Loader, MessageSquare, 
@@ -18,6 +19,222 @@ const quickActions = [
     { icon: Home, label: 'Mẹo thuê nhà', prompt: 'Cho tôi 5 mẹo quan trọng khi thuê phòng trọ' },
     { icon: Calendar, label: 'Hợp đồng thuê', prompt: 'Những điều cần lưu ý trong hợp đồng thuê nhà?' },
 ];
+
+/**
+ * Helper to render Markdown inline elements (Bold, Links)
+ */
+const parseInlineMarkdown = (text) => {
+    if (!text) return '';
+
+    const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    const boldRegex = /\*\*([^*]+)\*\*/g;
+
+    const tempParts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = linkRegex.exec(text)) !== null) {
+        const precedingText = text.substring(lastIndex, match.index);
+        if (precedingText) {
+            tempParts.push({ type: 'text', value: precedingText });
+        }
+        tempParts.push({ type: 'link', label: match[1], url: match[2] });
+        lastIndex = linkRegex.lastIndex;
+    }
+
+    const remainingText = text.substring(lastIndex);
+    if (remainingText) {
+        tempParts.push({ type: 'text', value: remainingText });
+    }
+
+    if (tempParts.length === 0) {
+        tempParts.push({ type: 'text', value: text });
+    }
+
+    return tempParts.map((part, idx) => {
+        if (part.type === 'link') {
+            const isLocal = part.url.startsWith('/') || part.url.startsWith(window.location.origin);
+            const path = part.url.startsWith('/') ? part.url : part.url.replace(window.location.origin, '');
+            if (isLocal) {
+                return (
+                    <Link
+                        key={idx}
+                        to={path}
+                        className="inline-flex items-center gap-0.5 px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl font-bold border border-indigo-100 text-xs transition-colors my-0.5"
+                    >
+                        {part.label}
+                    </Link>
+                );
+            }
+            return (
+                <a
+                    key={idx}
+                    href={part.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-0.5 px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl font-bold border border-indigo-100 text-xs transition-colors my-0.5"
+                >
+                    {part.label}
+                </a>
+            );
+        }
+
+        const subParts = [];
+        let subLastIdx = 0;
+        let subMatch;
+        const subText = part.value;
+
+        boldRegex.lastIndex = 0;
+        while ((subMatch = boldRegex.exec(subText)) !== null) {
+            const normal = subText.substring(subLastIdx, subMatch.index);
+            if (normal) {
+                subParts.push(<span key={`n-${subMatch.index}`}>{normal}</span>);
+            }
+            subParts.push(<strong key={`b-${subMatch.index}`} className="font-black text-gray-900">{subMatch[1]}</strong>);
+            subLastIdx = boldRegex.lastIndex;
+        }
+
+        const subRemaining = subText.substring(subLastIdx);
+        if (subRemaining) {
+            subParts.push(<span key="end">{subRemaining}</span>);
+        }
+
+        return <span key={idx}>{subParts}</span>;
+    });
+};
+
+/**
+ * Custom Simple Markdown Renderer
+ */
+const renderMarkdown = (text) => {
+    if (!text) return null;
+
+    const lines = text.split('\n');
+    const elements = [];
+    let currentTable = null;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+
+        // Handle Table
+        if (line.startsWith('|')) {
+            const cells = line.split('|').map(c => c.trim()).filter((_, idx, arr) => idx > 0 && idx < arr.length - 1);
+            if (line.includes('---') || line.includes(':---')) {
+                continue;
+            }
+            if (!currentTable) {
+                currentTable = { headers: cells, rows: [] };
+            } else {
+                currentTable.rows.push(cells);
+            }
+            continue;
+        } else {
+            if (currentTable) {
+                elements.push(
+                    <div key={`table-${i}`} className="overflow-x-auto my-3 border border-gray-200 rounded-2xl shadow-sm bg-white">
+                        <table className="min-w-full divide-y divide-gray-200 text-left text-xs">
+                            <thead className="bg-gray-50 text-gray-500 uppercase tracking-wider">
+                                <tr>
+                                    {currentTable.headers.map((h, hIdx) => (
+                                        <th key={hIdx} className="px-4 py-3 font-black">{h}</th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-100 text-gray-700">
+                                {currentTable.rows.map((row, rIdx) => (
+                                    <tr key={rIdx} className="hover:bg-gray-50/50 transition-colors">
+                                        {row.map((cell, cIdx) => (
+                                            <td key={cIdx} className="px-4 py-3 font-semibold">{parseInlineMarkdown(cell)}</td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                );
+                currentTable = null;
+            }
+        }
+
+        // Headings
+        if (line.startsWith('#')) {
+            const level = line.match(/^#+/)[0].length;
+            const content = line.replace(/^#+\s*/, '');
+            const HeadingTag = `h${Math.min(level + 2, 6)}`;
+            elements.push(
+                <HeadingTag key={i} className="font-black text-gray-900 my-2 tracking-tight">
+                    {parseInlineMarkdown(content)}
+                </HeadingTag>
+            );
+            continue;
+        }
+
+        // Lists
+        if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
+            const content = line.replace(/^[•\-*]\s*/, '');
+            elements.push(
+                <div key={i} className="flex items-start gap-2 ml-3 my-1 text-sm text-gray-700 leading-relaxed font-semibold">
+                    <span className="text-indigo-500 mt-1 flex-shrink-0">•</span>
+                    <span>{parseInlineMarkdown(content)}</span>
+                </div>
+            );
+            continue;
+        }
+
+        // Numbered list
+        if (/^\d+\.\s/.test(line)) {
+            const num = line.match(/^\d+/)[0];
+            const content = line.replace(/^\d+\.\s*/, '');
+            elements.push(
+                <div key={i} className="flex items-start gap-2 ml-3 my-1 text-sm text-gray-700 leading-relaxed font-semibold">
+                    <span className="text-indigo-500 font-black">{num}.</span>
+                    <span>{parseInlineMarkdown(content)}</span>
+                </div>
+            );
+            continue;
+        }
+
+        // Empty lines
+        if (line === '') {
+            elements.push(<div key={i} className="h-1" />);
+            continue;
+        }
+
+        // Paragraph
+        elements.push(
+            <p key={i} className="text-sm leading-relaxed text-gray-700 font-semibold my-1">
+                {parseInlineMarkdown(line)}
+            </p>
+        );
+    }
+
+    if (currentTable) {
+        elements.push(
+            <div key="table-end" className="overflow-x-auto my-3 border border-gray-200 rounded-2xl shadow-sm bg-white">
+                <table className="min-w-full divide-y divide-gray-200 text-left text-xs">
+                    <thead className="bg-gray-50 text-gray-500 uppercase tracking-wider">
+                        <tr>
+                            {currentTable.headers.map((h, hIdx) => (
+                                <th key={hIdx} className="px-4 py-3 font-black">{h}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-100 text-gray-700">
+                        {currentTable.rows.map((row, rIdx) => (
+                            <tr key={rIdx} className="hover:bg-gray-50/50 transition-colors">
+                                {row.map((cell, cIdx) => (
+                                    <td key={cIdx} className="px-4 py-3 font-semibold">{parseInlineMarkdown(cell)}</td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
+
+    return <div className="space-y-0.5">{elements}</div>;
+};
 
 /**
  * Message Component
@@ -51,7 +268,11 @@ const ChatMessage = ({ message, onRegenerate }) => {
                         ? 'bg-indigo-600 text-white rounded-tr-md' 
                         : 'bg-gray-100 text-gray-800 rounded-tl-md'
                 }`}>
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                    {isUser ? (
+                        <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                    ) : (
+                        renderMarkdown(message.content)
+                    )}
                 </div>
 
                 {/* Actions */}

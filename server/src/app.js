@@ -12,6 +12,21 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+        const duration = Date.now() - start;
+        console.log(`[RESPONSE] ${req.method} ${req.url} - ${res.statusCode} (${duration}ms)`);
+    });
+    console.log(`[REQUEST] ${req.method} ${req.url}`);
+    if (req.headers.authorization) {
+        console.log('  Authorization:', req.headers.authorization.substring(0, 30) + '...');
+    } else {
+        console.log('  Authorization: NONE');
+    }
+    next();
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', require('./routes/userRoutes'));
@@ -33,6 +48,7 @@ app.use('/api/categories', require('./routes/categoryRoutes'));
 app.use('/api/landlord/banners', require('./routes/bannerRoutes'));
 app.use('/api/landlord/stats', require('./routes/statisticsRoutes'));
 app.use('/api/admin/stats', require('./routes/adminStatisticsRoutes'));
+app.use('/api/reports', require('./routes/reportRoutes'));
 
 // Basic route
 app.get('/', (req, res) => {

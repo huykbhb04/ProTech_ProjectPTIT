@@ -9,6 +9,9 @@ const uploadMemory = multer({ storage: multer.memoryStorage() });
 // AI Description
 router.post('/generate-description', protect, aiController.generateDescription);
 
+// AI Chat
+router.post('/chat', protect, aiController.chat);
+
 // AI OCR
 router.post('/ocr/cccd', protect, uploadMemory.single('file'), ocrController.processCCCD);
 router.post('/ocr/meter', protect, uploadMemory.single('file'), ocrController.processMeter);

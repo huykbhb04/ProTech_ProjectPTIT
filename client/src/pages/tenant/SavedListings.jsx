@@ -12,7 +12,7 @@ import {
   Bed,
   Ruler,
 } from 'lucide-react';
-import { toggleSaveListing } from '../../features/savedListings/savedListingsSlice';
+import { toggleSaveListing, fetchSavedIds } from '../../features/savedListings/savedListingsSlice';
 import savedListingService from '../../services/savedListingService';
 
 const defaultHeroImage = 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2670&auto=format&fit=crop';
@@ -52,8 +52,10 @@ const SavedListings = () => {
     }
   };
 
-  useEffect(() => { fetchSavedListings(); }, []);
-  useEffect(() => { setListings(prev => prev.filter(item => savedIds.includes(item.listing_id))); }, [savedIds]);
+  useEffect(() => {
+    dispatch(fetchSavedIds());
+    fetchSavedListings();
+  }, [dispatch]);
 
   const handleRemove = async (e, listingId) => {
     e.preventDefault();
@@ -66,13 +68,18 @@ const SavedListings = () => {
     }
   };
 
+  const displayListings = useMemo(() => {
+    const ids = savedIds.map(Number);
+    return listings.filter(item => ids.includes(Number(item.listing_id)));
+  }, [listings, savedIds]);
+
   const sortedListings = useMemo(() => {
-    const clone = [...listings];
+    const clone = [...displayListings];
     if (sortBy === 'price-asc') return clone.sort((a, b) => Number(a.rent_price || 0) - Number(b.rent_price || 0));
     if (sortBy === 'price-desc') return clone.sort((a, b) => Number(b.rent_price || 0) - Number(a.rent_price || 0));
     if (sortBy === 'area-desc') return clone.sort((a, b) => Number(b.area || 0) - Number(a.area || 0));
     return clone;
-  }, [listings, sortBy]);
+  }, [displayListings, sortBy]);
 
   if (loading) {
     return <div className="flex min-h-[400px] items-center justify-center bg-[#faf8ff]"><Loader className="animate-spin text-[#c3c6d7]" /></div>;

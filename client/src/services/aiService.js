@@ -21,6 +21,10 @@ const aiService = {
             headers: { 'Content-Type': 'multipart/form-data' }
         });
         return response.data;
+    },
+    chat: async (chatData) => {
+        const response = await api.post('/ai/chat', chatData);
+        return response.data;
     }
 };
 

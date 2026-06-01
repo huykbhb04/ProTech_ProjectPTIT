@@ -165,7 +165,7 @@ const TenantBillDetail = () => {
                         {[
                             { n: 1, text: 'Kiểm tra số', icon: Zap },
                             { n: 2, text: 'Minh chứng', icon: Camera },
-                            { n: 3, text: 'Xác nhận', icon: CheckCircle }
+                            { n: 3, text: 'Xác nhận', icon: CircleCheck }
                         ].map((s, idx) => (
                             <div key={idx} className="flex flex-col items-center gap-3 relative z-10">
                                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 shadow-lg ${step >= s.n ? 'bg-black text-white' : 'bg-gray-50 text-gray-400 border border-gray-100'}`}>

@@ -17,6 +17,7 @@ const protect = (req, res, next) => {
 
         next();
     } catch (error) {
+        console.error('[JWT Verification Error]:', error.message, 'Token:', token);
         res.status(401).json({ message: 'Token is not valid' });
     }
 };

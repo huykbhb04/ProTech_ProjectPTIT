@@ -1,4 +1,6 @@
+// Trigger reload to load new env vars 2
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const Listing = require('../models/listingModel');
 
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -68,3 +70,102 @@ exports.generateDescription = async (req, res) => {
         });
     }
 };
+
+exports.chat = async (req, res) => {
+    const fs = require('fs');
+    const logPath = require('path').join(__dirname, '../../server_debug.log');
+    try {
+        const { message, history } = req.body;
+
+        fs.appendFileSync(logPath, `[REQUEST] ${new Date().toISOString()} - body: ${JSON.stringify(req.body)}\nHeaders: ${JSON.stringify(req.headers)}\n`);
+
+        if (!message) {
+            fs.appendFileSync(logPath, `[ERROR] message is empty\n`);
+            return res.status(400).json({ message: 'Tin nhắn không được để trống' });
+        }
+
+        if (!process.env.GEMINI_API_KEY) {
+            fs.appendFileSync(logPath, `[ERROR] GEMINI_API_KEY not defined in process.env\n`);
+            return res.status(500).json({ message: 'Server chưa cấu hình Gemini API Key' });
+        }
+
+        // 1. Get active listings for RAG context
+        const listings = await Listing.getAllActive();
+        const listingsContext = listings.map(item => {
+            const priceFormatted = new Intl.NumberFormat('vi-VN').format(item.rent_price || item.base_price || 0);
+            return `ID Phòng: ${item.room_id || item.id}
+Tiêu đề: ${item.title}
+Khu trọ: ${item.building_name || 'N/A'}
+Địa chỉ: ${item.address || 'N/A'}
+Giá thuê: ${priceFormatted} VNĐ/tháng
+Diện tích: ${item.area || 'N/A'} m2
+Tiện ích: ${JSON.stringify(item.amenities || {})}
+Chủ trọ: ${item.landlord_name || 'N/A'} (Độ uy tín: ${item.reputation_score || 100})`;
+        }).join('\n---\n');
+
+        // 2. Prepare system instructions
+        const systemInstruction = `Bạn là trợ lý AI thông minh của PropTech, chuyên gia tư vấn thuê phòng trọ hàng đầu tại Việt Nam. Nhiệm vụ của bạn là hỗ trợ người thuê tìm phòng phù hợp, so sánh giá cả/tiện ích giữa các phòng và tư vấn các thủ tục đặt lịch xem phòng, hợp đồng.
+
+Dưới đây là danh sách toàn bộ các phòng trọ đang hoạt động thực tế trên hệ thống của chúng tôi:
+${listingsContext}
+
+LƯU Ý BẮT BUỘC:
+1. Chỉ đề xuất các phòng trọ có thực tế trong danh sách trên. Không tự ý bịa đặt thông tin phòng trọ khác.
+2. Khi giới thiệu bất cứ phòng trọ nào, bắt buộc phải chèn link Markdown dẫn đến phòng trọ dưới dạng: [Chi tiết phòng trọ](/tenant/room/{room_id}) hoặc [Xem phòng](/tenant/room/{room_id}). Thay thế {room_id} bằng ID phòng trọ tương ứng. Ví dụ: [Chi tiết phòng trọ](/tenant/room/127).
+3. Nếu người dùng yêu cầu so sánh các phòng trọ, hãy tạo một bảng so sánh Markdown trực quan (bao gồm Giá, Diện tích, Tiện ích nổi bật, Vị trí).
+4. Nếu không tìm thấy phòng trọ nào khớp chính xác với yêu cầu của người dùng (ví dụ: khu vực không khớp hoặc vượt quá ngân sách), hãy thông báo rõ ràng và gợi ý các phòng trọ gần đúng nhất trong danh sách.
+5. Luôn trả lời lịch sự, thân thiện, dễ hiểu bằng tiếng Việt và sử dụng các emoji thích hợp.`;
+
+        // 3. Setup Gemini Model Fallback Loop
+        const chatHistory = [];
+        if (history && Array.isArray(history)) {
+            const lastMsgs = history.slice(-10);
+            lastMsgs.forEach(msg => {
+                chatHistory.push({
+                    role: msg.role === 'user' ? 'user' : 'model',
+                    parts: [{ text: msg.content }]
+                });
+            });
+        }
+
+        const modelsToTry = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-flash-latest"];
+        let responseText = null;
+        let lastError = null;
+
+        for (const modelName of modelsToTry) {
+            try {
+                fs.appendFileSync(logPath, `[INFO] Attempting chat with model: ${modelName}\n`);
+                const model = genAI.getGenerativeModel({ 
+                    model: modelName,
+                    systemInstruction: systemInstruction
+                });
+
+                const chatSession = model.startChat({
+                    history: chatHistory
+                });
+
+                const result = await chatSession.sendMessage(message);
+                responseText = result.response.text();
+                fs.appendFileSync(logPath, `[SUCCESS] Model ${modelName} succeeded, response length: ${responseText.length}\n`);
+                break; // Exit loop if successful
+            } catch (err) {
+                lastError = err;
+                fs.appendFileSync(logPath, `[WARNING] Model ${modelName} failed: ${err.message}\n`);
+            }
+        }
+
+        if (responseText === null) {
+            throw lastError || new Error("All generative models failed");
+        }
+
+        res.json({ message: responseText });
+
+    } catch (error) {
+        fs.appendFileSync(logPath, `[EXCEPTION] ${error.message}\nStack: ${error.stack}\n`);
+        res.status(500).json({
+            message: 'Lỗi khi kết nối với trợ lý AI',
+            error: error.message
+        });
+    }
+};
+

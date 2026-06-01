@@ -299,26 +299,6 @@ const UnifiedProfile = () => {
                         </form>
                     </div>
 
-                    {/* AI Identity Verification Section */}
-                    {!profile?.is_verified && (
-                        <div className="glass rounded-[2rem] p-8 md:p-10 border-white/40 shadow-xl bg-gradient-to-br from-indigo-500/5 to-purple-500/5 space-y-6">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="p-3 bg-indigo-600 text-white rounded-2xl shadow-lg shadow-indigo-100">
-                                        <ShieldCheck size={24} />
-                                    </div>
-                                    <h2 className="text-xl font-black text-gray-900">Xác thực danh tính AI</h2>
-                                </div>
-                            </div>
-                            <p className="text-gray-600 font-medium">Sử dụng AI để tự động trích xuất thông tin từ CCCD và xác thực tài khoản của bạn. Giúp tăng uy tín khi thuê phòng.</p>
-                            <button
-                                onClick={() => toast('Tính năng xác thực đang được mở...', { icon: '🔒' })}
-                                className="px-8 py-4 glass text-indigo-600 rounded-2xl font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all transition-duration-500"
-                            >
-                                Bắt đầu xác thực ngay
-                            </button>
-                        </div>
-                    )}
                 </div>
 
                 {/* Sidebar Section: Payment Methods */}

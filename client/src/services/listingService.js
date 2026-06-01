@@ -62,6 +62,11 @@ const listingService = {
     incrementView: async (listingId) => {
         const response = await api.post(`${API_PATH}/${listingId}/view`);
         return response.data;
+    },
+
+    reportListing: async (listingId, reportData) => {
+        const response = await api.post(`/reports/listings/${listingId}/report`, reportData);
+        return response.data;
     }
 };
 

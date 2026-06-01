@@ -33,21 +33,54 @@ class Bill {
         return result.insertId;
     }
 
+    static formatBillRow(row) {
+        if (!row) return null;
+
+        // Parse service_fees to calculate total service price
+        let servicePrice = 0;
+        try {
+            const fees = typeof row.service_fees === 'string' ? JSON.parse(row.service_fees || '{}') : row.service_fees || {};
+            servicePrice = Object.values(fees).reduce((sum, val) => sum + parseFloat(val || 0), 0);
+        } catch (e) {
+            console.error("Error parsing service_fees:", e);
+        }
+
+        const billingDate = new Date(row.billing_month);
+        const month = billingDate.getMonth() + 1; // 1-indexed
+        const year = billingDate.getFullYear();
+
+        return {
+            ...row,
+            rent_price: parseFloat(row.room_rent || 0),
+            old_electric: row.electricity_old,
+            electric_reading: row.electricity_new,
+            electric_cost: parseFloat(row.electricity_amount || 0),
+            old_water: row.water_old,
+            water_reading: row.water_new,
+            water_cost: parseFloat(row.water_amount || 0),
+            service_price: servicePrice,
+            month,
+            year
+        };
+    }
+
     static async getById(billId) {
         const query = `
             SELECT b.*, 
                    r.room_number, bld.name as building_name,
                    c.tenant_id, c.monthly_price as contract_price,
-                   u.full_name as tenant_name, u.email as tenant_email
+                   ut.full_name as tenant_name, ut.email as tenant_email,
+                   ul.phone_number as landlord_phone
             FROM bills b
             JOIN contracts c ON b.contract_id = c.contract_id
             JOIN rooms r ON b.room_id = r.room_id
             JOIN buildings bld ON r.building_id = bld.building_id
-            JOIN users u ON c.tenant_id = u.user_id
+            JOIN users ut ON c.tenant_id = ut.user_id
+            JOIN users ul ON bld.landlord_id = ul.user_id
             WHERE b.bill_id = ?
         `;
         const [rows] = await db.execute(query, [billId]);
-        return rows[0];
+        return this.formatBillRow(rows[0]);
     }
 
     static async getBillsByContract(contractId) {
@@ -59,7 +92,7 @@ class Bill {
             ORDER BY b.billing_month DESC
         `;
         const [rows] = await db.execute(query, [contractId]);
-        return rows;
+        return rows.map(r => this.formatBillRow(r));
     }
 
     static async getBillsByRoom(roomId, limit = 12) {
@@ -73,7 +106,7 @@ class Bill {
             LIMIT ?
         `;
         const [rows] = await db.execute(query, [roomId, limit]);
-        return rows;
+        return rows.map(r => this.formatBillRow(r));
     }
 
     static async getTenantBills(tenantId) {
@@ -87,7 +120,7 @@ class Bill {
             ORDER BY b.billing_month DESC
         `;
         const [rows] = await db.execute(query, [tenantId]);
-        return rows;
+        return rows.map(r => this.formatBillRow(r));
     }
 
     static async getLandlordBills(landlordId, filters = {}) {
@@ -117,7 +150,7 @@ class Bill {
         query += ' ORDER BY b.billing_month DESC, b.created_at DESC';
 
         const [rows] = await db.execute(query, params);
-        return rows;
+        return rows.map(r => this.formatBillRow(r));
     }
 
     // ==================== Meter Reading Updates ====================
