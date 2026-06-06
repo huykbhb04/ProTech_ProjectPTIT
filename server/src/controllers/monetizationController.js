@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const Monetization = require('../models/monetizationModel');
 const Listing = require('../models/listingModel');
 const db = require('../config/database');
+const WalletTopup = require('../models/walletTopupModel');
 
 exports.getPackages = async (req, res) => {
     try {
@@ -59,6 +60,12 @@ const MOMO_PARTNER_CODE = process.env.MOMO_PARTNER_CODE || '';
 const MOMO_ACCESS_KEY = process.env.MOMO_ACCESS_KEY || '';
 const MOMO_SECRET_KEY = process.env.MOMO_SECRET_KEY || '';
 const MOMO_ENDPOINT = process.env.MOMO_ENDPOINT || 'https://test-payment.momo.vn/v2/gateway/api/create';
+
+const VNPAY_TMNCODE = (process.env.VNPAY_TMN_CODE || '').trim();
+const VNPAY_HASH_SECRET = (process.env.VNPAY_HASH_SECRET || '').trim();
+const VNPAY_URL = (process.env.VNPAY_URL || 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html').trim();
+const VNPAY_RETURN_URL = (process.env.VNPAY_RETURN_URL || 'http://localhost:3000/api/wallet-topups/topup/vnpay-return').trim();
+console.log('[VNPAY CONFIG] TmnCode:', VNPAY_TMNCODE, '| SecretLen:', VNPAY_HASH_SECRET.length, '| ReturnUrl:', VNPAY_RETURN_URL);
 
 const buildVietQrUrl = (amount, content) => {
     const params = new URLSearchParams({
@@ -123,8 +130,77 @@ exports.topUpWallet = async (req, res) => {
             return res.status(400).json({ message: 'Số tiền nạp không hợp lệ' });
         }
 
-        const transactionRef = `${method.toUpperCase()}-${Date.now()}`;
+        const transactionRef = `${method.toUpperCase()}-${userId}-${Date.now()}`;
 
+        // ── VNPAY ─────────────────────────────────────────────────────────────
+        if (method === 'vnpay') {
+            if (!VNPAY_TMNCODE || !VNPAY_HASH_SECRET) {
+                return res.status(500).json({ message: 'VNPAY chưa được cấu hình' });
+            }
+            const pad = (n) => String(n).padStart(2, '0');
+            const now = new Date();
+            const createDate = `${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+            const expireDate = (() => {
+                const d = new Date(now.getTime() + 30 * 60 * 1000);
+                return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+            })();
+            const ipAddr = (req.headers['x-forwarded-for'] || req.ip || '127.0.0.1').replace('::ffff:', '').split(',')[0].trim();
+
+            const params = {
+                vnp_Version: '2.1.0',
+                vnp_Command: 'pay',
+                vnp_TmnCode: VNPAY_TMNCODE,
+                vnp_Amount: String(Math.round(amount * 100)),
+                vnp_CurrCode: 'VND',
+                vnp_TxnRef: transactionRef,
+                vnp_OrderInfo: orderInfo,
+                vnp_OrderType: 'other',
+                vnp_Locale: 'vn',
+                vnp_ReturnUrl: VNPAY_RETURN_URL,
+                vnp_IpAddr: ipAddr,
+                vnp_CreateDate: createDate,
+                vnp_ExpireDate: expireDate,
+            };
+            const sorted = Object.keys(params).sort();
+            // Build sign string using URL-encoded values (PHP urlencode equivalent)
+            const queryStr = sorted
+                .map(k => `${k}=${encodeURIComponent(params[k]).replace(/%20/g, '+')}`)
+                .join('&');
+            const secureHash = crypto.createHmac('sha512', VNPAY_HASH_SECRET).update(Buffer.from(queryStr, 'utf-8')).digest('hex');
+            const payUrl = `${VNPAY_URL}?${queryStr}&vnp_SecureHash=${secureHash}`;
+
+            // DEBUG - remove after fixing
+            console.log('[VNPAY DEBUG] signData:', queryStr);
+            console.log('[VNPAY DEBUG] hash:', secureHash);
+            console.log('[VNPAY DEBUG] payUrl:', payUrl.substring(0, 200));
+
+            // Persist topup record so IPN/return handler can credit the wallet
+            try {
+                await WalletTopup.create({
+                    user_id: userId,
+                    amount,
+                    payment_method: 'vnpay',
+                    reference_code: transactionRef,
+                    bank_code: 'VNPAY',
+                    bank_account: '',
+                    bank_name: 'VNPAY',
+                    account_name: 'VNPAY',
+                    qr_code_url: null,
+                });
+            } catch (dbErr) {
+                console.error('[topUpWallet/vnpay] DB save error:', dbErr.message);
+            }
+
+            return res.json({
+                method: 'vnpay',
+                transactionRef,
+                referenceCode: transactionRef,
+                payUrl,
+                amount,
+            });
+        }
+
+        // ── MoMo ──────────────────────────────────────────────────────────────
         if (method === 'momo') {
             const momo = await createMomoPayment({ amount, orderId: transactionRef, orderInfo });
             return res.json({
@@ -136,12 +212,13 @@ exports.topUpWallet = async (req, res) => {
             });
         }
 
+        // ── VietQR (default) ──────────────────────────────────────────────────
         const vietQrUrl = buildVietQrUrl(amount, transactionRef);
         return res.json({
             method: 'vietqr',
             transactionRef,
+            referenceCode: transactionRef,
             qrCodeUrl: vietQrUrl,
-            qrText: `https://img.vietqr.io/image/${TECHCOMBANK_BANK_CODE}-${TECHCOMBANK_ACCOUNT}-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(transactionRef)}`,
             bank: {
                 bankCode: TECHCOMBANK_BANK_CODE,
                 bankName: 'Techcombank',

@@ -43,9 +43,10 @@ const FilterTab = ({ active, label, onClick }) => (
 const StatusBadge = ({ status }) => {
     const statusMap = {
         draft: { label: 'Bản nháp', bg: '#e5e9e5', color: '#6f7a74' },
-        signed_by_tenant: { label: 'Chờ ký', bg: '#e0e7ff', color: '#4338ca' },
+        signed_by_tenant: { label: 'Chờ xác nhận', bg: '#e0e7ff', color: '#4338ca' },
         active: { label: 'Đang hoạt động', bg: '#dcfce7', color: '#15803d' },
-        terminated: { label: 'Đã kết thúc', bg: '#fee2e2', color: '#dc2626' },
+        cancelled: { label: 'Đã từ chối', bg: '#fee2e2', color: '#dc2626' },
+        terminated: { label: 'Đã hủy', bg: '#fee2e2', color: '#dc2626' },
         expired: { label: 'Hết hạn', bg: '#e5e9e5', color: '#6f7a74' }
     };
     const s = statusMap[status] || { label: status, bg: '#e5e9e5', color: '#6f7a74' };
@@ -137,10 +138,16 @@ const LandlordContracts = () => {
         active: contracts.filter(c => c.status === 'active').length,
     };
 
-    const actionFor = (status) => {
-        if (status === 'draft') return { label: 'Hoàn tất', action: 'complete' };
-        if (status === 'signed_by_tenant') return { label: 'Gửi lời nhắc', action: 'remind' };
-        return { label: 'Gia hạn', action: 'renew' };
+    const handleLandlordAction = async (contractId, action) => {
+        try {
+            if (action === 'confirm') await contractService.landlordSign(contractId);
+            if (action === 'reject') await contractService.landlordReject(contractId);
+            if (action === 'cancel') await contractService.landlordCancel(contractId);
+            const refreshed = await contractService.getLandlordContracts();
+            setContracts(refreshed);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -266,9 +273,7 @@ const LandlordContracts = () => {
                                         <p className="text-sm font-semibold text-[#6f7a74]">Không tìm thấy hợp đồng nào</p>
                                     </td>
                                 </tr>
-                            ) : paginated.map(c => {
-                                const action = actionFor(c.status);
-                                return (
+                            ) : paginated.map(c => (
                                     <tr
                                         key={c.contract_id}
                                         className="hover:bg-[#f9fbfc] transition-colors cursor-pointer"
@@ -299,18 +304,46 @@ const LandlordContracts = () => {
                                         <td className="px-6 py-4">
                                             <StatusBadge status={c.status} />
                                         </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); }}
-                                                className="px-3 py-1 rounded-lg border text-[14px] font-semibold hover:border-[#0f6e56] hover:text-[#0f6e56] transition-all"
-                                                style={{ borderColor: '#bec9c3', color: '#3f4944' }}
-                                            >
-                                                {action.label}
-                                            </button>
+                                        <td className="px-6 py-4">
+                                            <div className="flex items-center justify-end gap-2">
+                                                {c.status === 'signed_by_tenant' && (
+                                                    <>
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); handleLandlordAction(c.contract_id, 'confirm'); }}
+                                                            className="px-3 py-1.5 rounded-lg text-[13px] font-bold text-white flex items-center gap-1 shadow-sm transition-all hover:opacity-90"
+                                                            style={{ backgroundColor: '#0f6e56' }}
+                                                        >
+                                                            Xác nhận
+                                                        </button>
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); handleLandlordAction(c.contract_id, 'reject'); }}
+                                                            className="px-3 py-1.5 rounded-lg border text-[13px] font-semibold hover:border-red-500 hover:text-red-600 transition-all"
+                                                            style={{ borderColor: '#fecaca', color: '#b91c1c' }}
+                                                        >
+                                                            Từ chối
+                                                        </button>
+                                                    </>
+                                                )}
+                                                {c.status === 'active' && (
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); handleLandlordAction(c.contract_id, 'cancel'); }}
+                                                        className="px-3 py-1.5 rounded-lg border text-[13px] font-semibold hover:border-red-500 hover:text-red-600 transition-all"
+                                                        style={{ borderColor: '#fecaca', color: '#b91c1c' }}
+                                                    >
+                                                        Hủy hợp đồng
+                                                    </button>
+                                                )}
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); navigate(`/landlord/contracts/${c.contract_id}`); }}
+                                                    className="px-3 py-1.5 rounded-lg border text-[13px] font-semibold hover:border-[#0f6e56] hover:text-[#0f6e56] transition-all"
+                                                    style={{ borderColor: '#bec9c3', color: '#3f4944' }}
+                                                >
+                                                    Xem chi tiết
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
-                                );
-                            })}
+                            ))}
                         </tbody>
                     </table>
                 </div>

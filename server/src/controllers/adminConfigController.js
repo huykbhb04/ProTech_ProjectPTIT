@@ -244,12 +244,36 @@ exports.getListingDetails = async (req, res) => {
     }
 };
 
+const DEFAULT_MONETIZATION_PRICING = {
+    rows: [
+        { id: 'vip_spotlight_5', label: '5 ngày', vipSpotlight: 60000, vip1: 50000, vip2: 25000, normal: 0 },
+        { id: 'vip_spotlight_10', label: '10 ngày', vipSpotlight: 120000, vip1: 100000, vip2: 50000, normal: 0 },
+        { id: 'vip_spotlight_15', label: '15 ngày', vipSpotlight: 180000, vip1: 150000, vip2: 75000, normal: 0 },
+        { id: 'vip_spotlight_30', label: '30 ngày', vipSpotlight: 288000, vip1: 240000, vip2: 120000, normal: 0 },
+        { id: 'push_listing', label: 'Giá đẩy tin', vipSpotlight: 0, vip1: 2000, vip2: 2000, normal: null },
+        { id: 'auto_approve', label: 'Tự động duyệt', vipSpotlight: true, vip1: true, vip2: false, normal: false },
+        { id: 'extend_days', label: 'Duy trì thêm', vipSpotlight: 10, vip1: 10, vip2: 10, normal: 0 },
+        { id: 'call_button', label: 'Hiển thị nút gọi điện', vipSpotlight: true, vip1: true, vip2: true, normal: false },
+    ]
+};
+
+const readConfigValue = (value) => {
+    if (value === null || value === undefined) return null;
+    if (typeof value !== 'string') return value;
+    try {
+        return JSON.parse(value);
+    } catch {
+        return value;
+    }
+};
+
 // --- SYSTEM CONFIGS ---
 exports.getSystemConfigs = async (req, res) => {
     try {
         const [rows] = await db.query('SELECT * FROM system_configs');
         const configs = {};
-        rows.forEach(r => configs[r.config_key] = r.config_value);
+        rows.forEach(r => configs[r.config_key] = readConfigValue(r.config_value));
+        if (!configs.monetization_pricing) configs.monetization_pricing = DEFAULT_MONETIZATION_PRICING;
         res.json(configs);
     } catch (e) {
         res.status(500).json({ message: 'Error fetching configs', error: e.message });
@@ -261,7 +285,7 @@ exports.updateSystemConfig = async (req, res) => {
         const { key, value } = req.body;
         await db.query(
             'INSERT INTO system_configs (config_key, config_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE config_value = ?',
-            [key, value, value]
+            [key, typeof value === 'string' ? value : JSON.stringify(value), typeof value === 'string' ? value : JSON.stringify(value)]
         );
         res.json({ success: true, message: 'Updated successfully' });
     } catch (e) {

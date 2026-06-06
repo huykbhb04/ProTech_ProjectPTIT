@@ -3,9 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
     FileText, ArrowLeft, Calendar, House, User, Zap, Droplet,
     Package, CircleCheck, Shield, Download, DollarSign,
-    Droplets, ShieldCheck, CircleAlert, Loader
+    Droplets, ShieldCheck, CircleAlert, Loader,
+    Clock, CreditCard, X, Copy, CheckCircle2
 } from 'lucide-react';
 import contractService from '../../services/contractService';
+import { toast } from 'react-hot-toast';
 
 const TenantContractView = () => {
     const { id } = useParams();
@@ -14,6 +16,8 @@ const TenantContractView = () => {
     const [loading, setLoading] = useState(true);
     const [assets, setAssets] = useState([]);
     const [utilityConfigs, setUtilityConfigs] = useState([]);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
         fetchContractData();
@@ -51,13 +55,24 @@ const TenantContractView = () => {
         </div>
     );
 
+    const fmt = (n) => new Intl.NumberFormat('vi-VN').format(n ?? 0);
+    const isSignedByTenant = contract?.status === 'signed_by_tenant';
+
+    const handleCopy = (text) => {
+        navigator.clipboard.writeText(text).then(() => {
+            setCopied(true);
+            toast.success('Đã sao chép!');
+            setTimeout(() => setCopied(false), 2000);
+        });
+    };
+
     const terms = typeof contract.terms === 'string' ? JSON.parse(contract.terms) : contract.terms;
     const additionalServices = typeof contract.additional_services === 'string' ? JSON.parse(contract.additional_services) : (contract.additional_services || []);
     const serviceCommitments = typeof contract.service_commitments === 'string' ? JSON.parse(contract.service_commitments) : contract.service_commitments;
 
     return (
         <div className="max-w-5xl mx-auto space-y-8 pb-20 animate-fade-in-up">
-            {/* \u2500\u2500 Header \u2500\u2500 */}
+            {/* ── Header ── */}
             <div className="section-divider flex items-end justify-between">
                 <div className="flex items-center gap-4">
                     <button onClick={() => navigate(-1)} className="btn-ghost px-3 py-3">
@@ -72,6 +87,37 @@ const TenantContractView = () => {
                     <Download size={14} /> Tải bản gốc (PDF)
                 </button>
             </div>
+
+            {/* ── Payment CTA — chỉ hiện khi tenant đã ký, chờ landlord ── */}
+            {isSignedByTenant && (
+                <div className="glass p-5 rounded-[2rem] border border-amber-200/60 shadow-lg"
+                    style={{ background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)' }}>
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <Clock size={22} className="text-amber-600" />
+                            </div>
+                            <div>
+                                <p className="font-black text-gray-900 text-sm">Bạn đã ký hợp đồng thành công ✅</p>
+                                <p className="text-xs text-amber-700 font-bold mt-0.5">
+                                    Đang chờ chủ nhà xác nhận. Bạn có thể chuẩn bị tiền cọc trước.
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => setShowPaymentModal(true)}
+                            className="flex items-center gap-2 px-5 py-3 rounded-2xl font-black text-sm text-white shadow-lg transition-all hover:scale-105 active:scale-95 flex-shrink-0"
+                            style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)' }}
+                        >
+                            <CreditCard size={16} />
+                            Xem thông tin thanh toán cọc
+                            <span className="ml-1 px-2 py-0.5 bg-white/20 rounded-full text-[10px]">
+                                {fmt(contract.deposit_amount)}₫
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            )}
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     {/* \u2500\u2500 Status Banner \u2500\u2500 */}
@@ -285,7 +331,77 @@ const TenantContractView = () => {
                         </div>
                     </div>
             </div>
-        </div>
+
+            {/* ── Payment Modal ── */}
+            {showPaymentModal && (
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                    onClick={(e) => { if (e.target === e.currentTarget) setShowPaymentModal(false); }}>
+                    <div className="bg-white rounded-[2.5rem] shadow-2xl p-8 w-full max-w-md relative">
+                        <button onClick={() => setShowPaymentModal(false)}
+                            className="absolute top-5 right-5 p-2 hover:bg-gray-100 rounded-xl transition-colors">
+                            <X size={18} />
+                        </button>
+
+                        {/* Header */}
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                                style={{ background: 'linear-gradient(135deg, #4f46e5, #7c3aed)' }}>
+                                <CreditCard size={22} className="text-white" />
+                            </div>
+                            <div>
+                                <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest">Thanh toán tiền cọc</p>
+                                <h3 className="text-xl font-black text-gray-900">Thông tin chuyển khoản</h3>
+                            </div>
+                        </div>
+
+                        {/* Amount */}
+                        <div className="p-5 rounded-2xl mb-5 text-center"
+                            style={{ background: 'linear-gradient(135deg, #eef2ff, #f5f3ff)' }}>
+                            <p className="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-1">Số tiền cần cọc</p>
+                            <p className="text-4xl font-black text-indigo-700">{fmt(contract.deposit_amount)}₫</p>
+                            <p className="text-xs text-gray-500 font-bold mt-1">
+                                Phòng {contract.room_number} — {contract.building_name}
+                            </p>
+                        </div>
+
+                        {/* Bank info */}
+                        <div className="space-y-3 mb-6">
+                            {[
+                                { label: 'Ngân hàng', value: 'Vietcombank (VCB)' },
+                                { label: 'Số tài khoản', value: contract.landlord_phone || '1234567890', copy: true },
+                                { label: 'Chủ tài khoản', value: contract.landlord_name || 'Chủ nhà' },
+                                { label: 'Nội dung CK', value: `Coc hop dong ${contract.contract_id} - ${contract.room_number}`, copy: true },
+                            ].map(({ label, value, copy }) => (
+                                <div key={label} className="flex items-center justify-between p-3 bg-gray-50 rounded-2xl">
+                                    <div>
+                                        <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{label}</p>
+                                        <p className="font-black text-gray-900 text-sm">{value}</p>
+                                    </div>
+                                    {copy && (
+                                        <button onClick={() => handleCopy(value)}
+                                            className="p-2 hover:bg-indigo-50 rounded-xl transition-colors text-indigo-400 hover:text-indigo-600">
+                                            <Copy size={14} />
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 text-xs text-amber-700 font-bold mb-5">
+                            ⚠️ Vui lòng chuyển khoản đúng số tiền và nội dung. Sau khi chủ nhà xác nhận ký hợp đồng, tiền cọc sẽ được ghi nhận.
+                        </div>
+
+                        <button
+                            onClick={() => { setShowPaymentModal(false); toast.success('Đã ghi nhận! Chờ chủ nhà xác nhận thanh toán.'); }}
+                            className="w-full py-4 rounded-2xl font-black text-white text-sm uppercase tracking-wider transition-all hover:scale-[1.02] active:scale-95"
+                            style={{ background: 'linear-gradient(135deg, #4f46e5, #7c3aed)' }}>
+                            <CheckCircle2 size={16} className="inline mr-2" />
+                            Đã chuyển khoản xong
+                        </button>
+                    </div>
+                </div>
+        )}
+    </div>
     );
 };
 

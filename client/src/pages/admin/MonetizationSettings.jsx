@@ -21,6 +21,19 @@ import adminService from '../../services/adminService';
 
 const formatCurrency = (amount) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(Number(amount || 0));
 
+const PREMIUM_SERVICE_MATRIX = [
+    { label: 'Giá 5 ngày', vipSpotlight: 60000, vip1: 50000, vip2: 25000, normal: 0 },
+    { label: 'Giá 10 ngày', vipSpotlight: 120000, vip1: 100000, vip2: 50000, normal: 0 },
+    { label: 'Giá 15 ngày', vipSpotlight: 180000, vip1: 150000, vip2: 75000, normal: 0 },
+    { label: 'Giá 30 ngày', vipSpotlight: 288000, vip1: 240000, vip2: 120000, normal: 0, badge: 'Giảm 20%' },
+    { label: 'Giá đẩy tin', vipSpotlight: 0, vip1: 2000, vip2: 2000, normal: null },
+    { label: 'Màu sắc tiêu đề', vipSpotlight: 'Màu đỏ, in hoa, đậm', vip1: 'Màu hồng, in hoa, đậm', vip2: 'Màu cam, in hoa, đậm', normal: 'Mặc định, viết thường' },
+    { label: 'Kích thước tin', vipSpotlight: 'Rất lớn', vip1: 'Lớn', vip2: 'Trung bình', normal: 'Nhỏ' },
+    { label: 'Tự động duyệt (*)', vipSpotlight: true, vip1: true, vip2: true, normal: false },
+    { label: 'Duy trì thêm 10 ngày tin thường', vipSpotlight: true, vip1: true, vip2: true, normal: false },
+    { label: 'Hiển thị nút gọi điện', vipSpotlight: true, vip1: true, vip2: true, normal: true },
+];
+
 const Card = ({ title, subtitle, children, action }) => (
     <div className="rounded-[14px] border border-[#e2e8f0] bg-white shadow-sm">
         <div className="flex items-center justify-between border-b border-[#e2e8f0] px-6 py-4">
@@ -40,6 +53,7 @@ const MonetizationSettings = () => {
     const [packages, setPackages] = useState([]);
     const [services, setServices] = useState([]);
     const [systemConfigs, setSystemConfigs] = useState({});
+    const [pricing, setPricing] = useState(PREMIUM_SERVICE_MATRIX);
     const [loading, setLoading] = useState(true);
     const [editingId, setEditingId] = useState(null);
     const [editForm, setEditForm] = useState({});
@@ -59,6 +73,7 @@ const MonetizationSettings = () => {
             setPackages(Array.isArray(pkgs) ? pkgs : []);
             setServices(Array.isArray(svcs) ? svcs : []);
             setSystemConfigs(configs || {});
+            setPricing(configs?.monetization_pricing?.rows?.length ? configs.monetization_pricing.rows : PREMIUM_SERVICE_MATRIX);
         } catch (error) {
             console.error(error);
             toast.error('Không thể tải dữ liệu cấu hình.');
@@ -85,6 +100,13 @@ const MonetizationSettings = () => {
 
 
     const handleUpdateConfig = async (key, value) => { try { await adminService.updateSystemConfig({ key, value }, token); toast.success('Cập nhật cấu hình thành công!'); await fetchData(); } catch { toast.error('Lỗi cập nhật cấu hình!'); } };
+    const updatePricingCell = (rowId, field, value) => {
+        setPricing((prev) => prev.map((row) => row.id === rowId ? { ...row, [field]: value } : row));
+    };
+    const handleSavePricing = async () => {
+        await handleUpdateConfig('monetization_pricing', { rows: pricing });
+    };
+    const currencyInput = (v) => Number(String(v).replace(/[^\d.-]/g, '') || 0);
 
     if (loading) return <div className="flex min-h-[400px] items-center justify-center"><Loader size={24} className="animate-spin text-gray-300" /></div>;
 
@@ -140,8 +162,54 @@ const MonetizationSettings = () => {
                 )}
 
                 {activeTab === 'services' && (
-                    <Card title="Danh sách dịch vụ VIP" subtitle="Cấu hình dịch vụ cao cấp và kích hoạt nhanh">
-                        <div className="overflow-x-auto"><table className="w-full text-left"><thead className="bg-[#f8f9ff] text-[10px] font-black uppercase tracking-[0.16em] text-[#5c403c]"><tr><th className="px-6 py-4">Tên dịch vụ</th><th className="px-6 py-4">Loại</th><th className="px-6 py-4">Giá</th><th className="px-6 py-4">Mô tả</th><th className="px-6 py-4 text-center">Trạng thái</th><th className="px-6 py-4 text-right">Thao tác</th></tr></thead><tbody className="divide-y divide-[#e2e8f0]">{services.map((svc) => (<tr key={svc.service_id} className="hover:bg-[#fef2f2]"><td className="px-6 py-4">{editingId === svc.service_id ? <input value={editForm.name || ''} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} className="w-full rounded-lg border border-[#e6bdb8] px-3 py-2 text-sm" /> : <span className="font-bold text-[#0b1c30]">{svc.name}</span>}</td><td className="px-6 py-4 text-[#5c403c]">{svc.badge_type || '—'}</td><td className="px-6 py-4">{editingId === svc.service_id ? <input type="number" value={editForm.price_per_day || 0} onChange={(e) => setEditForm({ ...editForm, price_per_day: Number(e.target.value) })} className="w-32 rounded-lg border border-[#e6bdb8] px-3 py-2 text-sm" /> : <span className="font-bold text-[#dc2626]">{formatCurrency(svc.price_per_day)}</span>}</td><td className="px-6 py-4">{editingId === svc.service_id ? <input value={editForm.description || ''} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} className="w-full rounded-lg border border-[#e6bdb8] px-3 py-2 text-sm" /> : <span className="text-sm text-[#5c403c]">{svc.description}</span>}</td><td className="px-6 py-4 text-center"><button onClick={() => handleToggleService(svc.service_id)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[10px] font-black uppercase tracking-widest ${svc.is_active ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-gray-200 bg-gray-100 text-gray-500'}`}><Power size={12} />{svc.is_active ? 'Active' : 'Inactive'}</button></td><td className="px-6 py-4"><div className="flex justify-end gap-2">{editingId === svc.service_id ? <><button onClick={handleSaveService} className="rounded-lg bg-[#dc2626] p-2 text-white"><Save size={18} /></button><button onClick={() => { setEditingId(null); setEditForm({}); }} className="rounded-lg border border-[#e6bdb8] p-2 text-[#5c403c]"><X size={18} /></button></> : <><button onClick={() => { setEditingId(svc.service_id); setEditForm(svc); }} className="rounded-lg border border-[#e6bdb8] p-2 text-[#5c403c]"><Pencil size={18} /></button><button onClick={() => handleDeleteService(svc.service_id)} className="rounded-lg border border-[#e6bdb8] p-2 text-[#5c403c]"><Trash2 size={18} /></button></>}</div></td></tr>))}</tbody></table></div>
+                    <Card title="Bảng giá dịch vụ VIP" subtitle="Chỉnh sửa và lưu trực tiếp vào cấu hình hệ thống">
+                        <div className="overflow-x-auto">
+                            <table className="w-full min-w-[980px] border-separate border-spacing-0 overflow-hidden rounded-2xl border border-[#e2e8f0]">
+                                <thead>
+                                    <tr className="text-white">
+                                        <th className="bg-white px-5 py-5 text-left text-[13px] font-bold text-[#0b1c30]">Dịch vụ</th>
+                                        <th className="bg-[#ef4444] px-5 py-5 text-center text-[15px] font-black uppercase tracking-wide">Tin VIP nổi bật</th>
+                                        <th className="bg-[#ec4899] px-5 py-5 text-center text-[15px] font-black uppercase tracking-wide">Tin VIP 1</th>
+                                        <th className="bg-[#f97316] px-5 py-5 text-center text-[15px] font-black uppercase tracking-wide">Tin VIP 2</th>
+                                        <th className="bg-[#2563eb] px-5 py-5 text-center text-[15px] font-black uppercase tracking-wide">Tin thường</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {pricing.map((row, index) => (
+                                        <tr key={row.id || row.label} className={index % 2 === 0 ? 'bg-white' : 'bg-[#fafafa]'}>
+                                            <td className="border-t border-[#e2e8f0] px-5 py-4 text-[14px] font-semibold text-[#0b1c30]">{row.label}</td>
+                                            {['vipSpotlight', 'vip1', 'vip2', 'normal'].map((field, fieldIndex) => {
+                                                const editable = !(row.label.includes('Màu sắc') || row.label.includes('Kích thước') || row.label.includes('Tự động duyệt') || row.label.includes('Duy trì thêm') || row.label.includes('Hiển thị nút gọi điện'));
+                                                const raw = row[field];
+                                                return (
+                                                    <td key={field} className="border-t border-[#e2e8f0] px-5 py-4 text-center">
+                                                        {editable ? (
+                                                            <input
+                                                                type="number"
+                                                                value={raw ?? ''}
+                                                                onChange={(e) => updatePricingCell(row.id, field, e.target.value === '' ? '' : currencyInput(e.target.value))}
+                                                                className="w-full rounded-lg border border-[#dbe3ee] bg-white px-3 py-2 text-center text-[14px] font-bold text-[#0b1c30] outline-none focus:border-[#dc2626]"
+                                                                placeholder={field === 'normal' && row.label.includes('Giá đẩy') ? 'Không khả dụng' : '0'}
+                                                            />
+                                                        ) : (
+                                                            <div className="text-[14px] font-bold text-[#0b1c30]">
+                                                                {typeof raw === 'number' ? (raw === 0 ? 'Miễn phí' : formatCurrency(raw)) : raw === true ? <span className="text-emerald-600">✓</span> : raw === false ? <span className="text-red-500">✕</span> : raw}
+                                                            </div>
+                                                        )}
+                                                        {row.badge && fieldIndex === 2 && <div className="mt-1 text-[11px] font-black text-emerald-600">{row.badge}</div>}
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="flex justify-end gap-3 px-6 py-5">
+                            <button onClick={handleSavePricing} className="rounded-lg bg-[#dc2626] px-5 py-3 text-[14px] font-semibold text-white shadow-sm hover:bg-[#b91c1c]">
+                                <Save size={16} className="mr-2 inline" /> Lưu bảng giá
+                            </button>
+                        </div>
                     </Card>
                 )}
 

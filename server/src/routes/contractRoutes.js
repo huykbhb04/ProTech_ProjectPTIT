@@ -13,6 +13,8 @@ router.put('/:id/landlord-cccd', protect, landlordOnly, uploadMultiple.fields([{
 router.put('/:id/personal-info', protect, contractController.updateTenantInfo);
 router.put('/:id/tenant-sign', protect, contractController.tenantSignContract);
 router.put('/:id/landlord-sign', protect, landlordOnly, contractController.landlordSignContract);
+router.put('/:id/landlord-reject', protect, landlordOnly, contractController.landlordRejectContract);
+router.put('/:id/landlord-cancel', protect, landlordOnly, contractController.landlordCancelContract);
 
 // Handover routes
 router.put('/:id/handover', protect, landlordOnly, contractController.saveContractHandover);

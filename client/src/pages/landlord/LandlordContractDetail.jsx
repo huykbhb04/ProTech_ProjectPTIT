@@ -3,10 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
     FileText, User, Calendar, House, ArrowLeft, Pencil, Save, Plus, X,
     Upload, Image as ImageIcon, Loader, PenTool, CircleCheck, TriangleAlert,
-    Eye, ZoomIn
+    Eye, ZoomIn, Bell, CheckSquare
 } from 'lucide-react';
 import contractService from '../../services/contractService';
 import HandoverForm from '../../components/HandoverForm';
+import { toast } from 'react-hot-toast';
 
 const LandlordContractDetail = () => {
     const { id } = useParams();
@@ -59,11 +60,11 @@ const LandlordContractDetail = () => {
         try {
             setIsSavingTerms(true);
             await contractService.updateContractTerms(id, terms);
-            alert('Đã cập nhật điều khoản hợp đồng thành công!');
+            toast.success('Đã cập nhật điều khoản hợp đồng thành công!');
             setIsEditingTerms(false);
             await fetchContract();
         } catch (error) {
-            alert(error.response?.data?.message || 'Có lỗi khi cập nhật điều khoản');
+            toast.error(error.response?.data?.message || 'Có lỗi khi cập nhật điều khoản');
         } finally {
             setIsSavingTerms(false);
         }
@@ -108,17 +109,16 @@ const LandlordContractDetail = () => {
 
     const handleUploadLandlordCCCD = async () => {
         if (!landlordFrontImage || !landlordBackImage) {
-            alert('Vui lòng chọn cả 2 mặt CCCD');
+            toast.error('Vui lòng chọn cả 2 mặt CCCD');
             return;
         }
-
         try {
             setIsUploadingCCCD(true);
             const result = await contractService.uploadLandlordCCCD(id, landlordFrontImage, landlordBackImage);
-            alert(result.message || 'Đã lưu ảnh CCCD thành công!');
+            toast.success(result.message || 'Đã lưu ảnh CCCD thành công!');
             await fetchContract();
         } catch (error) {
-            alert(error.response?.data?.message || 'Có lỗi khi upload CCCD');
+            toast.error(error.response?.data?.message || 'Có lỗi khi upload CCCD');
         } finally {
             setIsUploadingCCCD(false);
         }
@@ -126,17 +126,16 @@ const LandlordContractDetail = () => {
 
     const handleSign = async () => {
         if (!acceptedTerms) {
-            alert('Vui lòng xác nhận đã đọc và đồng ý với hợp đồng');
+            toast.error('Vui lòng xác nhận đã đọc và đồng ý với hợp đồng');
             return;
         }
-
         try {
             setIsSigning(true);
             await contractService.landlordSign(id);
-            alert('Bạn đã ký hợp đồng thành công! Hợp đồng đã được kích hoạt.');
+            toast.success('Bạn đã ký hợp đồng thành công! Hợp đồng đã được kích hoạt.');
             await fetchContract();
         } catch (error) {
-            alert(error.response?.data?.message || 'Có lỗi khi ký hợp đồng');
+            toast.error(error.response?.data?.message || 'Có lỗi khi ký hợp đồng');
         } finally {
             setIsSigning(false);
         }
@@ -166,7 +165,8 @@ const LandlordContractDetail = () => {
     const isSignedByTenant = contract.status === 'signed_by_tenant';
     const isActive = contract.status === 'active';
     const hasHandoverInfo = contract.handover_electricity_index && contract.handover_water_index;
-    const canSign = isSignedByTenant && contract.landlord_cccd_front_url && contract.landlord_cccd_back_url && hasHandoverInfo && acceptedTerms;
+    // CCCD is optional - only require handover info + checkbox acceptance
+    const canSign = isSignedByTenant && hasHandoverInfo && acceptedTerms;
 
     return (
         <div className="min-h-screen bg-gray-50 p-6">
@@ -177,6 +177,26 @@ const LandlordContractDetail = () => {
                         <ArrowLeft size={20} className="mr-2" />
                         Quay lại danh sách
                     </button>
+                    
+                    {/* Prominent action banner for signed_by_tenant */}
+                    {isSignedByTenant && (
+                        <div className="mb-6 p-5 rounded-2xl border-2 flex items-center justify-between gap-4"
+                            style={{ backgroundColor: '#fffbeb', borderColor: '#f59e0b' }}>
+                            <div className="flex items-center gap-3">
+                                <Bell size={22} style={{ color: '#d97706' }} />
+                                <div>
+                                    <p className="font-bold text-sm" style={{ color: '#92400e' }}>Người thuê đã ký hợp đồng — Chờ bạn xác nhận!</p>
+                                    <p className="text-xs" style={{ color: '#b45309' }}>Hoàn tất thông tin bàn giao, sau đó ký xác nhận để kích hoạt hợp đồng.</p>
+                                </div>
+                            </div>
+                            <a href="#signing-section"
+                                className="px-4 py-2 rounded-lg text-sm font-bold text-white flex-shrink-0 transition-all hover:opacity-90"
+                                style={{ backgroundColor: '#0f6e56' }}>
+                                ✍️ Ký ngay
+                            </a>
+                        </div>
+                    )}
+
                     <div className="flex items-center justify-between">
                         <div>
                             <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
@@ -186,7 +206,7 @@ const LandlordContractDetail = () => {
                             <p className="text-gray-600 mt-2">Phòng {contract.room_number} - {contract.building_name}</p>
                         </div>
                         <div className={`px-4 py-2 rounded-full font-semibold ${isActive ? 'bg-green-100 text-green-700' :
-                            isSignedByTenant ? 'bg-blue-100 text-blue-700' :
+                            isSignedByTenant ? 'bg-amber-100 text-amber-700' :
                                 'bg-gray-100 text-gray-700'
                             }`}>
                             {isActive ? '✅ Đang hoạt động' :
@@ -533,11 +553,34 @@ const LandlordContractDetail = () => {
 
                         {/* Signing Section */}
                         {isSignedByTenant && (
-                            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl shadow-lg p-6 border-2 border-indigo-200">
+                            <div id="signing-section" className="rounded-2xl shadow-lg p-6 border-2"
+                                style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%)', borderColor: '#0f6e56' }}>
                                 <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                    <PenTool className="text-indigo-600" size={20} />
-                                    Ký hợp đồng
+                                    <PenTool className="text-green-700" size={20} />
+                                    Xác nhận và Ký hợp đồng
                                 </h3>
+
+                                {/* Checklist */}
+                                <div className="space-y-2 mb-5">
+                                    <div className={`flex items-center gap-2 text-sm p-2 rounded-lg ${
+                                        hasHandoverInfo ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
+                                    }`}>
+                                        {hasHandoverInfo
+                                            ? <CircleCheck size={16} />
+                                            : <TriangleAlert size={16} />}
+                                        Thông tin bàn giao (chỉ số điện/nước)
+                                        {!hasHandoverInfo && (
+                                            <button onClick={() => setShowHandoverForm(true)}
+                                                className="ml-auto text-xs font-bold underline">Nhập ngay</button>
+                                        )}
+                                    </div>
+                                    <div className={`flex items-center gap-2 text-sm p-2 rounded-lg ${
+                                        acceptedTerms ? 'bg-green-50 text-green-700' : 'bg-gray-50 text-gray-500'
+                                    }`}>
+                                        {acceptedTerms ? <CircleCheck size={16} /> : <CheckSquare size={16} />}
+                                        Đồng ý với các điều khoản hợp đồng
+                                    </div>
+                                </div>
 
                                 <div className="space-y-4">
                                     <label className="flex items-start gap-3 cursor-pointer">
@@ -545,7 +588,7 @@ const LandlordContractDetail = () => {
                                             type="checkbox"
                                             checked={acceptedTerms}
                                             onChange={(e) => setAcceptedTerms(e.target.checked)}
-                                            className="mt-1 w-5 h-5 text-indigo-600 rounded focus:ring-2 focus:ring-indigo-500"
+                                            className="mt-1 w-5 h-5 text-green-600 rounded focus:ring-2 focus:ring-green-500"
                                         />
                                         <span className="text-sm text-gray-700">
                                             Tôi xác nhận đã kiểm tra thông tin người thuê và đồng ý với các điều khoản hợp đồng
@@ -555,29 +598,25 @@ const LandlordContractDetail = () => {
                                     <button
                                         onClick={handleSign}
                                         disabled={!canSign || isSigning}
-                                        className={`w-full py-3 rounded-lg font-bold text-white flex items-center justify-center gap-2 transition-all ${canSign && !isSigning
-                                            ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg'
-                                            : 'bg-gray-400 cursor-not-allowed'
-                                            }`}
+                                        className={`w-full py-4 rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all text-base ${
+                                            canSign && !isSigning
+                                                ? 'shadow-lg hover:opacity-90 active:scale-95'
+                                                : 'opacity-50 cursor-not-allowed'
+                                        }`}
+                                        style={{ backgroundColor: canSign ? '#0f6e56' : '#9ca3af' }}
                                     >
                                         {isSigning ? (
-                                            <>
-                                                <Loader className="animate-spin" size={20} />
-                                                Đang ký...
-                                            </>
+                                            <><Loader className="animate-spin" size={20} /> Đang xử lý...</>
                                         ) : (
-                                            <>
-                                                <PenTool size={20} />
-                                                Ký hợp đồng
-                                            </>
+                                            <><PenTool size={20} /> ✅ Ký xác nhận hợp đồng</>
                                         )}
                                     </button>
 
                                     {!canSign && (
-                                        <div className="text-xs text-amber-600 bg-amber-50 p-3 rounded-lg space-y-1">
-                                            {!contract.landlord_cccd_front_url && <div>⚠️ Vui lòng upload CCCD của bạn</div>}
-                                            {!hasHandoverInfo && <div>⚠️ Vui lòng hoàn tất thông tin bàn giao</div>}
-                                            {!acceptedTerms && <div>⚠️ Vui lòng xác nhận đồng ý với hợp đồng</div>}
+                                        <div className="text-xs text-amber-700 bg-amber-50 p-3 rounded-lg space-y-1 border border-amber-200">
+                                            <p className="font-bold mb-1">⚠️ Cần hoàn tất trước khi ký:</p>
+                                            {!hasHandoverInfo && <div>• Nhập chỉ số điện/nước bàn giao</div>}
+                                            {!acceptedTerms && <div>• Xác nhận đồng ý với hợp đồng</div>}
                                         </div>
                                     )}
                                 </div>

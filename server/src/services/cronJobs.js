@@ -1,6 +1,7 @@
 const cron = require('node-cron');
 const Bill = require('../models/billModel');
 const Notification = require('../models/notificationModel');
+const { init: initWalletTopupPoller } = require('./walletTopupPoller');
 
 class CronJobs {
     static init() {
@@ -38,11 +39,14 @@ class CronJobs {
             timezone: 'Asia/Ho_Chi_Minh'
         });
 
+        initWalletTopupPoller();
+
         console.log('✅ Cron Jobs initialized successfully');
         console.log('   - Meter reading reminders: 25th @ 9:00 AM');
         console.log('   - Overdue check: Daily @ 6:00 AM');
         console.log('   - Auto bill generation: 1st @ 00:01 AM');
         console.log('   - Payment reminders: 7th @ 10:00 AM');
+        console.log('   - Wallet topup polling: every interval');
     }
 
     static async sendMeterReadingReminders() {

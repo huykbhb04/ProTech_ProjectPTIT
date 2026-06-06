@@ -17,6 +17,14 @@ const contractService = {
         const response = await api.put(`/contracts/${id}/landlord-sign`);
         return response.data;
     },
+    landlordReject: async (id) => {
+        const response = await api.put(`/contracts/${id}/landlord-reject`);
+        return response.data;
+    },
+    landlordCancel: async (id) => {
+        const response = await api.put(`/contracts/${id}/landlord-cancel`);
+        return response.data;
+    },
     uploadCCCD: async (contractId, frontFile, backFile) => {
         const formData = new FormData();
         formData.append('front', frontFile);

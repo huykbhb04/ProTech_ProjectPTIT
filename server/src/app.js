@@ -35,6 +35,7 @@ app.use('/api/upload', require('./routes/uploadRoutes'));
 app.use('/api/tenant', require('./routes/tenantRoutes'));
 app.use('/api/listings', require('./routes/listingRoutes'));
 app.use('/api/monetization', require('./routes/monetizationRoutes'));
+app.use('/api/wallet-topups', require('./routes/walletTopupRoutes'));
 app.use('/api/ai', require('./routes/aiRoutes')); // Register AI Routes
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/bookings', require('./routes/bookingRoutes'));

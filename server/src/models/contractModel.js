@@ -19,7 +19,19 @@ class Contract {
 
     static async getById(contractId) {
         const query = `
-            SELECT c.*, b.landlord_id, r.room_number, b.name as building_name, b.address_full as building_address,
+            SELECT c.contract_id, c.booking_id, c.tenant_id, c.room_id, c.start_date, c.end_date,
+                   c.deposit_amount, c.monthly_price, c.contract_content,
+                   c.tenant_cccd_front_url, c.tenant_cccd_back_url,
+                   c.landlord_cccd_front_url, c.landlord_cccd_back_url,
+                   c.tenant_full_name, c.tenant_id_number, c.tenant_dob, c.tenant_address,
+                   c.tenant_signed_at, c.landlord_signed_at,
+                   c.terms_accepted, c.handover_electricity_index, c.handover_water_index,
+                   c.handover_date, c.service_commitments, c.additional_services,
+                   CASE
+                       WHEN c.tenant_signed_at IS NOT NULL AND c.status = 'draft' THEN 'signed_by_tenant'
+                       ELSE c.status
+                   END AS status,
+                   b.landlord_id, r.room_number, b.name as building_name, b.address_full as building_address,
                    ut.full_name as tenant_name, ut.phone_number as tenant_phone, ut.email as tenant_email,
                    ul.full_name as landlord_name, ul.phone_number as landlord_phone, ul.email as landlord_email
             FROM contracts c
@@ -72,19 +84,26 @@ class Contract {
         const contract = rows[0];
         const missing = [];
 
-        if (!contract.tenant_cccd_front_url) missing.push('CCCD mặt trước');
-        if (!contract.tenant_cccd_back_url) missing.push('CCCD mặt sau');
+        // Chỉ yêu cầu thông tin cá nhân tối thiểu (ảnh CCCD là tùy chọn)
         if (!contract.tenant_full_name) missing.push('Họ và tên');
         if (!contract.tenant_id_number) missing.push('Số CCCD');
-        if (!contract.tenant_dob) missing.push('Ngày sinh');
-        if (!contract.tenant_address) missing.push('Địa chỉ thường trú');
 
         return { ready: missing.length === 0, missing };
     }
 
     static async getContractsByLandlord(landlordId) {
         const query = `
-            SELECT c.*, r.room_number, b.name as building_name,
+            SELECT c.contract_id, c.booking_id, c.tenant_id, c.room_id, c.start_date, c.end_date,
+                   c.deposit_amount, c.monthly_price, c.tenant_signed_at, c.landlord_signed_at,
+                   c.tenant_cccd_front_url, c.tenant_cccd_back_url,
+                   c.landlord_cccd_front_url, c.landlord_cccd_back_url,
+                   c.tenant_full_name, c.tenant_id_number, c.tenant_dob, c.tenant_address,
+                   c.handover_electricity_index, c.handover_water_index, c.handover_date,
+                   CASE
+                       WHEN c.tenant_signed_at IS NOT NULL AND c.status = 'draft' THEN 'signed_by_tenant'
+                       ELSE c.status
+                   END AS status,
+                   r.room_number, b.name as building_name,
                    ut.full_name as tenant_name, ut.email as tenant_email
             FROM contracts c
             JOIN rooms r ON c.room_id = r.room_id
@@ -180,16 +199,14 @@ class Contract {
         try {
             await connection.beginTransaction();
             
-            // 1. Update contract status
             await connection.execute(
                 "UPDATE contracts SET status = 'signed_by_tenant', tenant_signed_at = NOW(), terms_accepted = TRUE WHERE contract_id = ?",
                 [contractId]
             );
 
-            // 2. Update booking status to 'signed'
             const [contract] = await connection.execute('SELECT booking_id FROM contracts WHERE contract_id = ?', [contractId]);
             if (contract.length && contract[0].booking_id) {
-                await connection.execute("UPDATE bookings SET status = 'signed' WHERE booking_id = ?", [contract[0].booking_id]);
+                await connection.execute("UPDATE bookings SET status = 'confirmed' WHERE booking_id = ?", [contract[0].booking_id]);
             }
 
             await connection.commit();
@@ -209,7 +226,6 @@ class Contract {
             await connection.beginTransaction();
 
             const [contract] = await connection.execute(
-                // BUG FIX #5: Added JOIN rooms to get room_number for use in transaction description
                 `SELECT c.room_id, c.handover_electricity_index, c.handover_water_index, r.room_number
                  FROM contracts c
                  JOIN rooms r ON c.room_id = r.room_id
@@ -222,18 +238,15 @@ class Contract {
             const electricityIndex = contract[0].handover_electricity_index;
             const waterIndex = contract[0].handover_water_index;
 
-            // Validate handover info exists
             if (!electricityIndex || !waterIndex) {
                 throw new Error('Vui lòng hoàn tất thông tin bàn giao trước khi ký hợp đồng');
             }
 
-            // 1. Update contract status
             await connection.execute(
                 "UPDATE contracts SET status = 'active', landlord_signed_at = NOW() WHERE contract_id = ?",
                 [contractId]
             );
 
-            // 1b. Update booking status to 'renting' and release escrow
             const [bookingInfo] = await connection.execute(
                 `SELECT b.booking_id, b.type, b.deposit_amount, b.status, bl.landlord_id 
                  FROM contracts c 
@@ -246,18 +259,14 @@ class Contract {
 
             if (bookingInfo.length) {
                 const b = bookingInfo[0];
-                // Update status to 'renting'
                 await connection.execute("UPDATE bookings SET status = 'renting' WHERE booking_id = ?", [b.booking_id]);
 
-                // Release escrowed deposit to landlord if it was a reservation and deposited
                 if (b.type === 'reservation' && b.status === 'deposited') {
-                    // Transfer money to landlord wallet
                     await connection.execute(
                         "UPDATE users SET wallet_balance = wallet_balance + ? WHERE user_id = ?",
                         [b.deposit_amount, b.landlord_id]
                     );
 
-                    // Create transaction record for landlord
                     await connection.execute(
                         `INSERT INTO transactions (user_id, amount, type, reference_id, description, status) 
                          VALUES (?, ?, 'deposit_receive', ?, ?, 'completed')`,
@@ -266,13 +275,11 @@ class Contract {
                 }
             }
 
-            // 2. Update room status to occupied
             await connection.execute(
                 "UPDATE rooms SET status = 'occupied' WHERE room_id = ?",
                 [roomId]
             );
 
-            // 3. Create check-in log with asset snapshot
             const [assets] = await connection.execute(
                 'SELECT item_name, condition_status, image_evidence_url FROM room_assets WHERE room_id = ?',
                 [roomId]
@@ -284,7 +291,6 @@ class Contract {
                 [contractId, JSON.stringify(assets)]
             );
 
-            // 4. Create initial service readings
             const today = new Date().toISOString().split('T')[0];
             await connection.execute(
                 `INSERT INTO service_readings (room_id, record_date, service_type, old_index, new_index, source) 
@@ -296,6 +302,74 @@ class Contract {
                  VALUES (?, ?, 'water', 0, ?, 'manual')`,
                 [roomId, today, waterIndex]
             );
+
+            await connection.commit();
+            return true;
+        } catch (error) {
+            await connection.rollback();
+            throw error;
+        } finally {
+            connection.release();
+        }
+    }
+
+    static async landlordReject(contractId) {
+        const connection = await db.getConnection();
+        try {
+            await connection.beginTransaction();
+
+            const [contracts] = await connection.execute(
+                'SELECT contract_id, booking_id, tenant_id, status FROM contracts WHERE contract_id = ?',
+                [contractId]
+            );
+            if (!contracts.length) throw new Error('Contract not found');
+            if (contracts[0].status !== 'signed_by_tenant') throw new Error('Only pending contracts can be rejected');
+
+            await connection.execute(
+                "UPDATE contracts SET status = 'cancelled' WHERE contract_id = ?",
+                [contractId]
+            );
+
+            if (contracts[0].booking_id) {
+                await connection.execute(
+                    "UPDATE bookings SET status = 'cancelled' WHERE booking_id = ?",
+                    [contracts[0].booking_id]
+                );
+            }
+
+            await connection.commit();
+            return true;
+        } catch (error) {
+            await connection.rollback();
+            throw error;
+        } finally {
+            connection.release();
+        }
+    }
+
+    static async landlordCancel(contractId) {
+        const connection = await db.getConnection();
+        try {
+            await connection.beginTransaction();
+
+            const [contracts] = await connection.execute(
+                'SELECT contract_id, booking_id, status FROM contracts WHERE contract_id = ?',
+                [contractId]
+            );
+            if (!contracts.length) throw new Error('Contract not found');
+            if (contracts[0].status !== 'active') throw new Error('Only active contracts can be cancelled');
+
+            await connection.execute(
+                "UPDATE contracts SET status = 'terminated' WHERE contract_id = ?",
+                [contractId]
+            );
+
+            if (contracts[0].booking_id) {
+                await connection.execute(
+                    "UPDATE bookings SET status = 'terminated' WHERE booking_id = ?",
+                    [contracts[0].booking_id]
+                );
+            }
 
             await connection.commit();
             return true;

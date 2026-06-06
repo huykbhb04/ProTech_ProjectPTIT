@@ -182,13 +182,36 @@ CREATE TABLE IF NOT EXISTS bills (
 -- 12. Transactions (Lịch sử giao dịch ngân hàng)
 CREATE TABLE IF NOT EXISTS transactions (
     transaction_id INT AUTO_INCREMENT PRIMARY KEY,
-    bill_id INT NOT NULL,
+    bill_id INT NULL,
     gateway_ref_id VARCHAR(255),
     amount DECIMAL(15,2) NOT NULL,
     bank_code VARCHAR(50),
     payment_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     status ENUM('success', 'failed') DEFAULT 'success',
     FOREIGN KEY (bill_id) REFERENCES bills(bill_id)
+);
+
+-- 12.1 Wallet_Topups (Nạp tiền vào ví landlord)
+CREATE TABLE IF NOT EXISTS wallet_topups (
+    topup_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    amount DECIMAL(15,2) NOT NULL,
+    payment_method ENUM('vietqr', 'momo') DEFAULT 'vietqr',
+    reference_code VARCHAR(80) NOT NULL,
+    bank_code VARCHAR(50),
+    bank_account VARCHAR(50),
+    bank_name VARCHAR(100),
+    account_name VARCHAR(100),
+    qr_code_url VARCHAR(255),
+    status ENUM('pending', 'matched', 'credited', 'expired', 'failed') DEFAULT 'pending',
+    matched_bank_ref VARCHAR(255),
+    matched_description VARCHAR(255),
+    matched_at DATETIME NULL,
+    credited_at DATETIME NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    UNIQUE KEY uniq_wallet_topup_reference (reference_code)
 );
 
 -- ========================================================
@@ -278,3 +301,8 @@ CREATE TABLE IF NOT EXISTS system_configs (
     config_key VARCHAR(100) PRIMARY KEY, -- Renamed from 'key' to avoid SQL keyword conflict
     config_value TEXT
 );
+
+-- Monetization pricing config seed (stored as JSON in system_configs)
+INSERT INTO system_configs (config_key, config_value) VALUES
+('monetization_pricing', '{"rows":[{"id":"vip_spotlight_5","label":"5 ngày","vipSpotlight":60000,"vip1":50000,"vip2":25000,"normal":0},{"id":"vip_spotlight_10","label":"10 ngày","vipSpotlight":120000,"vip1":100000,"vip2":50000,"normal":0},{"id":"vip_spotlight_15","label":"15 ngày","vipSpotlight":180000,"vip1":150000,"vip2":75000,"normal":0},{"id":"vip_spotlight_30","label":"30 ngày","vipSpotlight":288000,"vip1":240000,"vip2":120000,"normal":0},{"id":"push_listing","label":"Giá đẩy tin","vipSpotlight":0,"vip1":2000,"vip2":2000,"normal":null},{"id":"auto_approve","label":"Tự động duyệt","vipSpotlight":true,"vip1":true,"vip2":false,"normal":false},{"id":"extend_days","label":"Duy trì thêm","vipSpotlight":10,"vip1":10,"vip2":10,"normal":0},{"id":"call_button","label":"Hiển thị nút gọi điện","vipSpotlight":true,"vip1":true,"vip2":true,"normal":false}]}')
+ON DUPLICATE KEY UPDATE config_value = VALUES(config_value);

@@ -244,14 +244,12 @@ exports.landlordSignContract = async (req, res) => {
             return res.status(400).json({ message: 'Người thuê chưa ký hợp đồng này.' });
         }
 
-        // Validate landlord CCCD is uploaded
         if (!contract.landlord_cccd_front_url || !contract.landlord_cccd_back_url) {
             return res.status(400).json({ message: 'Vui lòng upload CCCD của bạn trước khi ký hợp đồng.' });
         }
 
         await Contract.landlordSign(id);
 
-        // Notify tenant
         await Notification.create(
             contract.tenant_id,
             'Hợp đồng thuê phòng đã chính thức kích hoạt',
@@ -260,6 +258,62 @@ exports.landlordSignContract = async (req, res) => {
         );
 
         res.json({ success: true, message: 'Hợp đồng đã được ký kết thành công. Phòng đã chuyển sang trạng thái đã thuê.' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.landlordRejectContract = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const contract = await Contract.getById(id);
+
+        if (!contract || contract.landlord_id !== req.user.user_id) {
+            return res.status(403).json({ message: 'Không có quyền thực hiện.' });
+        }
+
+        if (contract.status !== 'signed_by_tenant') {
+            return res.status(400).json({ message: 'Chỉ có thể từ chối hợp đồng đang chờ xác nhận.' });
+        }
+
+        await Contract.landlordReject(id);
+
+        await Notification.create(
+            contract.tenant_id,
+            'Hợp đồng đã bị từ chối',
+            `Chủ nhà đã từ chối hợp đồng phòng ${contract.room_number}.`,
+            'system'
+        );
+
+        res.json({ success: true, message: 'Đã từ chối hợp đồng.' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.landlordCancelContract = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const contract = await Contract.getById(id);
+
+        if (!contract || contract.landlord_id !== req.user.user_id) {
+            return res.status(403).json({ message: 'Không có quyền thực hiện.' });
+        }
+
+        if (contract.status !== 'active') {
+            return res.status(400).json({ message: 'Chỉ có thể hủy hợp đồng đang hoạt động.' });
+        }
+
+        await Contract.landlordCancel(id);
+
+        await Notification.create(
+            contract.tenant_id,
+            'Hợp đồng đã bị chấm dứt',
+            `Chủ nhà đã chấm dứt hợp đồng phòng ${contract.room_number}.`,
+            'system'
+        );
+
+        res.json({ success: true, message: 'Đã hủy hợp đồng.' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

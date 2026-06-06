@@ -39,6 +39,7 @@ import SavedListings from './pages/tenant/SavedListings.jsx';
 import RoommateMatching from './pages/tenant/RoommateMatching.jsx';
 import ServicesPrice from './pages/tenant/ServicesPrice.jsx';
 import UnifiedProfile from './pages/UnifiedProfile.jsx';
+import VnpayReturn from './pages/VnpayReturn.jsx';
 
 import AdminLayout from './layouts/AdminLayout.jsx';
 import AdminDashboard from './pages/admin/Dashboard.jsx';
@@ -135,6 +136,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/tenant/discover" element={<DiscoverRooms />} />
             <Route path="/services-price" element={<ServicesPrice />} />
             <Route path="/tenant/services-price" element={<ServicesPrice />} />
+
+            {/* VNPAY payment return — public, no auth needed */}
+            <Route path="/payment/vnpay-return" element={<VnpayReturn />} />
 
             {/* Admin Routes */}
             <Route

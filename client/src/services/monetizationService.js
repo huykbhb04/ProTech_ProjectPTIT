@@ -38,6 +38,18 @@ const monetizationService = {
         });
         return response.data;
     },
+    getWalletTopup: async (token, topupId) => {
+        const response = await axios.get(`/api/wallet-topups/topup/${topupId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    },
+    pollWalletTopups: async (token) => {
+        const response = await axios.post(`/api/wallet-topups/topup/poll`, {}, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    },
 
     getRenewalQuote: async (token, listingId, durationDays = 30) => {
         const response = await axios.get(`${API_URL}/listing-renewal-quote/${listingId}`, {
