@@ -169,3 +169,63 @@ LƯU Ý BẮT BUỘC:
     }
 };
 
+// ============================================================
+// GỢI Ý GIÁ THUÊ PHÒNG BẰNG ML
+// Proxy request tới FastAPI price_api service
+// ⚠️ Model huấn luyện trên dữ liệu giả lập - chỉ tham khảo
+// ============================================================
+const axios = require('axios');
+
+exports.predictPrice = async (req, res) => {
+    try {
+        // Đọc URL từ env hoặc dùng default (port 8001 = standalone test)
+        const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://localhost:8000';
+        // Thử port 8001 (standalone) trước, fallback về 8000 (main)
+        const PRICE_API_URL = process.env.PRICE_API_URL || 'http://localhost:8001';
+
+        console.log('[PredictPrice] Request body:', req.body);
+        console.log('[PredictPrice] Forwarding to:', `${PRICE_API_URL}/predict-price`);
+
+        const response = await axios.post(
+            `${PRICE_API_URL}/predict-price`,
+            req.body,
+            { timeout: 10000 } // 10s timeout
+        );
+
+        console.log('[PredictPrice] Response:', response.data);
+        return res.json(response.data);
+
+    } catch (error) {
+        // Xử lý lỗi validation từ FastAPI (422)
+        if (error.response?.status === 422) {
+            return res.status(422).json({
+                success: false,
+                message: 'Dữ liệu không hợp lệ',
+                detail: error.response.data?.detail || 'Validation error'
+            });
+        }
+
+        // Xử lý lỗi model chưa load (503)
+        if (error.response?.status === 503) {
+            return res.status(503).json({
+                success: false,
+                message: 'Mô hình AI chưa sẵn sàng. Vui lòng thử lại sau.',
+                detail: error.response.data?.detail
+            });
+        }
+
+        // Service không chạy
+        if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT') {
+            return res.status(503).json({
+                success: false,
+                message: 'Dịch vụ AI đang offline. Chức năng gợi ý giá tạm thời không khả dụng.',
+            });
+        }
+
+        console.error('[PredictPrice] Error:', error.message);
+        return res.status(500).json({
+            success: false,
+            message: 'Lỗi khi gợi ý giá: ' + error.message
+        });
+    }
+};

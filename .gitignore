@@ -136,3 +136,7 @@ coverage/
 .nyc_output/
 test-results/
 playwright-report/
+
+# CatBoost training logs
+catboost_info/
+

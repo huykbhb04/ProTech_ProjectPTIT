@@ -1,0 +1,2001 @@
+﻿district,area_m2,room_type,furniture_level,max_occupants,has_ac,has_water_heater,has_parking,has_wifi,floor,price_vnd
+Hoàng Mai,45.7,Phòng trọ,Nội thất cơ bản,4,1,0,0,1,7,6900000
+Hoàn Kiếm,52.7,Phòng trọ,Nội thất đầy đủ,4,0,1,0,1,9,11200000
+Thanh Xuân,23.8,CHDV,Nội thất đầy đủ,2,0,1,1,1,6,6100000
+Tây Hồ,29.1,Phòng trọ,Nội thất đầy đủ,3,1,0,1,1,1,6500000
+Hoàng Mai,52.1,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,9,7500000
+Bắc Từ Liêm,26.5,CHDV,Nội thất đầy đủ,3,0,1,0,1,10,5100000
+Ba Đình,51.3,Chung cư mini,Nội thất cơ bản,4,0,0,0,1,9,10400000
+Hoàng Mai,54.2,Phòng trọ,Nội thất đầy đủ,4,1,0,0,1,5,8400000
+Thanh Xuân,40.5,Mini apartment,Nội thất cơ bản,4,0,1,1,1,7,8300000
+Tây Hồ,47.1,CHDV,Nội thất đầy đủ,3,1,1,1,1,1,19400000
+Hoàn Kiếm,44.2,Phòng trọ,Nội thất đầy đủ,3,1,0,0,1,4,10200000
+Thanh Xuân,42.1,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,10,8800000
+Thanh Xuân,25.2,Chung cư mini,Không nội thất,2,0,0,1,1,4,4700000
+Ba Đình,14.5,Phòng trọ,Không nội thất,1,1,1,1,0,5,2500000
+Hai Bà Trưng,26.8,Phòng trọ,Nội thất đầy đủ,2,0,1,0,1,6,6100000
+Tây Hồ,40.7,Phòng trọ,Không nội thất,3,1,1,1,1,4,6000000
+Cầu Giấy,16.4,Chung cư mini,Nội thất đầy đủ,2,1,0,0,1,6,4400000
+Thanh Xuân,12.5,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,10,2100000
+Hai Bà Trưng,18.0,CHDV,Nội thất cơ bản,2,0,1,1,1,7,4300000
+Cầu Giấy,42.8,Chung cư mini,Nội thất đầy đủ,3,1,0,1,1,3,11500000
+Tây Hồ,53.8,Phòng trọ,Nội thất cơ bản,4,1,1,0,1,9,12700000
+Đống Đa,54.3,Chung cư mini,Nội thất cơ bản,4,1,1,0,1,8,12800000
+Bắc Từ Liêm,33.2,Phòng trọ,Nội thất cơ bản,2,0,0,1,0,1,3200000
+Hai Bà Trưng,49.4,Chung cư mini,Nội thất cơ bản,4,1,0,0,1,2,8900000
+Nam Từ Liêm,43.7,Chung cư mini,Nội thất đầy đủ,4,1,0,1,1,2,8200000
+Đống Đa,33.5,Phòng trọ,Không nội thất,3,1,0,1,1,10,5200000
+Bắc Từ Liêm,36.6,Chung cư mini,Nội thất đầy đủ,3,0,1,1,0,9,7500000
+Ba Đình,17.9,Phòng trọ,Nội thất đầy đủ,1,0,1,1,0,9,3800000
+Hoàng Mai,52.3,Phòng trọ,Nội thất cơ bản,4,0,0,1,1,9,6900000
+Hoàn Kiếm,27.1,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,1,6100000
+Nam Từ Liêm,31.2,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,7,4800000
+Ba Đình,40.9,Mini apartment,Nội thất cơ bản,4,0,1,0,1,3,12100000
+Tây Hồ,26.4,Phòng trọ,Nội thất đầy đủ,1,1,1,0,1,9,6100000
+Ba Đình,22.9,Phòng trọ,Không nội thất,2,1,0,0,1,8,4300000
+Hoàng Mai,39.1,Chung cư mini,Không nội thất,2,1,1,1,0,3,5400000
+Tây Hồ,13.1,Phòng trọ,Nội thất cơ bản,1,0,0,1,1,1,2100000
+Nam Từ Liêm,43.0,Mini apartment,Nội thất cơ bản,3,1,1,1,0,9,9600000
+Hoàng Mai,34.1,Chung cư mini,Nội thất cơ bản,2,1,1,1,1,10,6000000
+Cầu Giấy,38.0,CHDV,Nội thất đầy đủ,3,0,1,1,1,1,11600000
+Hoàn Kiếm,39.2,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,3,8600000
+Nam Từ Liêm,34.7,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,6,4100000
+Cầu Giấy,37.0,Phòng trọ,Không nội thất,2,0,1,1,1,6,4900000
+Bắc Từ Liêm,41.4,CHDV,Nội thất cơ bản,3,0,1,0,1,10,7800000
+Nam Từ Liêm,44.4,Phòng trọ,Không nội thất,2,0,1,1,0,4,5400000
+Bắc Từ Liêm,43.3,Phòng trọ,Không nội thất,3,0,1,0,1,2,5100000
+Tây Hồ,49.4,Mini apartment,Nội thất cơ bản,4,1,1,1,1,10,16500000
+Cầu Giấy,20.1,Chung cư mini,Không nội thất,2,0,1,1,1,6,4300000
+Hoàn Kiếm,29.2,Phòng trọ,Không nội thất,3,1,1,1,0,10,6500000
+Hoàng Mai,52.8,Phòng trọ,Không nội thất,4,0,0,1,1,5,6400000
+Thanh Xuân,29.1,Mini apartment,Nội thất đầy đủ,1,0,1,1,1,6,6900000
+Ba Đình,17.4,Phòng trọ,Nội thất đầy đủ,1,0,0,0,1,7,3900000
+Đống Đa,34.6,CHDV,Nội thất cơ bản,2,0,0,0,1,9,9100000
+Hoàn Kiếm,16.7,CHDV,Nội thất đầy đủ,2,0,1,1,0,7,6100000
+Cầu Giấy,20.7,Phòng trọ,Nội thất đầy đủ,2,1,0,0,1,4,3800000
+Thanh Xuân,54.9,Chung cư mini,Nội thất cơ bản,3,0,1,0,1,10,8500000
+Hoàn Kiếm,35.3,Phòng trọ,Không nội thất,3,1,0,0,1,5,7000000
+Cầu Giấy,24.2,Phòng trọ,Nội thất đầy đủ,2,1,0,0,1,6,5400000
+Hai Bà Trưng,54.8,CHDV,Nội thất đầy đủ,4,1,1,0,1,9,17100000
+Hai Bà Trưng,53.6,Mini apartment,Nội thất cơ bản,4,1,1,0,1,5,13400000
+Bắc Từ Liêm,31.0,Chung cư mini,Nội thất đầy đủ,1,0,1,0,1,5,4800000
+Hoàn Kiếm,23.2,Chung cư mini,Nội thất cơ bản,2,0,1,0,1,7,4800000
+Hai Bà Trưng,48.1,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,2,9800000
+Cầu Giấy,42.8,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,3,10900000
+Bắc Từ Liêm,41.5,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,2,5300000
+Cầu Giấy,50.4,Phòng trọ,Nội thất đầy đủ,4,0,1,1,0,10,9700000
+Bắc Từ Liêm,41.6,Phòng trọ,Nội thất cơ bản,3,1,0,0,0,10,5300000
+Hoàn Kiếm,24.2,Phòng trọ,Nội thất cơ bản,3,0,0,1,1,2,4400000
+Thanh Xuân,41.8,Phòng trọ,Nội thất đầy đủ,4,0,1,1,1,3,6500000
+Hoàng Mai,25.1,Phòng trọ,Không nội thất,1,1,1,1,1,6,3000000
+Nam Từ Liêm,44.6,Chung cư mini,Nội thất cơ bản,2,0,1,1,0,5,7700000
+Thanh Xuân,38.6,CHDV,Không nội thất,3,0,1,0,0,5,7200000
+Tây Hồ,15.3,Phòng trọ,Nội thất cơ bản,1,0,0,0,1,2,2800000
+Cầu Giấy,34.1,Mini apartment,Nội thất cơ bản,3,1,1,1,1,2,8500000
+Tây Hồ,26.8,Mini apartment,Nội thất đầy đủ,2,1,1,0,1,1,8600000
+Thanh Xuân,26.1,Phòng trọ,Không nội thất,3,0,0,0,1,3,3100000
+Bắc Từ Liêm,37.9,CHDV,Nội thất cơ bản,3,1,0,0,1,7,6900000
+Nam Từ Liêm,25.9,Chung cư mini,Không nội thất,2,0,1,0,1,5,3800000
+Nam Từ Liêm,45.4,Chung cư mini,Nội thất đầy đủ,3,1,1,1,0,7,10800000
+Đống Đa,15.0,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,9,3200000
+Nam Từ Liêm,40.4,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,6,8900000
+Hoàng Mai,46.8,Phòng trọ,Nội thất đầy đủ,4,1,0,0,1,2,7200000
+Nam Từ Liêm,40.9,Chung cư mini,Nội thất đầy đủ,3,1,1,1,1,1,9100000
+Thanh Xuân,33.4,Chung cư mini,Không nội thất,2,1,1,1,0,1,6100000
+Đống Đa,52.9,Chung cư mini,Nội thất cơ bản,3,1,0,1,1,10,14300000
+Thanh Xuân,24.9,Chung cư mini,Nội thất cơ bản,2,0,0,1,1,9,5200000
+Thanh Xuân,12.8,CHDV,Nội thất đầy đủ,2,0,0,1,1,6,3300000
+Ba Đình,30.6,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,6,8200000
+Đống Đa,13.4,Phòng trọ,Không nội thất,1,1,1,1,1,4,2100000
+Thanh Xuân,53.0,CHDV,Nội thất đầy đủ,4,1,1,0,0,2,13300000
+Ba Đình,21.0,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,10,4500000
+Ba Đình,45.9,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,3,7800000
+Đống Đa,45.3,Phòng trọ,Không nội thất,3,1,1,1,0,3,7400000
+Tây Hồ,21.4,Phòng trọ,Không nội thất,3,1,1,0,1,8,4500000
+Bắc Từ Liêm,38.7,Mini apartment,Nội thất cơ bản,2,0,0,1,1,6,7200000
+Hoàng Mai,14.1,Chung cư mini,Nội thất cơ bản,1,1,1,0,1,7,2600000
+Bắc Từ Liêm,32.8,Mini apartment,Không nội thất,2,0,0,1,1,9,4800000
+Nam Từ Liêm,12.6,Chung cư mini,Nội thất cơ bản,1,1,1,0,0,1,2200000
+Hoàng Mai,51.6,Chung cư mini,Nội thất đầy đủ,4,0,0,0,1,2,10100000
+Nam Từ Liêm,54.0,Phòng trọ,Nội thất đầy đủ,4,1,1,0,1,9,9000000
+Thanh Xuân,21.6,Chung cư mini,Nội thất đầy đủ,1,1,0,0,1,5,4900000
+Cầu Giấy,20.9,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,4,3900000
+Đống Đa,44.4,Mini apartment,Nội thất cơ bản,3,1,1,0,1,1,11400000
+Hoàng Mai,22.9,CHDV,Nội thất đầy đủ,2,1,0,1,1,9,4900000
+Hoàng Mai,50.5,Phòng trọ,Nội thất cơ bản,4,1,1,0,0,9,7800000
+Thanh Xuân,36.7,Mini apartment,Không nội thất,2,0,1,0,1,4,6700000
+Tây Hồ,27.1,CHDV,Không nội thất,3,1,0,1,1,9,7300000
+Ba Đình,47.8,Chung cư mini,Nội thất cơ bản,3,0,0,1,1,10,11500000
+Thanh Xuân,33.2,Phòng trọ,Không nội thất,1,1,1,0,1,1,4200000
+Hai Bà Trưng,51.2,Chung cư mini,Nội thất cơ bản,4,0,1,0,1,5,9200000
+Ba Đình,51.9,Chung cư mini,Không nội thất,4,1,1,1,1,1,12800000
+Đống Đa,19.1,Phòng trọ,Không nội thất,2,1,1,0,1,4,3100000
+Ba Đình,12.1,Phòng trọ,Nội thất cơ bản,1,1,0,0,1,5,2400000
+Tây Hồ,54.3,CHDV,Nội thất cơ bản,4,1,1,1,1,3,19900000
+Ba Đình,51.0,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,2,10000000
+Đống Đa,14.4,Chung cư mini,Không nội thất,1,1,0,1,1,6,2200000
+Tây Hồ,47.8,Mini apartment,Không nội thất,3,0,1,0,0,3,11500000
+Bắc Từ Liêm,31.7,Mini apartment,Nội thất cơ bản,2,0,1,1,1,10,6000000
+Hoàng Mai,23.1,Phòng trọ,Nội thất cơ bản,2,1,1,1,0,1,3500000
+Hoàng Mai,49.8,Mini apartment,Nội thất cơ bản,4,0,1,0,1,5,10100000
+Nam Từ Liêm,20.5,Phòng trọ,Nội thất cơ bản,1,0,1,1,0,2,2700000
+Bắc Từ Liêm,52.7,Phòng trọ,Nội thất đầy đủ,4,0,1,1,1,2,7800000
+Bắc Từ Liêm,20.8,Chung cư mini,Nội thất cơ bản,1,1,1,0,1,4,3500000
+Ba Đình,38.4,Phòng trọ,Nội thất cơ bản,2,1,1,1,0,4,5500000
+Hoàng Mai,21.6,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,4,2900000
+Đống Đa,35.5,Chung cư mini,Nội thất cơ bản,3,0,1,1,1,7,8600000
+Hoàn Kiếm,41.4,Phòng trọ,Nội thất cơ bản,3,1,1,0,0,1,8500000
+Hoàn Kiếm,20.2,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,8,4100000
+Tây Hồ,34.4,Chung cư mini,Nội thất đầy đủ,1,1,1,0,1,10,10300000
+Hoàng Mai,32.2,CHDV,Không nội thất,1,1,1,0,1,9,6300000
+Hoàng Mai,15.1,Chung cư mini,Không nội thất,1,0,1,0,1,10,2200000
+Hoàn Kiếm,47.2,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,6,9700000
+Hoàng Mai,26.4,Phòng trọ,Nội thất đầy đủ,2,0,0,1,0,4,4300000
+Ba Đình,36.7,Phòng trọ,Không nội thất,2,0,1,0,1,6,6700000
+Hai Bà Trưng,34.1,Phòng trọ,Nội thất đầy đủ,2,1,0,0,1,10,5800000
+Cầu Giấy,34.1,CHDV,Nội thất cơ bản,1,1,0,1,1,7,12200000
+Bắc Từ Liêm,16.6,Phòng trọ,Nội thất đầy đủ,1,0,1,0,0,6,2200000
+Nam Từ Liêm,30.2,Phòng trọ,Nội thất đầy đủ,2,1,1,0,1,1,5300000
+Tây Hồ,31.5,Chung cư mini,Nội thất cơ bản,3,1,0,1,0,5,8500000
+Hai Bà Trưng,43.5,Chung cư mini,Không nội thất,2,1,1,0,1,8,7000000
+Hoàn Kiếm,48.1,Chung cư mini,Không nội thất,3,1,0,0,0,8,10400000
+Bắc Từ Liêm,35.4,Phòng trọ,Không nội thất,3,1,1,1,1,10,4200000
+Hoàng Mai,15.7,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,9,2100000
+Nam Từ Liêm,22.2,Phòng trọ,Không nội thất,3,1,1,0,1,4,2900000
+Hoàng Mai,19.1,Phòng trọ,Nội thất cơ bản,1,1,1,1,1,10,2100000
+Đống Đa,17.4,Chung cư mini,Nội thất cơ bản,2,0,1,1,1,6,3700000
+Đống Đa,27.7,CHDV,Nội thất đầy đủ,2,1,1,0,1,7,7900000
+Nam Từ Liêm,21.9,CHDV,Không nội thất,2,0,0,0,1,5,3900000
+Nam Từ Liêm,21.4,CHDV,Không nội thất,3,1,0,0,1,8,3000000
+Hoàn Kiếm,14.4,Phòng trọ,Không nội thất,1,0,1,0,1,3,2000000
+Nam Từ Liêm,12.8,Chung cư mini,Nội thất đầy đủ,1,1,0,0,1,8,2400000
+Ba Đình,16.4,Phòng trọ,Nội thất cơ bản,1,0,0,0,0,5,2900000
+Hoàng Mai,19.4,Chung cư mini,Không nội thất,1,1,0,0,0,1,2600000
+Hai Bà Trưng,30.5,Chung cư mini,Không nội thất,1,0,1,1,1,6,5700000
+Thanh Xuân,34.0,Phòng trọ,Không nội thất,2,1,0,1,1,2,4500000
+Nam Từ Liêm,18.0,Phòng trọ,Không nội thất,1,1,1,1,1,7,2200000
+Tây Hồ,30.3,Mini apartment,Nội thất đầy đủ,3,1,1,1,1,9,9500000
+Đống Đa,26.7,Phòng trọ,Nội thất đầy đủ,3,0,0,1,1,3,5100000
+Ba Đình,19.9,Phòng trọ,Nội thất cơ bản,1,0,1,1,1,10,3800000
+Bắc Từ Liêm,12.3,Phòng trọ,Nội thất đầy đủ,1,1,1,0,1,4,1400000
+Thanh Xuân,32.1,CHDV,Không nội thất,1,0,0,0,0,4,5100000
+Hai Bà Trưng,41.5,Chung cư mini,Nội thất đầy đủ,2,0,1,1,1,4,10000000
+Thanh Xuân,21.7,Chung cư mini,Nội thất đầy đủ,3,0,0,0,1,3,4600000
+Nam Từ Liêm,17.7,Phòng trọ,Nội thất cơ bản,1,0,0,0,1,5,2200000
+Hoàn Kiếm,50.1,Chung cư mini,Nội thất đầy đủ,4,0,1,1,1,9,15400000
+Đống Đa,23.8,Phòng trọ,Không nội thất,3,1,1,1,1,8,3200000
+Đống Đa,21.6,CHDV,Không nội thất,3,0,0,1,1,10,3800000
+Bắc Từ Liêm,48.9,Chung cư mini,Không nội thất,3,1,1,0,0,2,6400000
+Hoàn Kiếm,47.1,Phòng trọ,Nội thất cơ bản,3,0,0,0,1,9,11000000
+Hoàng Mai,31.3,Phòng trọ,Nội thất đầy đủ,2,1,0,1,0,10,5000000
+Cầu Giấy,33.0,Phòng trọ,Nội thất đầy đủ,3,1,1,0,1,2,7900000
+Ba Đình,21.4,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,7,3600000
+Đống Đa,15.4,Phòng trọ,Nội thất đầy đủ,1,0,0,0,0,5,2800000
+Tây Hồ,36.7,Chung cư mini,Nội thất đầy đủ,2,0,1,1,1,7,10000000
+Đống Đa,16.2,Chung cư mini,Không nội thất,1,1,1,1,1,5,2900000
+Thanh Xuân,31.3,Phòng trọ,Nội thất cơ bản,2,0,0,1,0,6,4900000
+Đống Đa,52.4,Phòng trọ,Không nội thất,4,0,0,0,1,8,7500000
+Đống Đa,53.0,Phòng trọ,Nội thất cơ bản,4,0,1,0,1,1,7600000
+Cầu Giấy,22.3,Mini apartment,Nội thất đầy đủ,3,1,1,0,0,1,6700000
+Cầu Giấy,38.8,Phòng trọ,Không nội thất,3,0,1,1,1,5,5900000
+Hai Bà Trưng,32.4,Chung cư mini,Nội thất đầy đủ,2,1,0,0,1,1,6100000
+Hoàng Mai,49.7,CHDV,Nội thất cơ bản,4,0,0,0,1,3,8400000
+Tây Hồ,23.7,Chung cư mini,Nội thất cơ bản,2,1,0,1,1,10,7300000
+Đống Đa,12.2,Mini apartment,Nội thất cơ bản,1,1,1,0,1,9,3300000
+Đống Đa,19.0,Phòng trọ,Nội thất cơ bản,1,0,0,1,0,7,2500000
+Ba Đình,27.0,Mini apartment,Không nội thất,3,1,0,1,1,6,6400000
+Cầu Giấy,25.6,Phòng trọ,Không nội thất,2,1,1,0,1,8,4100000
+Tây Hồ,46.0,Phòng trọ,Không nội thất,4,0,1,0,0,8,7600000
+Bắc Từ Liêm,41.3,Chung cư mini,Nội thất cơ bản,3,1,0,0,1,6,6000000
+Hai Bà Trưng,24.9,Mini apartment,Không nội thất,2,1,1,0,1,4,5100000
+Hoàng Mai,31.7,CHDV,Nội thất đầy đủ,2,1,1,0,1,4,8000000
+Hoàn Kiếm,16.1,Phòng trọ,Nội thất cơ bản,1,1,1,1,1,4,3800000
+Hoàng Mai,50.6,Phòng trọ,Nội thất cơ bản,4,1,1,0,0,6,7100000
+Thanh Xuân,52.2,Mini apartment,Nội thất cơ bản,4,1,1,1,1,1,12500000
+Đống Đa,54.1,Phòng trọ,Nội thất cơ bản,4,0,1,0,1,2,8700000
+Hai Bà Trưng,49.3,CHDV,Nội thất đầy đủ,4,1,0,0,1,6,11700000
+Thanh Xuân,19.5,CHDV,Không nội thất,1,1,0,0,1,1,3000000
+Tây Hồ,14.0,Chung cư mini,Không nội thất,1,1,0,1,1,9,2800000
+Hoàn Kiếm,36.9,Phòng trọ,Nội thất đầy đủ,3,1,1,0,1,6,9200000
+Cầu Giấy,51.2,Chung cư mini,Không nội thất,4,0,0,1,1,7,9100000
+Hai Bà Trưng,19.6,Phòng trọ,Không nội thất,2,0,0,1,0,1,2200000
+Hai Bà Trưng,12.3,Mini apartment,Nội thất cơ bản,1,1,1,1,1,8,2700000
+Đống Đa,46.6,Chung cư mini,Không nội thất,3,1,1,1,1,5,10000000
+Nam Từ Liêm,15.3,Mini apartment,Nội thất cơ bản,1,1,1,0,0,5,2900000
+Hai Bà Trưng,29.8,Phòng trọ,Không nội thất,2,0,0,1,1,6,3700000
+Ba Đình,41.2,Mini apartment,Nội thất đầy đủ,4,1,1,1,1,7,14200000
+Hoàn Kiếm,22.2,Phòng trọ,Nội thất đầy đủ,2,1,0,1,0,7,4800000
+Hoàn Kiếm,15.6,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,5,3000000
+Ba Đình,45.1,Phòng trọ,Nội thất cơ bản,3,0,1,1,1,1,7200000
+Bắc Từ Liêm,39.1,CHDV,Nội thất đầy đủ,2,0,0,0,1,9,8500000
+Ba Đình,54.5,Chung cư mini,Không nội thất,4,0,1,0,0,6,10700000
+Ba Đình,26.8,CHDV,Nội thất đầy đủ,2,1,1,1,1,9,9400000
+Hoàn Kiếm,14.7,Phòng trọ,Nội thất đầy đủ,1,1,0,1,1,4,3900000
+Hoàng Mai,43.6,Phòng trọ,Nội thất đầy đủ,3,1,0,1,1,2,6200000
+Hoàn Kiếm,34.4,Chung cư mini,Nội thất cơ bản,3,0,1,1,1,3,9600000
+Nam Từ Liêm,21.2,Phòng trọ,Không nội thất,2,0,1,0,0,4,2800000
+Đống Đa,45.6,Chung cư mini,Nội thất cơ bản,3,1,1,0,1,10,9200000
+Thanh Xuân,20.8,Mini apartment,Nội thất đầy đủ,1,1,0,1,1,8,4400000
+Hoàng Mai,23.2,Mini apartment,Không nội thất,2,1,1,0,1,3,3200000
+Cầu Giấy,16.0,Mini apartment,Nội thất đầy đủ,2,1,1,1,1,8,5300000
+Thanh Xuân,29.2,CHDV,Không nội thất,2,1,1,0,0,6,6700000
+Đống Đa,30.0,Phòng trọ,Không nội thất,2,1,0,0,1,4,5100000
+Nam Từ Liêm,34.1,Phòng trọ,Không nội thất,3,1,0,1,1,7,4700000
+Nam Từ Liêm,42.5,Chung cư mini,Không nội thất,3,1,0,0,1,5,6900000
+Cầu Giấy,51.0,CHDV,Nội thất cơ bản,4,0,1,1,1,5,15300000
+Hoàng Mai,17.9,Phòng trọ,Không nội thất,1,1,0,0,1,9,2100000
+Bắc Từ Liêm,14.3,Phòng trọ,Nội thất đầy đủ,1,1,1,0,1,3,2100000
+Ba Đình,12.8,Phòng trọ,Nội thất cơ bản,1,1,1,1,0,10,2300000
+Hoàng Mai,18.2,Chung cư mini,Không nội thất,1,0,0,0,1,4,2800000
+Bắc Từ Liêm,40.3,Mini apartment,Nội thất cơ bản,3,0,1,1,1,5,8200000
+Nam Từ Liêm,43.3,CHDV,Nội thất đầy đủ,3,1,1,0,1,1,9700000
+Hoàn Kiếm,45.8,Phòng trọ,Nội thất đầy đủ,3,1,0,0,0,7,11800000
+Đống Đa,22.5,Mini apartment,Không nội thất,1,1,1,1,1,8,5600000
+Cầu Giấy,25.2,Chung cư mini,Nội thất đầy đủ,2,0,1,1,1,6,7100000
+Đống Đa,32.8,Phòng trọ,Nội thất đầy đủ,3,0,1,0,1,9,6400000
+Tây Hồ,14.7,Phòng trọ,Không nội thất,1,0,1,1,1,3,2800000
+Tây Hồ,38.3,Phòng trọ,Không nội thất,3,1,0,1,0,2,6800000
+Hoàng Mai,54.3,Phòng trọ,Nội thất cơ bản,4,0,1,0,1,5,6600000
+Nam Từ Liêm,27.5,Mini apartment,Không nội thất,3,0,0,0,0,9,3900000
+Nam Từ Liêm,44.4,Chung cư mini,Nội thất đầy đủ,4,0,1,1,0,1,6400000
+Ba Đình,33.5,Mini apartment,Nội thất cơ bản,1,1,1,0,1,1,10300000
+Ba Đình,17.5,Phòng trọ,Nội thất đầy đủ,1,1,1,0,0,10,3500000
+Ba Đình,37.0,Phòng trọ,Nội thất cơ bản,3,1,0,1,1,3,8000000
+Hoàn Kiếm,24.9,Chung cư mini,Không nội thất,2,1,1,0,1,10,5300000
+Thanh Xuân,13.5,Phòng trọ,Không nội thất,1,1,0,1,0,3,1800000
+Hai Bà Trưng,39.3,Chung cư mini,Nội thất cơ bản,4,0,1,1,1,5,8400000
+Thanh Xuân,48.9,Mini apartment,Nội thất đầy đủ,2,0,0,1,1,4,10300000
+Đống Đa,26.8,Chung cư mini,Nội thất đầy đủ,2,0,0,1,1,6,7200000
+Thanh Xuân,28.8,Chung cư mini,Không nội thất,2,1,0,0,0,8,4500000
+Hoàn Kiếm,50.3,Phòng trọ,Không nội thất,4,1,0,0,1,8,10000000
+Đống Đa,47.0,Phòng trọ,Không nội thất,4,0,1,0,1,4,7900000
+Thanh Xuân,42.7,Phòng trọ,Nội thất cơ bản,4,1,0,1,1,1,7200000
+Hoàn Kiếm,22.7,Chung cư mini,Không nội thất,2,1,1,0,0,7,5100000
+Hai Bà Trưng,51.1,Phòng trọ,Nội thất cơ bản,4,0,1,0,1,6,9600000
+Thanh Xuân,18.6,Phòng trọ,Nội thất cơ bản,1,0,1,1,1,5,2700000
+Hoàn Kiếm,39.0,Chung cư mini,Nội thất đầy đủ,3,1,1,1,1,4,12900000
+Ba Đình,13.2,Phòng trọ,Nội thất cơ bản,1,0,1,0,1,6,2300000
+Nam Từ Liêm,39.7,Phòng trọ,Không nội thất,3,0,1,0,1,8,4100000
+Ba Đình,23.9,Phòng trọ,Nội thất cơ bản,3,0,1,1,1,6,4000000
+Nam Từ Liêm,31.3,Mini apartment,Nội thất cơ bản,2,0,1,1,1,3,5700000
+Cầu Giấy,26.8,Chung cư mini,Nội thất cơ bản,3,1,1,0,1,9,5800000
+Cầu Giấy,19.4,Chung cư mini,Nội thất đầy đủ,1,0,0,0,1,3,4600000
+Cầu Giấy,38.7,Phòng trọ,Nội thất đầy đủ,4,1,0,1,1,4,9500000
+Hai Bà Trưng,49.9,Mini apartment,Không nội thất,3,1,0,1,1,5,9600000
+Ba Đình,53.2,Chung cư mini,Không nội thất,4,0,1,1,1,2,11500000
+Nam Từ Liêm,20.3,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,10,2700000
+Hoàn Kiếm,42.8,Mini apartment,Nội thất đầy đủ,4,0,0,0,1,10,18300000
+Đống Đa,40.6,Phòng trọ,Không nội thất,3,0,0,1,1,2,6800000
+Hoàn Kiếm,26.8,Chung cư mini,Nội thất cơ bản,1,0,0,0,1,6,6300000
+Đống Đa,12.8,Chung cư mini,Nội thất cơ bản,1,0,1,0,1,2,2600000
+Tây Hồ,41.7,Phòng trọ,Không nội thất,3,1,1,0,1,10,6500000
+Hoàn Kiếm,52.7,Mini apartment,Nội thất cơ bản,4,1,0,1,0,1,15500000
+Thanh Xuân,39.2,CHDV,Nội thất đầy đủ,4,1,1,1,1,8,10800000
+Thanh Xuân,30.7,Chung cư mini,Không nội thất,2,1,1,1,0,10,5700000
+Hoàng Mai,34.6,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,10,4300000
+Ba Đình,20.6,Phòng trọ,Nội thất cơ bản,1,1,0,1,1,1,4500000
+Đống Đa,44.3,Phòng trọ,Nội thất đầy đủ,3,0,1,1,0,10,9100000
+Đống Đa,44.1,CHDV,Nội thất đầy đủ,3,0,1,0,1,6,11900000
+Ba Đình,18.3,Phòng trọ,Nội thất cơ bản,1,0,0,0,1,1,3100000
+Hai Bà Trưng,49.8,Chung cư mini,Nội thất đầy đủ,3,0,1,1,0,8,12600000
+Hoàng Mai,23.6,CHDV,Nội thất cơ bản,2,1,0,0,1,5,4800000
+Hai Bà Trưng,54.2,Phòng trọ,Nội thất cơ bản,4,1,0,1,1,3,9100000
+Hai Bà Trưng,28.5,Chung cư mini,Không nội thất,2,1,0,0,1,5,5200000
+Hai Bà Trưng,19.6,Phòng trọ,Không nội thất,1,0,0,0,0,1,2500000
+Ba Đình,27.1,Mini apartment,Không nội thất,2,1,1,1,0,1,6900000
+Hai Bà Trưng,30.9,Chung cư mini,Nội thất cơ bản,2,0,1,1,1,4,5900000
+Thanh Xuân,15.0,Phòng trọ,Không nội thất,1,1,1,1,1,9,2000000
+Cầu Giấy,36.9,Phòng trọ,Nội thất đầy đủ,3,1,1,1,0,9,8300000
+Tây Hồ,37.7,Phòng trọ,Không nội thất,4,1,1,0,1,1,6300000
+Đống Đa,43.8,CHDV,Không nội thất,2,1,1,0,1,3,9800000
+Đống Đa,13.3,CHDV,Nội thất cơ bản,1,1,0,1,1,4,3400000
+Tây Hồ,35.3,Chung cư mini,Nội thất đầy đủ,3,0,1,0,1,2,11400000
+Ba Đình,14.3,Phòng trọ,Không nội thất,1,0,1,0,1,7,2100000
+Hoàn Kiếm,42.1,Phòng trọ,Nội thất cơ bản,3,1,1,0,0,3,7900000
+Ba Đình,14.4,Phòng trọ,Nội thất đầy đủ,1,0,1,0,0,1,3100000
+Đống Đa,51.2,Chung cư mini,Không nội thất,3,1,1,1,1,1,10000000
+Đống Đa,42.2,Mini apartment,Nội thất cơ bản,3,0,1,1,1,3,9500000
+Tây Hồ,33.8,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,6,8900000
+Hai Bà Trưng,31.0,Phòng trọ,Không nội thất,2,0,0,1,1,4,4000000
+Ba Đình,17.6,Chung cư mini,Nội thất cơ bản,1,1,0,0,1,1,4500000
+Nam Từ Liêm,24.5,CHDV,Nội thất cơ bản,2,1,0,0,1,7,4500000
+Tây Hồ,49.4,CHDV,Nội thất cơ bản,4,1,1,0,1,2,14100000
+Thanh Xuân,50.9,Mini apartment,Không nội thất,4,1,1,0,1,5,9900000
+Đống Đa,12.0,Phòng trọ,Không nội thất,1,1,1,0,1,8,2000000
+Tây Hồ,37.5,Phòng trọ,Nội thất cơ bản,4,1,1,0,1,7,7200000
+Ba Đình,42.9,Mini apartment,Không nội thất,3,0,1,1,1,8,10700000
+Đống Đa,38.6,Chung cư mini,Nội thất đầy đủ,2,0,1,1,1,10,8800000
+Hoàn Kiếm,15.5,Phòng trọ,Nội thất cơ bản,1,0,0,1,1,6,3400000
+Tây Hồ,21.4,CHDV,Nội thất cơ bản,2,0,1,1,1,7,6000000
+Hoàng Mai,22.8,CHDV,Nội thất đầy đủ,3,0,1,0,1,9,5600000
+Đống Đa,47.8,Chung cư mini,Nội thất cơ bản,4,1,1,0,1,6,11400000
+Ba Đình,31.9,Chung cư mini,Không nội thất,2,1,1,0,1,9,5500000
+Cầu Giấy,32.9,Phòng trọ,Nội thất đầy đủ,2,0,0,0,1,2,6600000
+Nam Từ Liêm,52.2,Chung cư mini,Không nội thất,4,0,1,0,1,2,7300000
+Bắc Từ Liêm,39.4,Chung cư mini,Không nội thất,3,1,1,0,0,2,5500000
+Hai Bà Trưng,50.6,CHDV,Nội thất đầy đủ,4,1,1,1,1,6,14000000
+Bắc Từ Liêm,31.6,CHDV,Nội thất cơ bản,2,1,1,1,1,2,5700000
+Ba Đình,18.4,CHDV,Nội thất cơ bản,1,0,1,1,1,3,5700000
+Thanh Xuân,52.0,Phòng trọ,Không nội thất,3,1,0,0,1,8,7700000
+Thanh Xuân,31.7,CHDV,Nội thất cơ bản,2,0,0,1,1,8,6400000
+Cầu Giấy,19.8,CHDV,Không nội thất,1,0,0,1,1,4,5300000
+Hai Bà Trưng,25.0,Chung cư mini,Nội thất đầy đủ,3,0,1,1,1,9,4500000
+Hoàng Mai,14.2,CHDV,Không nội thất,1,1,1,0,1,8,2500000
+Cầu Giấy,32.1,CHDV,Nội thất đầy đủ,3,1,1,1,0,1,9300000
+Bắc Từ Liêm,48.7,Chung cư mini,Nội thất cơ bản,3,1,0,1,1,8,8300000
+Cầu Giấy,52.1,Chung cư mini,Nội thất đầy đủ,4,1,0,0,1,1,13600000
+Bắc Từ Liêm,52.1,Phòng trọ,Nội thất đầy đủ,4,0,0,0,1,4,6600000
+Đống Đa,17.4,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,10,2800000
+Thanh Xuân,28.4,Chung cư mini,Nội thất cơ bản,2,1,1,1,1,6,5200000
+Đống Đa,13.2,CHDV,Không nội thất,1,1,1,1,1,7,3100000
+Nam Từ Liêm,48.8,Phòng trọ,Không nội thất,3,0,1,0,1,10,6400000
+Hai Bà Trưng,27.4,Phòng trọ,Nội thất đầy đủ,2,1,1,0,1,4,6000000
+Hoàng Mai,39.1,Chung cư mini,Nội thất đầy đủ,3,0,1,1,1,8,7700000
+Bắc Từ Liêm,42.7,Phòng trọ,Nội thất cơ bản,2,1,0,0,1,8,5400000
+Hoàng Mai,30.5,Phòng trọ,Không nội thất,2,1,1,0,1,9,4000000
+Bắc Từ Liêm,25.2,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,6,3100000
+Ba Đình,53.4,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,4,10000000
+Cầu Giấy,53.5,Phòng trọ,Nội thất cơ bản,4,0,1,1,1,2,12100000
+Nam Từ Liêm,24.4,Phòng trọ,Nội thất đầy đủ,2,1,0,0,1,7,3800000
+Thanh Xuân,32.6,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,10,6300000
+Bắc Từ Liêm,53.8,Mini apartment,Không nội thất,3,0,1,1,0,3,6800000
+Hoàng Mai,12.2,Chung cư mini,Nội thất cơ bản,1,0,0,0,1,3,1700000
+Nam Từ Liêm,29.7,CHDV,Nội thất cơ bản,1,0,1,1,0,3,7000000
+Hoàn Kiếm,16.3,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,4,3500000
+Hoàn Kiếm,33.9,Phòng trọ,Không nội thất,2,1,0,1,1,2,6200000
+Đống Đa,13.1,CHDV,Không nội thất,1,0,0,0,1,5,3000000
+Thanh Xuân,29.5,Phòng trọ,Nội thất đầy đủ,3,0,1,1,1,3,4400000
+Ba Đình,21.5,Chung cư mini,Nội thất cơ bản,1,0,1,0,1,10,4700000
+Hoàng Mai,34.9,Chung cư mini,Nội thất cơ bản,2,1,1,1,1,5,7400000
+Cầu Giấy,54.8,Chung cư mini,Nội thất đầy đủ,3,0,0,0,0,7,13800000
+Cầu Giấy,46.4,Phòng trọ,Nội thất đầy đủ,3,0,1,1,1,9,10400000
+Hoàng Mai,48.4,Phòng trọ,Không nội thất,4,1,0,0,1,2,6200000
+Hai Bà Trưng,39.3,Chung cư mini,Nội thất cơ bản,4,0,0,1,1,9,9000000
+Ba Đình,13.8,Phòng trọ,Nội thất cơ bản,1,0,0,1,1,10,2200000
+Nam Từ Liêm,20.9,Chung cư mini,Nội thất đầy đủ,1,1,1,0,1,6,4400000
+Bắc Từ Liêm,51.8,CHDV,Nội thất đầy đủ,4,1,1,1,1,6,14600000
+Hai Bà Trưng,27.7,Mini apartment,Nội thất cơ bản,2,0,1,0,1,3,5400000
+Bắc Từ Liêm,16.5,Phòng trọ,Nội thất cơ bản,1,1,0,1,1,10,2000000
+Bắc Từ Liêm,42.2,CHDV,Nội thất đầy đủ,4,1,1,1,1,9,10300000
+Hai Bà Trưng,24.9,Chung cư mini,Không nội thất,3,1,1,0,1,4,4600000
+Đống Đa,23.6,Phòng trọ,Không nội thất,3,1,1,1,1,5,3200000
+Hoàn Kiếm,54.9,Phòng trọ,Nội thất cơ bản,4,0,1,0,0,3,7700000
+Bắc Từ Liêm,48.9,CHDV,Không nội thất,3,1,1,0,0,5,8200000
+Hai Bà Trưng,29.5,Phòng trọ,Không nội thất,2,1,1,1,1,8,4800000
+Hai Bà Trưng,54.2,Phòng trọ,Nội thất đầy đủ,3,0,1,1,1,8,10100000
+Tây Hồ,40.0,Phòng trọ,Nội thất đầy đủ,2,1,1,0,1,8,8800000
+Đống Đa,43.9,CHDV,Nội thất cơ bản,3,1,1,0,1,6,11400000
+Thanh Xuân,13.4,CHDV,Không nội thất,1,0,0,1,1,1,2900000
+Tây Hồ,17.2,CHDV,Không nội thất,2,1,0,0,0,10,4000000
+Tây Hồ,39.2,Phòng trọ,Không nội thất,4,1,1,1,1,6,7800000
+Hoàng Mai,50.7,Phòng trọ,Không nội thất,4,0,1,1,1,10,5500000
+Hoàn Kiếm,38.8,Chung cư mini,Nội thất đầy đủ,4,0,0,0,1,7,10400000
+Hai Bà Trưng,17.8,Chung cư mini,Không nội thất,1,0,1,0,0,9,3100000
+Hoàn Kiếm,17.0,Phòng trọ,Nội thất cơ bản,1,0,1,1,0,8,4100000
+Ba Đình,48.3,Chung cư mini,Không nội thất,3,0,1,0,1,8,10800000
+Hoàng Mai,18.0,Mini apartment,Nội thất đầy đủ,1,0,1,1,1,7,3100000
+Thanh Xuân,34.4,CHDV,Nội thất đầy đủ,3,0,1,1,1,2,8800000
+Hoàn Kiếm,13.6,CHDV,Nội thất đầy đủ,2,1,0,1,1,1,5200000
+Cầu Giấy,15.5,Mini apartment,Nội thất đầy đủ,1,1,0,0,1,2,4400000
+Bắc Từ Liêm,40.9,Phòng trọ,Nội thất cơ bản,2,0,1,0,0,6,3900000
+Ba Đình,41.6,Chung cư mini,Không nội thất,3,1,1,1,1,2,7900000
+Đống Đa,26.7,Mini apartment,Nội thất cơ bản,2,1,1,1,1,10,6300000
+Thanh Xuân,21.3,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,4,3400000
+Ba Đình,47.0,CHDV,Nội thất cơ bản,3,1,1,0,1,10,11300000
+Bắc Từ Liêm,21.3,Chung cư mini,Không nội thất,1,1,1,1,1,3,3100000
+Hoàng Mai,35.3,Chung cư mini,Không nội thất,3,0,0,0,1,6,4800000
+Bắc Từ Liêm,53.6,Chung cư mini,Nội thất cơ bản,3,0,1,1,1,8,7800000
+Tây Hồ,18.4,Mini apartment,Nội thất cơ bản,1,0,0,1,1,6,5000000
+Bắc Từ Liêm,52.5,CHDV,Nội thất đầy đủ,4,0,1,1,0,2,9900000
+Tây Hồ,19.9,Phòng trọ,Không nội thất,1,1,1,0,1,5,3300000
+Hoàng Mai,36.4,Mini apartment,Nội thất cơ bản,3,1,1,1,1,6,5900000
+Nam Từ Liêm,28.2,Phòng trọ,Không nội thất,1,1,1,0,1,9,2800000
+Tây Hồ,53.5,Phòng trọ,Không nội thất,4,0,0,1,1,6,8900000
+Đống Đa,23.8,Chung cư mini,Nội thất cơ bản,3,1,1,0,0,10,4800000
+Bắc Từ Liêm,29.2,Chung cư mini,Không nội thất,2,1,1,0,1,5,4100000
+Bắc Từ Liêm,54.3,Phòng trọ,Không nội thất,4,0,1,0,1,1,5700000
+Đống Đa,35.1,Mini apartment,Nội thất cơ bản,3,1,1,1,0,10,10900000
+Cầu Giấy,33.6,CHDV,Không nội thất,2,0,1,1,1,5,7900000
+Hai Bà Trưng,23.1,Chung cư mini,Không nội thất,2,0,1,1,1,5,2700000
+Nam Từ Liêm,42.2,Phòng trọ,Không nội thất,3,1,0,1,1,6,4200000
+Thanh Xuân,12.6,Mini apartment,Không nội thất,2,1,0,1,1,7,2100000
+Tây Hồ,14.1,Mini apartment,Không nội thất,1,0,1,0,1,4,4200000
+Đống Đa,37.8,CHDV,Nội thất cơ bản,3,1,1,1,1,7,10400000
+Hoàng Mai,26.7,Phòng trọ,Không nội thất,1,1,1,1,1,5,3500000
+Tây Hồ,53.0,Phòng trọ,Không nội thất,4,1,1,0,1,6,10500000
+Hai Bà Trưng,50.8,Phòng trọ,Nội thất cơ bản,4,0,0,0,1,4,6700000
+Hoàng Mai,42.7,Phòng trọ,Nội thất cơ bản,3,1,0,0,0,8,4600000
+Ba Đình,47.2,Phòng trọ,Nội thất đầy đủ,3,0,1,0,0,9,11000000
+Bắc Từ Liêm,40.7,Mini apartment,Nội thất đầy đủ,4,0,1,0,1,2,6400000
+Ba Đình,17.4,Chung cư mini,Nội thất đầy đủ,1,1,0,0,1,4,5100000
+Tây Hồ,44.9,Phòng trọ,Nội thất cơ bản,3,0,0,1,1,8,8800000
+Hai Bà Trưng,21.0,Phòng trọ,Nội thất cơ bản,2,1,1,0,0,8,3500000
+Nam Từ Liêm,25.9,Phòng trọ,Nội thất cơ bản,2,1,1,0,0,9,3700000
+Tây Hồ,47.2,Phòng trọ,Không nội thất,3,0,1,1,0,3,8300000
+Đống Đa,35.1,Phòng trọ,Không nội thất,3,0,0,1,0,1,5000000
+Hoàn Kiếm,49.0,Phòng trọ,Không nội thất,4,1,1,0,1,9,9800000
+Tây Hồ,21.2,CHDV,Nội thất đầy đủ,3,0,0,1,1,1,7200000
+Bắc Từ Liêm,38.1,Mini apartment,Nội thất cơ bản,2,0,1,0,1,3,5400000
+Bắc Từ Liêm,15.6,Phòng trọ,Nội thất đầy đủ,1,0,1,0,1,3,2000000
+Tây Hồ,39.7,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,9,9700000
+Hoàng Mai,44.8,CHDV,Nội thất cơ bản,4,0,0,1,1,1,9000000
+Hoàn Kiếm,37.2,Phòng trọ,Không nội thất,2,1,1,1,0,7,7900000
+Đống Đa,23.4,Phòng trọ,Không nội thất,2,1,0,1,1,2,3100000
+Tây Hồ,13.3,Mini apartment,Nội thất đầy đủ,1,0,1,1,0,7,3800000
+Hoàng Mai,17.1,Phòng trọ,Nội thất cơ bản,1,0,0,1,1,1,1900000
+Bắc Từ Liêm,38.8,Chung cư mini,Nội thất cơ bản,4,1,0,1,1,10,5700000
+Bắc Từ Liêm,52.2,Chung cư mini,Nội thất đầy đủ,4,1,1,1,1,10,8900000
+Hai Bà Trưng,20.9,Phòng trọ,Không nội thất,1,1,0,0,1,8,2800000
+Tây Hồ,43.6,Phòng trọ,Nội thất đầy đủ,3,0,1,0,1,10,9700000
+Hoàn Kiếm,49.3,CHDV,Nội thất cơ bản,4,1,1,1,1,10,18900000
+Cầu Giấy,34.4,Phòng trọ,Nội thất cơ bản,3,1,1,1,0,2,6300000
+Hoàn Kiếm,40.8,Phòng trọ,Nội thất cơ bản,3,1,0,1,1,3,6700000
+Bắc Từ Liêm,47.0,CHDV,Không nội thất,3,0,0,0,1,8,7700000
+Bắc Từ Liêm,23.2,Chung cư mini,Không nội thất,2,0,1,1,0,3,2400000
+Ba Đình,24.8,Phòng trọ,Nội thất cơ bản,2,0,0,1,1,1,4600000
+Bắc Từ Liêm,12.0,Mini apartment,Nội thất đầy đủ,1,0,1,0,1,9,2200000
+Đống Đa,53.4,Phòng trọ,Nội thất đầy đủ,4,1,0,1,1,8,11800000
+Thanh Xuân,51.5,CHDV,Không nội thất,4,1,1,1,1,4,9400000
+Tây Hồ,44.9,CHDV,Nội thất cơ bản,3,1,1,0,1,8,14800000
+Hoàn Kiếm,15.4,Chung cư mini,Không nội thất,1,0,1,1,1,5,3500000
+Thanh Xuân,31.2,Chung cư mini,Không nội thất,1,1,1,0,1,3,4800000
+Hoàng Mai,16.4,Mini apartment,Nội thất cơ bản,1,1,1,0,1,1,2400000
+Cầu Giấy,12.7,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,10,3000000
+Đống Đa,38.5,CHDV,Không nội thất,2,1,1,0,1,5,7800000
+Hoàn Kiếm,53.3,Phòng trọ,Không nội thất,4,1,0,0,0,6,10000000
+Thanh Xuân,50.8,Phòng trọ,Nội thất đầy đủ,4,0,1,0,1,4,8100000
+Cầu Giấy,42.0,Phòng trọ,Không nội thất,3,0,0,0,1,7,8900000
+Ba Đình,16.2,Mini apartment,Nội thất cơ bản,2,0,1,0,0,3,4100000
+Đống Đa,23.8,Mini apartment,Nội thất cơ bản,3,0,1,0,0,7,5200000
+Đống Đa,25.8,Phòng trọ,Không nội thất,2,1,1,1,0,1,4100000
+Ba Đình,44.8,Phòng trọ,Không nội thất,3,1,0,1,0,7,8200000
+Tây Hồ,46.5,CHDV,Nội thất cơ bản,4,0,0,0,1,1,13500000
+Ba Đình,28.6,Phòng trọ,Nội thất đầy đủ,2,0,1,0,1,1,5800000
+Đống Đa,30.0,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,2,5200000
+Đống Đa,13.9,Chung cư mini,Nội thất cơ bản,1,0,1,0,1,2,2700000
+Thanh Xuân,24.4,Chung cư mini,Nội thất đầy đủ,3,1,1,1,1,4,5700000
+Bắc Từ Liêm,31.4,Mini apartment,Nội thất đầy đủ,3,1,0,1,1,1,6100000
+Cầu Giấy,17.0,Phòng trọ,Nội thất cơ bản,1,0,1,1,1,4,2600000
+Ba Đình,31.5,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,2,6300000
+Cầu Giấy,48.7,Chung cư mini,Nội thất cơ bản,4,1,0,1,1,4,12500000
+Ba Đình,37.0,CHDV,Nội thất cơ bản,3,1,0,0,1,4,11800000
+Hoàng Mai,15.4,Chung cư mini,Nội thất cơ bản,1,1,1,1,1,9,2700000
+Đống Đa,20.2,Chung cư mini,Nội thất cơ bản,1,0,1,1,1,9,4200000
+Bắc Từ Liêm,32.4,Phòng trọ,Không nội thất,2,0,1,1,0,1,2900000
+Thanh Xuân,27.5,CHDV,Nội thất cơ bản,1,0,1,0,0,5,5700000
+Bắc Từ Liêm,27.4,Phòng trọ,Không nội thất,2,0,1,0,1,7,3000000
+Bắc Từ Liêm,34.8,Phòng trọ,Không nội thất,3,1,0,1,0,4,3100000
+Bắc Từ Liêm,37.1,Chung cư mini,Không nội thất,3,1,0,0,1,5,5500000
+Cầu Giấy,46.3,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,2,8000000
+Ba Đình,26.7,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,3,5200000
+Nam Từ Liêm,46.6,Mini apartment,Không nội thất,2,1,1,0,1,7,8400000
+Hoàng Mai,26.6,Chung cư mini,Nội thất cơ bản,2,0,1,1,0,10,4400000
+Hoàn Kiếm,14.4,CHDV,Nội thất cơ bản,1,0,1,0,1,7,4900000
+Bắc Từ Liêm,35.8,Phòng trọ,Không nội thất,4,1,1,1,0,4,4400000
+Tây Hồ,37.3,CHDV,Nội thất cơ bản,2,0,1,0,1,1,10200000
+Cầu Giấy,52.2,Phòng trọ,Nội thất đầy đủ,4,1,1,1,0,1,8100000
+Thanh Xuân,43.2,Phòng trọ,Nội thất đầy đủ,3,0,1,0,0,4,8000000
+Hoàn Kiếm,51.5,Mini apartment,Nội thất cơ bản,4,0,1,1,1,4,13800000
+Nam Từ Liêm,51.1,CHDV,Nội thất cơ bản,3,1,1,1,1,6,12300000
+Tây Hồ,38.0,Chung cư mini,Không nội thất,2,1,1,0,1,7,8600000
+Nam Từ Liêm,34.7,Phòng trọ,Không nội thất,2,0,1,0,0,9,3900000
+Hoàn Kiếm,36.0,Mini apartment,Không nội thất,4,0,1,0,1,9,10200000
+Bắc Từ Liêm,54.1,Chung cư mini,Nội thất đầy đủ,4,0,1,0,1,10,10600000
+Tây Hồ,45.2,CHDV,Không nội thất,3,0,0,1,1,5,11900000
+Nam Từ Liêm,16.6,CHDV,Không nội thất,1,0,1,0,1,10,2400000
+Thanh Xuân,45.5,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,3,8600000
+Ba Đình,19.3,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,3,3800000
+Đống Đa,31.2,Chung cư mini,Nội thất đầy đủ,2,1,1,0,0,6,6900000
+Ba Đình,21.0,Phòng trọ,Không nội thất,2,1,0,1,1,1,3400000
+Hoàn Kiếm,41.7,Phòng trọ,Không nội thất,3,1,0,0,1,7,8800000
+Cầu Giấy,49.7,Mini apartment,Nội thất cơ bản,4,0,1,0,1,3,13100000
+Đống Đa,24.5,Chung cư mini,Không nội thất,2,1,1,0,1,5,4800000
+Hoàng Mai,15.5,CHDV,Không nội thất,2,1,1,1,0,7,3000000
+Thanh Xuân,24.8,Chung cư mini,Nội thất cơ bản,3,0,1,0,1,7,4200000
+Hoàng Mai,40.9,Chung cư mini,Nội thất đầy đủ,3,1,1,1,1,9,7200000
+Tây Hồ,26.1,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,1,4200000
+Đống Đa,24.0,Phòng trọ,Nội thất cơ bản,2,0,1,1,0,3,4100000
+Hoàng Mai,19.9,Phòng trọ,Nội thất cơ bản,2,0,1,1,0,9,2900000
+Hoàng Mai,33.4,Phòng trọ,Không nội thất,2,1,0,0,1,8,4100000
+Nam Từ Liêm,23.9,CHDV,Nội thất cơ bản,2,1,1,1,1,2,4700000
+Ba Đình,43.4,Phòng trọ,Không nội thất,3,0,1,1,1,8,8500000
+Nam Từ Liêm,15.3,Chung cư mini,Không nội thất,2,1,1,0,1,8,2800000
+Đống Đa,40.6,Phòng trọ,Nội thất đầy đủ,3,1,1,0,1,2,8700000
+Đống Đa,22.2,Phòng trọ,Không nội thất,2,0,0,0,0,8,3500000
+Hoàn Kiếm,33.0,Phòng trọ,Nội thất đầy đủ,2,1,1,1,0,3,9000000
+Nam Từ Liêm,24.3,Phòng trọ,Không nội thất,2,1,0,1,0,7,2900000
+Hai Bà Trưng,43.1,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,9,6600000
+Ba Đình,52.6,Phòng trọ,Nội thất cơ bản,3,0,0,0,1,4,7900000
+Đống Đa,51.4,Phòng trọ,Không nội thất,4,0,0,0,1,6,7100000
+Hoàn Kiếm,37.1,CHDV,Không nội thất,4,1,1,1,1,9,11000000
+Nam Từ Liêm,31.9,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,5,4500000
+Ba Đình,47.2,Phòng trọ,Nội thất đầy đủ,3,1,0,1,1,1,10600000
+Nam Từ Liêm,41.4,Chung cư mini,Nội thất đầy đủ,2,1,1,0,1,3,6400000
+Hoàng Mai,19.9,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,9,2800000
+Hoàn Kiếm,47.3,Mini apartment,Nội thất đầy đủ,4,0,1,0,1,3,17500000
+Ba Đình,30.4,Chung cư mini,Nội thất cơ bản,2,1,1,1,1,10,8100000
+Bắc Từ Liêm,20.1,Phòng trọ,Nội thất đầy đủ,1,1,1,0,1,2,2500000
+Tây Hồ,24.1,Chung cư mini,Nội thất cơ bản,3,1,1,0,1,4,6300000
+Tây Hồ,23.5,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,5,5000000
+Ba Đình,34.3,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,7,10400000
+Nam Từ Liêm,22.1,Phòng trọ,Nội thất cơ bản,2,1,0,0,0,7,3400000
+Hoàn Kiếm,17.3,Mini apartment,Nội thất đầy đủ,1,0,1,1,0,9,5800000
+Tây Hồ,17.3,Phòng trọ,Nội thất cơ bản,1,0,0,0,1,8,3200000
+Hoàn Kiếm,37.1,Chung cư mini,Không nội thất,3,1,0,0,1,2,7600000
+Tây Hồ,43.6,Chung cư mini,Không nội thất,2,1,0,0,1,8,10100000
+Hoàng Mai,25.8,Phòng trọ,Nội thất cơ bản,2,1,0,0,1,8,3600000
+Nam Từ Liêm,13.5,Phòng trọ,Nội thất cơ bản,1,1,0,0,1,5,1800000
+Hoàng Mai,17.5,CHDV,Nội thất đầy đủ,1,0,0,1,1,3,3400000
+Tây Hồ,51.3,CHDV,Không nội thất,4,1,1,0,1,9,13000000
+Bắc Từ Liêm,33.2,Phòng trọ,Nội thất đầy đủ,2,0,1,1,1,7,4000000
+Bắc Từ Liêm,31.5,CHDV,Nội thất đầy đủ,2,0,0,0,0,1,5800000
+Hoàng Mai,13.6,Mini apartment,Không nội thất,2,0,1,0,1,8,2300000
+Bắc Từ Liêm,43.3,Mini apartment,Nội thất đầy đủ,3,0,0,0,1,10,9000000
+Tây Hồ,34.7,Phòng trọ,Nội thất đầy đủ,2,1,0,0,0,5,7800000
+Ba Đình,20.7,CHDV,Nội thất đầy đủ,2,0,1,0,0,6,7500000
+Hoàng Mai,16.7,Phòng trọ,Nội thất đầy đủ,1,0,0,0,1,9,2500000
+Cầu Giấy,28.5,Mini apartment,Nội thất đầy đủ,3,0,1,1,0,10,8300000
+Nam Từ Liêm,48.0,Chung cư mini,Nội thất cơ bản,2,1,1,0,1,8,7800000
+Bắc Từ Liêm,49.2,Phòng trọ,Nội thất cơ bản,4,0,1,1,1,3,6200000
+Bắc Từ Liêm,37.9,CHDV,Nội thất đầy đủ,2,1,1,0,1,5,8000000
+Đống Đa,43.3,Phòng trọ,Nội thất cơ bản,3,0,1,0,1,4,7900000
+Hai Bà Trưng,17.0,Mini apartment,Nội thất cơ bản,2,1,1,0,1,1,3800000
+Hoàng Mai,37.3,Mini apartment,Không nội thất,2,0,1,0,1,5,5500000
+Thanh Xuân,40.7,Chung cư mini,Nội thất đầy đủ,3,1,0,1,1,10,9300000
+Bắc Từ Liêm,20.6,Phòng trọ,Không nội thất,1,1,1,1,1,7,2500000
+Nam Từ Liêm,49.8,Chung cư mini,Nội thất đầy đủ,4,1,1,0,1,1,11300000
+Cầu Giấy,20.4,Phòng trọ,Nội thất cơ bản,1,1,1,0,0,4,2900000
+Bắc Từ Liêm,25.5,Phòng trọ,Không nội thất,2,1,0,1,1,6,2800000
+Cầu Giấy,38.7,CHDV,Nội thất cơ bản,2,1,0,0,1,9,10700000
+Tây Hồ,39.4,Phòng trọ,Không nội thất,3,0,1,0,1,8,7000000
+Tây Hồ,42.1,Phòng trọ,Nội thất cơ bản,3,0,1,0,1,2,8100000
+Hai Bà Trưng,16.8,Mini apartment,Nội thất đầy đủ,1,0,0,0,1,3,4100000
+Ba Đình,48.5,Phòng trọ,Nội thất đầy đủ,3,1,1,0,1,10,11100000
+Thanh Xuân,34.9,Phòng trọ,Không nội thất,3,1,1,1,0,5,4400000
+Đống Đa,32.3,Mini apartment,Không nội thất,2,1,1,1,1,7,7700000
+Hai Bà Trưng,54.2,Phòng trọ,Nội thất đầy đủ,4,0,1,1,1,3,11200000
+Hoàn Kiếm,43.8,CHDV,Nội thất đầy đủ,2,0,0,0,1,7,16200000
+Đống Đa,17.1,Mini apartment,Nội thất cơ bản,1,1,1,1,1,5,4500000
+Hoàng Mai,44.5,Mini apartment,Nội thất cơ bản,3,1,1,1,1,10,8100000
+Nam Từ Liêm,16.1,Chung cư mini,Nội thất cơ bản,1,0,1,1,0,6,2600000
+Hoàn Kiếm,13.2,Phòng trọ,Nội thất đầy đủ,1,0,0,0,0,6,3200000
+Hoàn Kiếm,29.4,Phòng trọ,Nội thất cơ bản,2,0,0,1,1,4,6200000
+Hai Bà Trưng,54.7,CHDV,Không nội thất,4,0,0,0,1,8,11100000
+Ba Đình,19.5,Mini apartment,Không nội thất,1,1,1,1,0,9,4500000
+Hai Bà Trưng,40.9,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,2,10700000
+Hoàng Mai,19.5,Phòng trọ,Không nội thất,1,1,0,0,1,9,1800000
+Bắc Từ Liêm,43.2,Phòng trọ,Nội thất cơ bản,4,1,1,0,0,4,5600000
+Bắc Từ Liêm,33.7,Phòng trọ,Nội thất cơ bản,1,1,0,1,1,6,4200000
+Ba Đình,41.2,CHDV,Không nội thất,3,1,1,0,1,7,9200000
+Hoàng Mai,20.7,Phòng trọ,Không nội thất,1,1,1,1,1,4,2800000
+Ba Đình,44.1,Mini apartment,Nội thất đầy đủ,4,1,1,1,1,8,11100000
+Cầu Giấy,54.8,CHDV,Nội thất đầy đủ,3,1,0,1,1,10,19100000
+Bắc Từ Liêm,40.6,Phòng trọ,Nội thất đầy đủ,3,1,0,1,0,8,6500000
+Hoàn Kiếm,33.2,Chung cư mini,Nội thất đầy đủ,2,1,1,1,1,1,9500000
+Thanh Xuân,51.7,Phòng trọ,Nội thất cơ bản,4,0,1,1,1,8,8500000
+Nam Từ Liêm,12.7,Chung cư mini,Nội thất đầy đủ,1,0,0,0,1,10,2300000
+Hoàng Mai,43.4,CHDV,Nội thất cơ bản,3,1,1,1,1,3,9900000
+Đống Đa,50.2,CHDV,Nội thất cơ bản,4,1,0,1,1,5,18400000
+Ba Đình,14.7,CHDV,Nội thất đầy đủ,1,1,1,0,0,10,5000000
+Nam Từ Liêm,31.4,Phòng trọ,Không nội thất,1,0,1,1,1,8,4000000
+Đống Đa,20.8,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,6,3200000
+Nam Từ Liêm,36.4,CHDV,Nội thất cơ bản,2,1,1,0,1,4,7700000
+Thanh Xuân,39.9,Phòng trọ,Không nội thất,4,0,1,0,0,4,4900000
+Đống Đa,25.0,Phòng trọ,Không nội thất,2,1,1,0,1,4,4000000
+Hai Bà Trưng,31.8,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,6,5300000
+Tây Hồ,24.0,Chung cư mini,Nội thất đầy đủ,1,1,1,1,1,7,6400000
+Hai Bà Trưng,27.9,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,5,5200000
+Bắc Từ Liêm,18.9,Chung cư mini,Không nội thất,1,1,0,1,0,10,2600000
+Tây Hồ,50.1,Mini apartment,Không nội thất,4,0,1,0,1,8,13700000
+Hai Bà Trưng,12.4,Phòng trọ,Nội thất đầy đủ,2,1,1,0,1,7,2400000
+Tây Hồ,49.9,Phòng trọ,Nội thất cơ bản,3,0,1,1,0,8,10500000
+Tây Hồ,36.6,Phòng trọ,Nội thất cơ bản,2,1,1,1,0,4,7200000
+Hoàn Kiếm,26.3,Mini apartment,Nội thất cơ bản,1,1,0,0,1,8,7400000
+Ba Đình,43.1,Phòng trọ,Nội thất cơ bản,4,1,1,1,1,6,9800000
+Ba Đình,33.8,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,3,6400000
+Hoàn Kiếm,33.5,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,8,9600000
+Nam Từ Liêm,16.7,CHDV,Nội thất cơ bản,1,1,1,0,0,7,3300000
+Cầu Giấy,28.7,Phòng trọ,Nội thất cơ bản,2,0,1,0,0,10,4500000
+Nam Từ Liêm,22.4,CHDV,Nội thất cơ bản,3,1,0,1,1,5,4200000
+Đống Đa,12.7,Mini apartment,Nội thất đầy đủ,1,1,0,1,1,4,3500000
+Đống Đa,27.5,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,1,5000000
+Tây Hồ,15.9,CHDV,Không nội thất,1,1,0,1,1,10,3900000
+Hai Bà Trưng,23.0,Phòng trọ,Nội thất cơ bản,2,1,1,1,0,3,4000000
+Hai Bà Trưng,16.0,Mini apartment,Không nội thất,1,1,0,0,1,2,2900000
+Ba Đình,16.3,Chung cư mini,Nội thất đầy đủ,1,1,1,0,1,8,4800000
+Hoàng Mai,20.6,Mini apartment,Nội thất cơ bản,1,1,1,0,1,8,3700000
+Nam Từ Liêm,55.0,Phòng trọ,Nội thất đầy đủ,3,0,1,0,0,5,8700000
+Bắc Từ Liêm,12.1,Phòng trọ,Không nội thất,1,1,0,1,1,5,1400000
+Thanh Xuân,39.5,Phòng trọ,Nội thất đầy đủ,3,1,0,0,0,4,6800000
+Hai Bà Trưng,18.1,Phòng trọ,Nội thất cơ bản,1,0,0,1,0,1,2500000
+Thanh Xuân,51.6,Phòng trọ,Nội thất đầy đủ,4,0,0,1,1,1,7400000
+Tây Hồ,16.0,Phòng trọ,Nội thất cơ bản,1,0,1,0,1,6,3100000
+Thanh Xuân,53.1,Phòng trọ,Nội thất cơ bản,4,1,0,1,1,4,7800000
+Bắc Từ Liêm,38.3,Phòng trọ,Nội thất đầy đủ,3,0,0,0,1,4,5000000
+Hoàn Kiếm,12.1,CHDV,Không nội thất,1,1,1,0,0,3,2800000
+Bắc Từ Liêm,50.4,Chung cư mini,Không nội thất,4,1,1,1,1,9,7400000
+Thanh Xuân,34.4,Phòng trọ,Nội thất cơ bản,1,0,1,1,1,3,6100000
+Bắc Từ Liêm,23.3,Phòng trọ,Nội thất cơ bản,2,1,0,0,1,8,3000000
+Cầu Giấy,45.0,Phòng trọ,Không nội thất,3,0,0,0,1,2,6300000
+Tây Hồ,51.8,Mini apartment,Không nội thất,4,0,0,0,1,4,11400000
+Nam Từ Liêm,32.8,Phòng trọ,Không nội thất,3,0,0,0,1,1,3100000
+Hoàn Kiếm,25.6,CHDV,Nội thất đầy đủ,2,0,0,0,1,5,7800000
+Hai Bà Trưng,45.9,Mini apartment,Nội thất cơ bản,4,1,0,1,1,2,9200000
+Đống Đa,41.3,CHDV,Nội thất đầy đủ,4,1,0,0,1,1,12700000
+Nam Từ Liêm,50.2,Chung cư mini,Nội thất đầy đủ,4,0,1,1,1,1,10800000
+Đống Đa,41.8,CHDV,Nội thất cơ bản,4,0,1,0,1,2,10600000
+Tây Hồ,22.5,Mini apartment,Không nội thất,3,0,1,1,0,5,5600000
+Hoàn Kiếm,52.1,Chung cư mini,Không nội thất,4,0,0,1,1,9,11300000
+Ba Đình,16.5,Chung cư mini,Không nội thất,1,0,1,1,1,6,3000000
+Hai Bà Trưng,23.5,Chung cư mini,Nội thất đầy đủ,1,0,1,0,1,4,4500000
+Cầu Giấy,34.4,Chung cư mini,Nội thất cơ bản,2,1,1,1,1,3,7200000
+Ba Đình,36.3,Chung cư mini,Không nội thất,4,1,1,1,1,8,8600000
+Tây Hồ,12.7,Phòng trọ,Nội thất cơ bản,1,0,1,1,0,3,2900000
+Nam Từ Liêm,45.6,Phòng trọ,Nội thất cơ bản,4,1,1,1,1,1,6000000
+Cầu Giấy,27.5,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,4,5000000
+Bắc Từ Liêm,29.5,Phòng trọ,Không nội thất,1,1,1,1,1,5,3400000
+Thanh Xuân,46.8,Phòng trọ,Nội thất đầy đủ,3,0,1,1,1,5,8200000
+Cầu Giấy,28.3,Phòng trọ,Nội thất cơ bản,2,0,1,1,1,5,5400000
+Tây Hồ,14.0,Chung cư mini,Không nội thất,1,0,1,1,1,8,2800000
+Hoàng Mai,19.6,Phòng trọ,Nội thất đầy đủ,1,1,1,1,0,8,2900000
+Thanh Xuân,53.1,CHDV,Không nội thất,4,0,1,1,1,4,10600000
+Đống Đa,15.0,Phòng trọ,Nội thất đầy đủ,1,0,1,1,1,9,3100000
+Hai Bà Trưng,27.3,Phòng trọ,Nội thất đầy đủ,2,1,0,1,0,1,5600000
+Đống Đa,33.6,CHDV,Nội thất đầy đủ,1,1,1,0,0,5,10100000
+Cầu Giấy,33.2,Chung cư mini,Nội thất đầy đủ,2,1,1,1,0,5,9000000
+Đống Đa,12.2,Phòng trọ,Nội thất cơ bản,1,1,1,1,1,5,2300000
+Tây Hồ,33.5,Mini apartment,Nội thất đầy đủ,2,0,1,0,1,8,11600000
+Bắc Từ Liêm,28.5,Mini apartment,Nội thất cơ bản,1,1,1,0,0,9,4700000
+Nam Từ Liêm,53.8,Phòng trọ,Nội thất đầy đủ,4,0,1,1,1,3,8800000
+Hai Bà Trưng,18.8,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,9,3500000
+Đống Đa,27.2,Mini apartment,Nội thất đầy đủ,3,1,1,0,1,8,8600000
+Đống Đa,30.0,Chung cư mini,Nội thất đầy đủ,1,1,1,1,1,3,7700000
+Cầu Giấy,28.8,Chung cư mini,Nội thất cơ bản,1,1,0,1,0,2,5500000
+Nam Từ Liêm,40.6,CHDV,Nội thất đầy đủ,2,1,1,0,0,4,10000000
+Ba Đình,21.3,Phòng trọ,Nội thất cơ bản,2,1,0,0,0,2,4400000
+Đống Đa,21.5,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,4,5200000
+Tây Hồ,43.4,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,5,8700000
+Hoàng Mai,33.5,CHDV,Nội thất cơ bản,2,0,1,0,0,2,5700000
+Hai Bà Trưng,29.9,Chung cư mini,Nội thất cơ bản,2,1,0,0,0,8,6800000
+Đống Đa,19.3,Chung cư mini,Nội thất cơ bản,1,1,1,0,1,1,4600000
+Tây Hồ,20.1,Phòng trọ,Nội thất đầy đủ,1,0,1,1,1,3,4700000
+Tây Hồ,12.5,Phòng trọ,Nội thất cơ bản,1,1,1,0,0,7,2000000
+Hai Bà Trưng,15.9,Chung cư mini,Nội thất cơ bản,1,0,1,1,1,10,3000000
+Ba Đình,35.9,CHDV,Nội thất cơ bản,3,0,0,0,1,1,8500000
+Tây Hồ,50.4,Chung cư mini,Nội thất đầy đủ,4,1,1,1,1,2,18500000
+Hoàng Mai,24.3,Phòng trọ,Nội thất cơ bản,2,0,1,0,1,3,2600000
+Tây Hồ,26.1,Mini apartment,Không nội thất,2,0,1,1,1,2,7300000
+Tây Hồ,17.0,Phòng trọ,Không nội thất,1,0,1,1,1,2,2800000
+Tây Hồ,28.7,Mini apartment,Không nội thất,3,0,1,0,1,6,5900000
+Bắc Từ Liêm,13.6,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,7,1800000
+Bắc Từ Liêm,51.5,Chung cư mini,Không nội thất,3,0,1,1,1,6,7600000
+Ba Đình,40.9,Phòng trọ,Không nội thất,2,1,0,0,1,6,5800000
+Đống Đa,54.6,Mini apartment,Nội thất đầy đủ,4,1,1,1,1,9,17000000
+Tây Hồ,50.0,Chung cư mini,Nội thất đầy đủ,4,1,0,0,1,8,16900000
+Nam Từ Liêm,32.3,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,8,4300000
+Đống Đa,34.3,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,6,8500000
+Ba Đình,20.2,Phòng trọ,Không nội thất,2,0,1,1,1,5,3100000
+Hoàn Kiếm,31.9,Phòng trọ,Nội thất cơ bản,1,0,0,1,1,9,5500000
+Đống Đa,50.8,Mini apartment,Nội thất cơ bản,4,1,1,0,1,2,12500000
+Đống Đa,14.2,Phòng trọ,Nội thất cơ bản,1,0,1,0,1,7,2000000
+Thanh Xuân,49.1,CHDV,Nội thất cơ bản,4,0,1,1,1,6,11800000
+Cầu Giấy,26.7,Chung cư mini,Nội thất cơ bản,2,1,0,0,1,7,6000000
+Thanh Xuân,50.7,Chung cư mini,Nội thất cơ bản,4,1,1,0,0,4,9000000
+Hoàng Mai,52.5,Phòng trọ,Nội thất đầy đủ,3,0,1,0,0,9,9400000
+Bắc Từ Liêm,40.8,Phòng trọ,Không nội thất,4,0,1,0,1,7,4400000
+Bắc Từ Liêm,40.6,CHDV,Không nội thất,3,0,0,1,1,2,7000000
+Cầu Giấy,31.5,Mini apartment,Không nội thất,1,0,0,1,0,4,7200000
+Hai Bà Trưng,47.9,Phòng trọ,Không nội thất,4,1,1,1,1,5,8400000
+Hai Bà Trưng,53.3,Phòng trọ,Nội thất cơ bản,4,1,1,1,1,2,7900000
+Ba Đình,45.3,Chung cư mini,Không nội thất,2,1,0,1,1,10,8100000
+Cầu Giấy,38.7,Mini apartment,Nội thất đầy đủ,2,1,0,1,1,8,14200000
+Đống Đa,38.1,Phòng trọ,Không nội thất,2,0,1,1,0,1,5800000
+Hai Bà Trưng,48.5,Phòng trọ,Không nội thất,3,0,0,0,1,3,6300000
+Tây Hồ,35.3,Mini apartment,Nội thất cơ bản,2,1,1,0,1,1,9400000
+Nam Từ Liêm,46.6,Phòng trọ,Không nội thất,3,0,1,1,0,5,5400000
+Đống Đa,33.9,Phòng trọ,Nội thất cơ bản,1,1,0,0,1,8,6100000
+Hoàng Mai,14.7,Chung cư mini,Nội thất cơ bản,1,0,1,0,1,7,2000000
+Tây Hồ,28.5,Mini apartment,Không nội thất,3,0,0,1,1,9,7300000
+Tây Hồ,31.1,Phòng trọ,Không nội thất,2,0,1,1,1,2,5800000
+Cầu Giấy,18.1,Chung cư mini,Nội thất cơ bản,1,0,1,1,0,8,4400000
+Ba Đình,16.4,Chung cư mini,Không nội thất,2,1,0,0,0,8,3300000
+Hoàng Mai,35.0,Chung cư mini,Không nội thất,2,0,1,1,0,6,4900000
+Hai Bà Trưng,15.7,Chung cư mini,Không nội thất,2,0,1,1,1,3,3000000
+Cầu Giấy,25.0,Chung cư mini,Không nội thất,2,1,0,1,1,2,5300000
+Hai Bà Trưng,44.0,Phòng trọ,Nội thất cơ bản,3,0,1,0,0,8,7900000
+Cầu Giấy,53.5,Chung cư mini,Nội thất cơ bản,4,0,1,0,1,6,10100000
+Cầu Giấy,42.9,Chung cư mini,Nội thất cơ bản,2,1,0,0,0,4,10200000
+Cầu Giấy,54.7,Chung cư mini,Không nội thất,4,1,1,0,1,5,10500000
+Ba Đình,42.0,Mini apartment,Không nội thất,4,0,0,0,0,5,9200000
+Cầu Giấy,24.6,Phòng trọ,Nội thất đầy đủ,3,0,0,0,1,9,5800000
+Hoàn Kiếm,40.9,CHDV,Nội thất cơ bản,4,1,1,1,1,9,12900000
+Nam Từ Liêm,42.2,CHDV,Nội thất đầy đủ,3,1,1,1,1,8,13500000
+Hai Bà Trưng,28.0,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,8,5100000
+Đống Đa,12.8,Chung cư mini,Nội thất cơ bản,1,0,1,0,1,2,2700000
+Thanh Xuân,42.2,Phòng trọ,Nội thất cơ bản,3,0,1,0,1,3,5600000
+Hoàng Mai,12.9,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,8,1700000
+Bắc Từ Liêm,39.1,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,5,4800000
+Ba Đình,19.0,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,7,3100000
+Đống Đa,36.3,Phòng trọ,Không nội thất,3,0,0,0,0,8,5600000
+Tây Hồ,33.7,CHDV,Nội thất cơ bản,2,1,0,1,1,6,9800000
+Hoàn Kiếm,12.6,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,5,3200000
+Bắc Từ Liêm,27.6,CHDV,Nội thất đầy đủ,2,1,1,1,1,8,6400000
+Thanh Xuân,37.8,Chung cư mini,Nội thất cơ bản,3,0,1,1,1,1,7000000
+Đống Đa,48.5,Mini apartment,Nội thất cơ bản,3,1,1,1,0,1,12600000
+Bắc Từ Liêm,50.2,Chung cư mini,Không nội thất,4,1,0,1,0,1,6500000
+Đống Đa,32.8,Phòng trọ,Nội thất cơ bản,2,0,0,1,0,3,5800000
+Hoàn Kiếm,43.3,Chung cư mini,Nội thất cơ bản,4,1,0,1,1,10,11600000
+Thanh Xuân,25.6,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,6,4900000
+Tây Hồ,26.7,Chung cư mini,Nội thất cơ bản,3,0,1,0,1,6,5600000
+Cầu Giấy,20.4,Mini apartment,Nội thất cơ bản,1,1,1,1,1,5,6000000
+Hai Bà Trưng,36.2,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,7,6800000
+Tây Hồ,25.5,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,5,6500000
+Cầu Giấy,15.6,CHDV,Nội thất cơ bản,1,0,0,0,1,2,3900000
+Ba Đình,41.5,Mini apartment,Nội thất cơ bản,2,1,0,0,0,4,10500000
+Nam Từ Liêm,42.4,Chung cư mini,Nội thất đầy đủ,2,0,0,1,0,1,6800000
+Hoàng Mai,27.5,Phòng trọ,Không nội thất,2,1,0,1,1,7,2800000
+Hoàng Mai,15.3,Chung cư mini,Nội thất đầy đủ,1,1,1,0,1,4,3100000
+Hai Bà Trưng,30.3,Phòng trọ,Không nội thất,2,0,1,1,0,4,4000000
+Thanh Xuân,31.0,CHDV,Nội thất đầy đủ,2,0,1,1,1,4,7100000
+Hoàn Kiếm,40.8,Mini apartment,Nội thất cơ bản,3,1,1,0,0,3,10200000
+Thanh Xuân,25.6,CHDV,Nội thất cơ bản,2,0,1,1,1,8,6300000
+Hoàn Kiếm,41.4,Mini apartment,Nội thất đầy đủ,3,1,0,0,0,4,15100000
+Thanh Xuân,49.5,Phòng trọ,Không nội thất,4,1,1,1,1,8,6100000
+Nam Từ Liêm,22.2,CHDV,Không nội thất,1,1,1,1,1,9,4200000
+Ba Đình,54.1,CHDV,Nội thất cơ bản,3,0,1,1,1,1,16100000
+Ba Đình,28.6,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,4,5300000
+Cầu Giấy,23.5,Mini apartment,Nội thất cơ bản,1,1,1,0,0,6,6600000
+Bắc Từ Liêm,30.1,Phòng trọ,Không nội thất,2,1,1,1,1,8,3400000
+Ba Đình,16.1,Chung cư mini,Không nội thất,1,1,1,1,1,6,2800000
+Ba Đình,17.4,CHDV,Không nội thất,1,0,0,1,1,6,4100000
+Tây Hồ,29.8,Chung cư mini,Không nội thất,1,0,1,0,0,10,6800000
+Tây Hồ,44.8,Phòng trọ,Nội thất cơ bản,3,0,1,0,0,4,8100000
+Cầu Giấy,50.7,Chung cư mini,Nội thất đầy đủ,4,1,1,0,1,9,13000000
+Bắc Từ Liêm,40.6,Chung cư mini,Nội thất đầy đủ,3,1,0,1,1,7,8300000
+Hai Bà Trưng,16.5,Mini apartment,Nội thất đầy đủ,1,0,1,0,1,6,4100000
+Tây Hồ,40.9,Phòng trọ,Không nội thất,2,0,0,1,1,1,6700000
+Hai Bà Trưng,39.3,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,2,6500000
+Đống Đa,46.6,CHDV,Không nội thất,2,0,0,1,1,6,9500000
+Tây Hồ,47.5,Phòng trọ,Không nội thất,4,0,1,1,0,1,7700000
+Nam Từ Liêm,49.3,Chung cư mini,Nội thất cơ bản,3,0,1,1,1,5,9300000
+Bắc Từ Liêm,29.8,Chung cư mini,Không nội thất,2,1,1,1,1,1,3700000
+Cầu Giấy,42.0,Mini apartment,Không nội thất,4,1,1,0,1,3,11300000
+Đống Đa,23.5,Chung cư mini,Nội thất đầy đủ,1,1,1,1,1,7,6900000
+Bắc Từ Liêm,55.0,Chung cư mini,Nội thất cơ bản,4,1,0,1,1,5,8100000
+Nam Từ Liêm,19.5,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,10,3200000
+Bắc Từ Liêm,12.4,Phòng trọ,Không nội thất,2,1,1,1,1,1,1400000
+Nam Từ Liêm,18.4,Phòng trọ,Không nội thất,1,0,1,0,0,1,2300000
+Nam Từ Liêm,45.4,Phòng trọ,Nội thất đầy đủ,3,1,0,0,1,8,7500000
+Hai Bà Trưng,31.2,Chung cư mini,Không nội thất,3,1,1,1,1,9,5700000
+Thanh Xuân,31.2,CHDV,Nội thất cơ bản,2,0,1,0,0,7,6500000
+Đống Đa,53.1,Chung cư mini,Không nội thất,4,0,1,1,1,3,7700000
+Bắc Từ Liêm,51.5,CHDV,Nội thất cơ bản,4,0,0,0,1,6,10200000
+Hoàn Kiếm,25.4,Mini apartment,Không nội thất,2,1,1,0,1,3,6000000
+Đống Đa,21.0,CHDV,Nội thất đầy đủ,3,0,0,0,0,10,6600000
+Thanh Xuân,48.5,Chung cư mini,Nội thất đầy đủ,4,1,1,1,0,4,13400000
+Đống Đa,51.0,Chung cư mini,Nội thất đầy đủ,4,1,1,1,1,4,13000000
+Ba Đình,35.3,Phòng trọ,Không nội thất,2,0,1,1,1,3,5400000
+Hoàn Kiếm,39.1,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,10,11600000
+Thanh Xuân,23.0,Phòng trọ,Nội thất cơ bản,2,1,1,0,0,6,3300000
+Hai Bà Trưng,46.4,Mini apartment,Nội thất cơ bản,3,1,1,0,1,5,11800000
+Bắc Từ Liêm,39.2,CHDV,Nội thất cơ bản,4,1,0,1,0,9,7300000
+Hoàng Mai,33.7,Phòng trọ,Không nội thất,3,1,1,1,1,9,4800000
+Thanh Xuân,14.6,Chung cư mini,Không nội thất,1,0,0,0,1,3,2100000
+Cầu Giấy,51.4,CHDV,Nội thất đầy đủ,3,1,0,1,1,9,18200000
+Bắc Từ Liêm,38.5,Phòng trọ,Không nội thất,3,0,0,1,1,3,4500000
+Thanh Xuân,20.3,Phòng trọ,Nội thất cơ bản,1,1,0,0,1,4,3100000
+Ba Đình,38.1,Mini apartment,Nội thất cơ bản,3,1,1,0,0,1,11100000
+Hoàng Mai,41.1,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,5,5800000
+Ba Đình,34.6,Phòng trọ,Nội thất đầy đủ,2,1,0,0,1,9,7400000
+Hoàng Mai,42.9,Chung cư mini,Nội thất đầy đủ,3,0,0,0,1,2,7800000
+Cầu Giấy,37.0,Mini apartment,Không nội thất,3,1,0,1,0,4,7800000
+Bắc Từ Liêm,52.8,Chung cư mini,Không nội thất,4,1,1,0,0,10,8200000
+Hai Bà Trưng,14.3,Phòng trọ,Nội thất cơ bản,1,0,1,0,1,2,2000000
+Ba Đình,16.6,Phòng trọ,Không nội thất,1,1,1,0,1,8,2500000
+Ba Đình,19.5,Chung cư mini,Không nội thất,1,0,0,1,1,9,4300000
+Nam Từ Liêm,41.7,Chung cư mini,Nội thất cơ bản,3,0,1,1,1,3,6500000
+Hoàng Mai,39.8,CHDV,Nội thất cơ bản,2,1,1,0,1,9,7200000
+Tây Hồ,50.4,Phòng trọ,Nội thất đầy đủ,4,1,1,0,1,6,12800000
+Bắc Từ Liêm,43.5,Mini apartment,Không nội thất,3,1,1,1,1,6,8000000
+Hoàng Mai,33.9,Phòng trọ,Không nội thất,2,0,1,1,1,7,4000000
+Nam Từ Liêm,54.6,Phòng trọ,Không nội thất,4,1,0,1,1,5,5800000
+Đống Đa,23.4,Phòng trọ,Nội thất đầy đủ,2,1,0,0,1,6,4900000
+Hoàng Mai,47.8,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,1,7300000
+Hai Bà Trưng,30.4,Chung cư mini,Nội thất đầy đủ,3,1,1,1,1,3,8300000
+Bắc Từ Liêm,39.9,Chung cư mini,Nội thất đầy đủ,3,1,0,1,1,9,7500000
+Nam Từ Liêm,43.3,Phòng trọ,Nội thất cơ bản,4,0,1,1,0,5,6800000
+Đống Đa,39.3,Chung cư mini,Nội thất cơ bản,3,1,0,0,1,5,8000000
+Hoàn Kiếm,18.0,Phòng trọ,Nội thất cơ bản,1,0,1,1,1,8,3500000
+Nam Từ Liêm,31.0,CHDV,Nội thất cơ bản,1,0,1,0,1,2,4800000
+Hoàn Kiếm,36.1,Mini apartment,Nội thất cơ bản,3,1,1,0,0,7,10000000
+Bắc Từ Liêm,48.5,Phòng trọ,Nội thất cơ bản,3,1,0,1,1,9,6500000
+Ba Đình,31.1,Chung cư mini,Nội thất đầy đủ,2,1,1,1,0,7,9100000
+Nam Từ Liêm,51.5,Phòng trọ,Nội thất đầy đủ,4,0,1,0,1,5,8800000
+Cầu Giấy,30.9,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,6,7900000
+Hoàn Kiếm,35.6,Phòng trọ,Nội thất đầy đủ,3,0,1,0,1,4,8500000
+Hai Bà Trưng,46.2,CHDV,Nội thất cơ bản,4,0,1,1,1,7,11600000
+Cầu Giấy,37.1,Chung cư mini,Không nội thất,4,1,1,1,1,1,8800000
+Thanh Xuân,53.3,Phòng trọ,Không nội thất,4,0,1,0,1,4,7100000
+Thanh Xuân,40.4,CHDV,Nội thất cơ bản,4,1,1,0,0,3,8400000
+Đống Đa,34.5,Chung cư mini,Nội thất đầy đủ,3,0,1,0,1,4,8000000
+Ba Đình,13.0,CHDV,Không nội thất,1,1,1,0,1,1,2400000
+Bắc Từ Liêm,29.8,Chung cư mini,Nội thất đầy đủ,1,1,1,0,1,2,4800000
+Nam Từ Liêm,24.9,Chung cư mini,Không nội thất,1,1,1,1,1,9,3200000
+Tây Hồ,44.2,Phòng trọ,Không nội thất,3,0,1,0,1,7,7700000
+Hai Bà Trưng,21.0,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,6,3900000
+Hoàn Kiếm,20.8,Mini apartment,Không nội thất,2,0,1,0,1,2,4500000
+Bắc Từ Liêm,20.1,Phòng trọ,Không nội thất,1,1,1,1,1,1,2000000
+Cầu Giấy,17.4,Mini apartment,Nội thất cơ bản,1,1,1,0,1,2,4700000
+Thanh Xuân,25.4,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,7,5500000
+Hai Bà Trưng,50.1,Phòng trọ,Nội thất cơ bản,4,1,1,1,1,2,8700000
+Tây Hồ,45.3,Phòng trọ,Nội thất cơ bản,3,1,0,0,0,3,9300000
+Nam Từ Liêm,43.6,Phòng trọ,Nội thất cơ bản,2,1,0,1,0,8,5700000
+Đống Đa,46.3,Mini apartment,Không nội thất,3,0,1,1,1,7,9200000
+Tây Hồ,23.6,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,9,5500000
+Hai Bà Trưng,50.2,Phòng trọ,Không nội thất,4,1,0,0,0,4,5700000
+Tây Hồ,17.9,Phòng trọ,Nội thất đầy đủ,1,1,0,0,1,7,4200000
+Hai Bà Trưng,26.5,Phòng trọ,Nội thất cơ bản,3,0,1,0,1,1,4200000
+Hai Bà Trưng,37.2,Chung cư mini,Nội thất đầy đủ,3,1,1,1,1,2,9100000
+Hoàng Mai,16.4,Phòng trọ,Không nội thất,1,1,1,0,0,7,2100000
+Hoàn Kiếm,43.4,CHDV,Nội thất cơ bản,3,1,1,0,1,2,13400000
+Thanh Xuân,28.7,Phòng trọ,Không nội thất,2,0,1,0,1,6,3800000
+Hoàng Mai,45.7,Phòng trọ,Không nội thất,2,0,1,0,1,10,5400000
+Nam Từ Liêm,33.2,Chung cư mini,Nội thất cơ bản,3,1,0,0,0,9,5200000
+Hoàng Mai,19.8,Phòng trọ,Không nội thất,1,1,1,0,1,5,2500000
+Ba Đình,43.6,Mini apartment,Nội thất cơ bản,3,0,1,0,0,10,11500000
+Ba Đình,22.8,Chung cư mini,Không nội thất,1,0,1,0,0,7,4800000
+Thanh Xuân,33.1,Phòng trọ,Nội thất cơ bản,2,0,1,0,1,1,4100000
+Tây Hồ,15.2,Chung cư mini,Nội thất đầy đủ,1,0,1,1,1,8,4400000
+Hoàn Kiếm,38.6,Phòng trọ,Nội thất cơ bản,3,0,1,0,1,9,7700000
+Thanh Xuân,40.6,Phòng trọ,Nội thất cơ bản,2,0,1,0,0,5,5300000
+Hai Bà Trưng,28.3,Mini apartment,Nội thất cơ bản,2,1,1,0,1,6,7200000
+Cầu Giấy,53.0,CHDV,Nội thất đầy đủ,4,1,0,0,0,8,17600000
+Hoàn Kiếm,49.6,Mini apartment,Nội thất cơ bản,4,1,1,0,1,4,12900000
+Hoàn Kiếm,42.4,Chung cư mini,Nội thất cơ bản,2,0,1,1,1,2,10400000
+Hai Bà Trưng,42.7,Chung cư mini,Nội thất đầy đủ,3,0,1,1,1,10,11300000
+Hai Bà Trưng,22.9,Phòng trọ,Nội thất đầy đủ,1,0,1,0,1,8,3700000
+Đống Đa,40.2,Phòng trọ,Nội thất cơ bản,3,1,1,1,0,2,6400000
+Thanh Xuân,20.5,CHDV,Nội thất cơ bản,1,1,1,0,1,5,4500000
+Hai Bà Trưng,18.2,Phòng trọ,Nội thất đầy đủ,1,1,1,0,1,6,3500000
+Ba Đình,55.0,CHDV,Nội thất cơ bản,4,1,1,1,1,5,15900000
+Nam Từ Liêm,38.8,CHDV,Không nội thất,4,0,0,1,1,6,7400000
+Cầu Giấy,30.5,Phòng trọ,Không nội thất,2,0,1,1,1,6,4900000
+Thanh Xuân,24.4,Chung cư mini,Nội thất đầy đủ,2,1,1,0,1,3,5400000
+Bắc Từ Liêm,38.0,Chung cư mini,Không nội thất,3,1,1,0,0,3,3900000
+Ba Đình,14.1,Phòng trọ,Nội thất đầy đủ,2,0,0,1,1,9,3100000
+Tây Hồ,16.1,CHDV,Nội thất cơ bản,1,1,1,1,1,3,4700000
+Hai Bà Trưng,13.4,Chung cư mini,Nội thất cơ bản,1,0,1,0,1,3,2500000
+Bắc Từ Liêm,33.5,Phòng trọ,Không nội thất,3,1,0,1,1,2,3500000
+Hai Bà Trưng,37.8,Chung cư mini,Không nội thất,4,1,1,1,1,7,6900000
+Hoàn Kiếm,14.7,Mini apartment,Nội thất đầy đủ,1,1,1,0,0,10,5300000
+Ba Đình,43.0,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,10,11800000
+Hoàn Kiếm,21.9,CHDV,Nội thất cơ bản,3,1,0,1,1,4,6200000
+Đống Đa,41.5,Phòng trọ,Nội thất cơ bản,3,1,0,0,1,1,7300000
+Hoàn Kiếm,54.2,CHDV,Nội thất cơ bản,4,1,0,1,1,6,20400000
+Đống Đa,41.7,CHDV,Nội thất cơ bản,3,1,0,0,0,5,11100000
+Đống Đa,50.0,Phòng trọ,Nội thất cơ bản,4,1,0,0,1,2,9500000
+Bắc Từ Liêm,52.8,Phòng trọ,Không nội thất,4,1,1,1,1,6,5900000
+Hai Bà Trưng,32.9,CHDV,Nội thất cơ bản,2,1,0,1,1,1,8700000
+Tây Hồ,42.2,Chung cư mini,Nội thất đầy đủ,4,0,1,1,0,3,11500000
+Hoàn Kiếm,48.6,CHDV,Nội thất đầy đủ,2,0,1,1,0,4,17700000
+Ba Đình,27.3,Phòng trọ,Không nội thất,2,1,1,1,1,3,4500000
+Đống Đa,23.2,Mini apartment,Nội thất đầy đủ,2,1,1,1,1,6,6500000
+Hai Bà Trưng,52.7,CHDV,Nội thất cơ bản,4,1,0,0,0,4,10200000
+Cầu Giấy,43.2,Mini apartment,Nội thất cơ bản,2,1,1,1,1,1,9200000
+Thanh Xuân,21.4,Phòng trọ,Không nội thất,1,0,1,1,1,5,3100000
+Bắc Từ Liêm,31.3,Chung cư mini,Nội thất cơ bản,1,0,1,0,1,5,3800000
+Tây Hồ,46.2,Chung cư mini,Nội thất cơ bản,2,0,0,1,0,9,11400000
+Hoàng Mai,35.5,Phòng trọ,Nội thất cơ bản,4,1,1,1,1,8,4500000
+Bắc Từ Liêm,39.9,Chung cư mini,Nội thất đầy đủ,3,1,1,1,1,8,7200000
+Cầu Giấy,44.4,Phòng trọ,Nội thất đầy đủ,3,0,1,0,0,5,9800000
+Thanh Xuân,38.7,CHDV,Nội thất cơ bản,3,1,1,1,1,8,9700000
+Cầu Giấy,35.2,Chung cư mini,Nội thất đầy đủ,3,1,1,0,0,10,9600000
+Hoàn Kiếm,44.2,Phòng trọ,Nội thất cơ bản,2,0,1,0,1,7,10000000
+Đống Đa,43.3,Chung cư mini,Không nội thất,3,0,0,1,0,1,7500000
+Tây Hồ,39.1,Chung cư mini,Nội thất cơ bản,3,0,1,1,1,7,11200000
+Nam Từ Liêm,27.5,Phòng trọ,Không nội thất,1,1,1,0,1,8,2900000
+Đống Đa,29.4,Mini apartment,Nội thất cơ bản,2,1,1,0,1,3,6100000
+Nam Từ Liêm,53.7,Mini apartment,Không nội thất,4,1,1,1,1,9,9900000
+Thanh Xuân,16.8,Chung cư mini,Không nội thất,1,0,1,1,1,8,2800000
+Hai Bà Trưng,23.5,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,2,4000000
+Hoàng Mai,33.2,CHDV,Không nội thất,2,0,1,1,1,6,5600000
+Ba Đình,48.0,Chung cư mini,Nội thất cơ bản,2,0,0,0,1,4,12000000
+Đống Đa,19.0,Phòng trọ,Không nội thất,2,1,1,0,1,3,2700000
+Tây Hồ,23.9,Chung cư mini,Nội thất cơ bản,1,1,1,0,1,6,4700000
+Cầu Giấy,14.8,Chung cư mini,Nội thất cơ bản,1,1,1,0,1,10,2800000
+Tây Hồ,42.4,Chung cư mini,Nội thất đầy đủ,4,0,1,0,0,9,14700000
+Thanh Xuân,22.2,Phòng trọ,Nội thất cơ bản,3,0,1,0,1,2,3700000
+Nam Từ Liêm,28.7,Chung cư mini,Không nội thất,3,0,1,1,1,10,4300000
+Cầu Giấy,31.1,Mini apartment,Nội thất cơ bản,2,1,0,0,0,10,8500000
+Ba Đình,50.3,Phòng trọ,Không nội thất,4,1,1,1,1,10,9500000
+Ba Đình,29.7,CHDV,Nội thất cơ bản,2,0,1,1,1,5,9600000
+Đống Đa,18.2,Mini apartment,Nội thất cơ bản,1,1,0,1,1,6,3900000
+Thanh Xuân,34.5,Chung cư mini,Nội thất đầy đủ,1,0,1,1,1,4,6700000
+Hai Bà Trưng,53.4,Phòng trọ,Không nội thất,4,0,0,1,1,7,8500000
+Thanh Xuân,38.1,Chung cư mini,Nội thất cơ bản,3,1,1,0,1,2,6200000
+Nam Từ Liêm,54.3,Chung cư mini,Không nội thất,4,1,1,0,0,7,8500000
+Tây Hồ,48.2,CHDV,Nội thất cơ bản,4,1,1,0,1,2,14500000
+Ba Đình,13.5,Chung cư mini,Nội thất cơ bản,1,1,0,0,1,1,3200000
+Tây Hồ,40.3,Mini apartment,Nội thất đầy đủ,3,0,0,1,0,5,12900000
+Tây Hồ,24.3,Phòng trọ,Không nội thất,2,0,1,1,1,2,4100000
+Tây Hồ,36.1,Phòng trọ,Không nội thất,2,0,1,1,0,8,5900000
+Ba Đình,24.0,Chung cư mini,Nội thất cơ bản,2,0,1,0,1,8,5000000
+Bắc Từ Liêm,27.0,Phòng trọ,Không nội thất,3,1,1,1,1,1,3000000
+Hoàn Kiếm,51.7,Phòng trọ,Không nội thất,4,1,1,0,1,4,10900000
+Nam Từ Liêm,20.9,Phòng trọ,Nội thất cơ bản,2,0,1,1,1,9,2900000
+Bắc Từ Liêm,49.6,Phòng trọ,Không nội thất,4,1,1,0,1,5,6400000
+Nam Từ Liêm,13.3,Phòng trọ,Không nội thất,2,0,1,0,1,10,1700000
+Cầu Giấy,15.9,Mini apartment,Nội thất đầy đủ,1,0,1,0,1,6,4700000
+Thanh Xuân,48.8,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,3,7300000
+Thanh Xuân,39.1,CHDV,Không nội thất,3,1,0,0,1,5,7200000
+Hoàng Mai,44.1,CHDV,Không nội thất,3,1,1,0,1,1,8800000
+Thanh Xuân,21.0,Mini apartment,Nội thất cơ bản,2,0,0,1,1,8,4700000
+Ba Đình,35.1,Phòng trọ,Không nội thất,3,1,1,1,1,6,6200000
+Hai Bà Trưng,43.7,Mini apartment,Nội thất cơ bản,2,0,0,0,1,2,10300000
+Đống Đa,39.0,Chung cư mini,Không nội thất,3,1,1,1,1,4,8200000
+Hoàng Mai,32.3,Chung cư mini,Nội thất cơ bản,2,0,1,0,1,4,4300000
+Đống Đa,53.3,Chung cư mini,Nội thất cơ bản,4,1,0,0,1,9,11200000
+Nam Từ Liêm,41.1,CHDV,Nội thất cơ bản,2,1,1,0,1,9,9300000
+Đống Đa,51.0,Phòng trọ,Nội thất đầy đủ,4,0,0,0,0,5,11100000
+Đống Đa,43.4,CHDV,Nội thất cơ bản,3,0,0,1,1,3,13500000
+Hoàng Mai,43.6,Chung cư mini,Không nội thất,3,1,0,1,1,1,6400000
+Cầu Giấy,15.4,CHDV,Không nội thất,1,0,1,0,0,6,3600000
+Tây Hồ,27.5,Mini apartment,Nội thất cơ bản,2,0,1,1,0,8,7100000
+Thanh Xuân,48.9,Phòng trọ,Không nội thất,4,1,1,1,0,1,6100000
+Thanh Xuân,22.0,Mini apartment,Không nội thất,1,1,0,0,1,1,3200000
+Ba Đình,17.0,Phòng trọ,Nội thất đầy đủ,1,0,1,0,1,7,3700000
+Hoàng Mai,26.0,Phòng trọ,Nội thất cơ bản,2,1,1,1,0,7,4000000
+Ba Đình,21.5,Phòng trọ,Nội thất cơ bản,2,1,1,1,0,2,4500000
+Hai Bà Trưng,51.8,Phòng trọ,Nội thất cơ bản,3,0,1,1,1,3,8300000
+Hai Bà Trưng,49.3,Chung cư mini,Nội thất cơ bản,3,1,1,1,1,2,11500000
+Ba Đình,33.5,Phòng trọ,Không nội thất,2,1,1,0,0,6,7100000
+Hoàng Mai,14.6,Phòng trọ,Nội thất đầy đủ,2,0,0,1,1,8,2000000
+Ba Đình,42.7,Mini apartment,Không nội thất,3,1,1,0,1,8,7800000
+Thanh Xuân,38.8,CHDV,Nội thất đầy đủ,3,0,0,1,1,1,10400000
+Bắc Từ Liêm,53.7,CHDV,Nội thất đầy đủ,4,0,1,1,1,9,13900000
+Hoàn Kiếm,36.0,Mini apartment,Nội thất đầy đủ,2,1,1,0,1,8,10700000
+Đống Đa,26.5,CHDV,Nội thất cơ bản,3,1,1,0,1,9,7700000
+Hoàn Kiếm,34.3,Phòng trọ,Không nội thất,2,1,1,1,0,9,6400000
+Hoàng Mai,54.1,Phòng trọ,Nội thất cơ bản,4,1,1,0,1,6,7700000
+Hoàn Kiếm,41.9,CHDV,Nội thất cơ bản,4,0,0,1,1,3,12000000
+Hai Bà Trưng,40.9,Phòng trọ,Nội thất cơ bản,4,0,1,1,0,1,5800000
+Nam Từ Liêm,22.3,Chung cư mini,Nội thất đầy đủ,3,1,1,1,1,8,4400000
+Đống Đa,44.0,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,10,8200000
+Tây Hồ,44.3,Phòng trọ,Không nội thất,4,1,0,1,1,3,7500000
+Hoàng Mai,25.6,Chung cư mini,Không nội thất,3,1,1,1,1,7,4000000
+Đống Đa,32.8,Chung cư mini,Nội thất cơ bản,2,1,1,1,1,10,7500000
+Hoàn Kiếm,24.7,Chung cư mini,Nội thất cơ bản,1,1,1,1,1,6,5900000
+Hai Bà Trưng,23.1,Chung cư mini,Nội thất đầy đủ,1,0,0,1,0,3,5000000
+Cầu Giấy,13.1,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,6,2600000
+Bắc Từ Liêm,24.3,Phòng trọ,Nội thất đầy đủ,2,1,1,0,1,3,3900000
+Tây Hồ,35.8,Mini apartment,Nội thất đầy đủ,3,0,1,1,1,9,13900000
+Bắc Từ Liêm,12.1,Chung cư mini,Nội thất đầy đủ,1,1,0,0,1,1,1900000
+Đống Đa,24.2,Phòng trọ,Không nội thất,2,1,1,0,1,8,3800000
+Hai Bà Trưng,49.9,CHDV,Nội thất đầy đủ,4,1,0,0,1,5,10900000
+Hai Bà Trưng,37.5,Phòng trọ,Không nội thất,3,1,1,1,0,4,5800000
+Hoàn Kiếm,38.1,Chung cư mini,Không nội thất,4,1,1,1,1,1,10300000
+Thanh Xuân,29.3,Phòng trọ,Nội thất cơ bản,2,0,1,1,1,9,3300000
+Hoàn Kiếm,41.1,CHDV,Nội thất cơ bản,3,1,0,0,1,9,12700000
+Thanh Xuân,20.2,Chung cư mini,Không nội thất,1,0,1,0,1,5,2800000
+Thanh Xuân,47.2,Phòng trọ,Không nội thất,2,1,0,0,1,9,6000000
+Tây Hồ,17.0,Mini apartment,Không nội thất,1,1,1,1,0,10,4000000
+Hoàn Kiếm,40.2,Phòng trọ,Nội thất đầy đủ,3,1,0,0,1,9,10000000
+Cầu Giấy,26.7,Phòng trọ,Không nội thất,2,1,1,0,1,7,4700000
+Ba Đình,44.1,Phòng trọ,Không nội thất,4,1,1,0,0,8,7300000
+Ba Đình,35.6,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,1,6400000
+Hoàn Kiếm,31.5,Phòng trọ,Nội thất cơ bản,1,1,1,1,0,4,6500000
+Hoàn Kiếm,19.3,Chung cư mini,Nội thất đầy đủ,1,1,1,1,1,10,6100000
+Bắc Từ Liêm,39.4,CHDV,Không nội thất,3,1,1,0,1,10,6700000
+Tây Hồ,53.9,Chung cư mini,Nội thất cơ bản,4,1,1,0,1,4,12900000
+Hoàn Kiếm,47.5,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,9,10800000
+Bắc Từ Liêm,14.6,Phòng trọ,Nội thất đầy đủ,1,0,1,0,1,3,2200000
+Thanh Xuân,28.2,Phòng trọ,Nội thất cơ bản,2,0,1,0,1,10,3600000
+Hai Bà Trưng,51.8,Phòng trọ,Nội thất đầy đủ,4,1,1,0,1,10,10700000
+Hai Bà Trưng,33.6,CHDV,Không nội thất,2,1,1,0,1,1,7400000
+Thanh Xuân,40.5,Phòng trọ,Nội thất cơ bản,2,1,1,0,0,5,5800000
+Hoàng Mai,51.2,CHDV,Nội thất cơ bản,4,0,1,0,1,7,11400000
+Bắc Từ Liêm,49.6,Mini apartment,Nội thất đầy đủ,3,1,0,1,1,4,10500000
+Bắc Từ Liêm,33.6,Chung cư mini,Không nội thất,1,0,0,1,1,9,3900000
+Thanh Xuân,30.8,CHDV,Không nội thất,3,1,1,1,1,6,5700000
+Cầu Giấy,26.6,Chung cư mini,Nội thất cơ bản,1,1,1,0,1,6,6500000
+Nam Từ Liêm,42.9,Chung cư mini,Không nội thất,3,1,1,0,1,3,7000000
+Đống Đa,24.3,Chung cư mini,Không nội thất,2,1,1,1,0,10,5500000
+Thanh Xuân,22.7,Chung cư mini,Nội thất đầy đủ,2,0,1,0,1,10,5300000
+Hoàn Kiếm,27.3,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,5,6000000
+Hoàn Kiếm,19.6,Phòng trọ,Nội thất cơ bản,1,1,1,1,0,10,4500000
+Tây Hồ,41.9,Phòng trọ,Nội thất đầy đủ,3,1,1,1,0,6,10300000
+Thanh Xuân,38.5,Chung cư mini,Nội thất cơ bản,3,0,1,1,1,4,7100000
+Tây Hồ,32.8,Phòng trọ,Không nội thất,2,1,1,1,1,3,5500000
+Thanh Xuân,28.8,Mini apartment,Không nội thất,1,1,1,1,1,5,4500000
+Bắc Từ Liêm,51.1,CHDV,Nội thất cơ bản,4,1,1,0,1,7,9300000
+Đống Đa,13.3,Phòng trọ,Nội thất cơ bản,1,1,1,0,0,6,2200000
+Bắc Từ Liêm,45.1,Phòng trọ,Nội thất cơ bản,3,0,0,0,1,2,3800000
+Nam Từ Liêm,50.8,Mini apartment,Không nội thất,4,1,0,0,1,1,8000000
+Hai Bà Trưng,31.2,CHDV,Nội thất cơ bản,1,1,1,0,1,5,7900000
+Ba Đình,35.7,CHDV,Nội thất đầy đủ,3,1,1,0,1,5,13900000
+Thanh Xuân,52.6,Phòng trọ,Nội thất đầy đủ,4,0,1,1,1,6,9200000
+Nam Từ Liêm,21.1,Phòng trọ,Nội thất đầy đủ,3,1,1,0,1,3,3300000
+Hai Bà Trưng,34.4,Phòng trọ,Nội thất đầy đủ,3,1,1,0,1,1,5900000
+Hoàng Mai,32.4,Phòng trọ,Nội thất cơ bản,2,0,1,0,1,4,3800000
+Đống Đa,23.1,CHDV,Nội thất đầy đủ,2,1,1,1,1,4,8100000
+Tây Hồ,47.2,CHDV,Không nội thất,2,0,1,0,1,10,13800000
+Tây Hồ,50.7,Chung cư mini,Nội thất cơ bản,4,1,0,1,1,2,10800000
+Bắc Từ Liêm,45.6,Mini apartment,Nội thất cơ bản,2,1,0,1,1,8,7600000
+Hoàn Kiếm,20.4,Chung cư mini,Không nội thất,1,0,1,1,0,6,3700000
+Hai Bà Trưng,15.7,Chung cư mini,Nội thất đầy đủ,1,0,1,0,1,3,3400000
+Hoàng Mai,38.0,Phòng trọ,Nội thất đầy đủ,3,1,1,0,1,1,5600000
+Nam Từ Liêm,14.5,Mini apartment,Không nội thất,1,0,0,1,1,3,2400000
+Đống Đa,40.9,Phòng trọ,Nội thất đầy đủ,4,1,0,0,1,8,9000000
+Hai Bà Trưng,34.8,Mini apartment,Không nội thất,2,0,0,0,1,4,6500000
+Hoàng Mai,40.5,CHDV,Nội thất cơ bản,4,1,1,0,1,3,6900000
+Ba Đình,37.4,Phòng trọ,Nội thất cơ bản,3,1,0,1,1,4,7400000
+Thanh Xuân,30.2,Chung cư mini,Nội thất cơ bản,2,0,1,0,1,4,4500000
+Tây Hồ,20.6,Mini apartment,Nội thất đầy đủ,1,0,0,1,1,2,7400000
+Nam Từ Liêm,25.1,Chung cư mini,Nội thất đầy đủ,1,1,0,0,1,4,4700000
+Tây Hồ,34.6,Mini apartment,Nội thất đầy đủ,3,1,1,1,0,9,10400000
+Nam Từ Liêm,40.0,Mini apartment,Không nội thất,3,1,1,1,1,4,6700000
+Bắc Từ Liêm,45.5,Phòng trọ,Nội thất đầy đủ,4,1,0,0,1,1,6800000
+Hoàn Kiếm,45.0,Phòng trọ,Không nội thất,3,1,1,0,1,1,8800000
+Nam Từ Liêm,53.8,Mini apartment,Nội thất đầy đủ,4,1,1,0,1,1,14100000
+Tây Hồ,24.3,Chung cư mini,Nội thất cơ bản,2,1,1,0,1,5,6000000
+Bắc Từ Liêm,15.1,Phòng trọ,Không nội thất,1,0,1,1,1,6,1600000
+Nam Từ Liêm,26.9,Phòng trọ,Nội thất cơ bản,2,1,1,0,0,6,3900000
+Ba Đình,44.0,Chung cư mini,Không nội thất,3,1,1,1,1,6,10400000
+Hoàn Kiếm,30.8,Mini apartment,Không nội thất,2,1,1,0,1,9,8100000
+Nam Từ Liêm,47.2,CHDV,Nội thất cơ bản,3,0,1,0,1,1,10100000
+Bắc Từ Liêm,35.6,Chung cư mini,Không nội thất,4,1,1,1,1,10,5100000
+Hai Bà Trưng,52.0,Phòng trọ,Không nội thất,4,1,1,1,1,6,7800000
+Cầu Giấy,52.8,Phòng trọ,Không nội thất,4,0,1,0,0,8,6700000
+Hoàng Mai,15.0,Mini apartment,Nội thất cơ bản,2,0,1,1,1,8,3200000
+Cầu Giấy,31.6,Phòng trọ,Không nội thất,2,0,1,0,0,3,4500000
+Cầu Giấy,38.2,Phòng trọ,Nội thất cơ bản,4,0,0,1,1,5,8100000
+Đống Đa,23.0,Phòng trọ,Không nội thất,2,0,1,0,0,10,3100000
+Ba Đình,29.5,Chung cư mini,Nội thất đầy đủ,3,0,0,0,0,4,7800000
+Hai Bà Trưng,41.1,Mini apartment,Nội thất đầy đủ,3,1,1,1,1,1,11200000
+Thanh Xuân,21.7,Phòng trọ,Không nội thất,2,1,0,0,0,9,2600000
+Nam Từ Liêm,37.9,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,5,8200000
+Hoàng Mai,42.0,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,2,9200000
+Hoàn Kiếm,15.9,Mini apartment,Nội thất đầy đủ,1,1,1,1,1,2,6600000
+Hai Bà Trưng,33.4,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,7,6000000
+Tây Hồ,23.3,Chung cư mini,Không nội thất,2,0,1,1,0,4,4300000
+Thanh Xuân,43.1,Phòng trọ,Nội thất cơ bản,4,1,1,0,1,1,5700000
+Đống Đa,20.2,Mini apartment,Nội thất cơ bản,1,1,1,1,1,5,5500000
+Đống Đa,50.4,Chung cư mini,Nội thất cơ bản,4,0,0,0,1,2,9200000
+Hai Bà Trưng,30.5,Phòng trọ,Nội thất cơ bản,2,1,1,0,0,7,5100000
+Bắc Từ Liêm,20.5,Chung cư mini,Nội thất đầy đủ,1,1,1,1,0,9,3900000
+Cầu Giấy,30.8,CHDV,Nội thất đầy đủ,3,1,1,0,1,1,11300000
+Tây Hồ,29.6,Phòng trọ,Không nội thất,2,0,1,0,1,2,5000000
+Đống Đa,30.4,Mini apartment,Không nội thất,1,1,0,1,1,6,6300000
+Hoàng Mai,37.2,Phòng trọ,Không nội thất,3,0,0,1,1,8,5200000
+Đống Đa,34.4,Chung cư mini,Nội thất đầy đủ,2,1,0,0,1,7,9200000
+Hoàn Kiếm,18.4,Phòng trọ,Nội thất cơ bản,2,1,0,0,1,9,4100000
+Nam Từ Liêm,14.8,CHDV,Nội thất cơ bản,1,1,1,1,1,2,2900000
+Đống Đa,43.4,Phòng trọ,Nội thất cơ bản,4,0,1,0,1,9,6600000
+Hoàn Kiếm,36.1,Mini apartment,Nội thất cơ bản,3,0,1,0,1,4,10000000
+Hai Bà Trưng,27.4,CHDV,Nội thất cơ bản,3,0,0,0,0,3,5100000
+Hai Bà Trưng,46.8,Chung cư mini,Nội thất cơ bản,2,0,0,1,0,7,8600000
+Thanh Xuân,28.7,CHDV,Nội thất đầy đủ,3,1,1,0,1,5,8400000
+Đống Đa,46.2,CHDV,Nội thất đầy đủ,4,0,1,0,1,5,15200000
+Hoàng Mai,25.1,Phòng trọ,Nội thất đầy đủ,3,1,0,0,1,2,3700000
+Đống Đa,15.1,Phòng trọ,Nội thất đầy đủ,1,0,1,0,1,6,3700000
+Hoàng Mai,52.1,Mini apartment,Nội thất cơ bản,3,1,0,0,1,6,10800000
+Ba Đình,29.0,Phòng trọ,Nội thất cơ bản,2,1,1,1,0,4,5600000
+Thanh Xuân,46.1,CHDV,Nội thất đầy đủ,2,1,1,1,1,5,14300000
+Ba Đình,24.0,Mini apartment,Nội thất đầy đủ,1,1,1,0,1,7,7000000
+Đống Đa,39.8,Phòng trọ,Không nội thất,3,1,1,1,1,8,6600000
+Thanh Xuân,49.6,Chung cư mini,Nội thất cơ bản,4,0,1,0,1,6,9000000
+Ba Đình,13.8,Chung cư mini,Không nội thất,1,1,1,1,0,5,2500000
+Cầu Giấy,47.7,Chung cư mini,Nội thất cơ bản,2,1,0,0,1,3,11100000
+Đống Đa,36.6,Phòng trọ,Nội thất cơ bản,2,0,1,1,0,7,6200000
+Ba Đình,38.1,Phòng trọ,Nội thất cơ bản,3,1,0,0,1,8,7400000
+Cầu Giấy,34.5,Chung cư mini,Không nội thất,2,0,1,1,0,3,6700000
+Cầu Giấy,49.6,CHDV,Nội thất cơ bản,3,1,0,1,0,5,12700000
+Hai Bà Trưng,13.9,CHDV,Nội thất đầy đủ,1,0,1,0,1,2,4100000
+Đống Đa,23.2,Chung cư mini,Không nội thất,3,1,1,0,0,10,4500000
+Cầu Giấy,49.7,Phòng trọ,Nội thất cơ bản,4,1,1,0,1,10,9500000
+Hai Bà Trưng,44.4,Chung cư mini,Nội thất cơ bản,4,1,1,1,0,4,8100000
+Ba Đình,12.8,Phòng trọ,Nội thất đầy đủ,2,1,0,0,1,4,3200000
+Hoàn Kiếm,34.2,Mini apartment,Không nội thất,2,0,1,1,1,8,9700000
+Đống Đa,34.8,CHDV,Nội thất đầy đủ,2,1,1,1,1,3,10900000
+Thanh Xuân,29.2,CHDV,Nội thất cơ bản,2,1,0,0,1,5,5600000
+Hoàng Mai,24.8,Mini apartment,Nội thất đầy đủ,2,1,1,0,0,5,6100000
+Hoàng Mai,41.3,Phòng trọ,Nội thất đầy đủ,3,0,0,1,1,2,6000000
+Ba Đình,20.9,CHDV,Không nội thất,1,1,1,1,1,9,5100000
+Bắc Từ Liêm,46.4,Phòng trọ,Không nội thất,3,0,0,1,1,4,5000000
+Bắc Từ Liêm,46.5,Mini apartment,Không nội thất,2,1,1,0,1,9,7500000
+Ba Đình,29.9,Phòng trọ,Nội thất cơ bản,2,1,0,0,1,9,5600000
+Cầu Giấy,24.2,CHDV,Không nội thất,1,1,1,1,1,2,3900000
+Đống Đa,24.2,Mini apartment,Không nội thất,2,0,1,1,1,9,5300000
+Hoàng Mai,32.7,Phòng trọ,Nội thất cơ bản,1,0,1,1,1,9,4700000
+Hoàng Mai,42.9,Phòng trọ,Không nội thất,3,1,1,0,1,2,4500000
+Cầu Giấy,27.4,CHDV,Không nội thất,1,1,1,0,1,6,7500000
+Hoàng Mai,38.2,Chung cư mini,Nội thất cơ bản,4,0,1,0,0,9,6800000
+Thanh Xuân,28.4,Phòng trọ,Không nội thất,2,1,1,1,1,4,4100000
+Đống Đa,25.1,Phòng trọ,Nội thất cơ bản,2,1,0,0,1,2,3700000
+Nam Từ Liêm,13.1,Phòng trọ,Nội thất cơ bản,1,1,1,1,1,7,1900000
+Hoàng Mai,12.2,Mini apartment,Nội thất cơ bản,1,1,0,1,1,9,2400000
+Ba Đình,21.8,Chung cư mini,Nội thất đầy đủ,2,1,1,0,1,6,6100000
+Thanh Xuân,29.5,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,4,4800000
+Hoàng Mai,48.6,Phòng trọ,Nội thất cơ bản,3,1,0,1,1,1,6300000
+Thanh Xuân,46.3,Phòng trọ,Nội thất cơ bản,4,0,0,0,1,4,6500000
+Hai Bà Trưng,23.5,Phòng trọ,Nội thất đầy đủ,3,1,1,0,1,3,4100000
+Nam Từ Liêm,22.5,Phòng trọ,Nội thất đầy đủ,2,0,1,0,1,7,3400000
+Tây Hồ,21.8,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,10,5300000
+Ba Đình,26.6,Phòng trọ,Nội thất cơ bản,2,0,1,1,1,5,5000000
+Ba Đình,33.4,CHDV,Không nội thất,2,1,1,1,1,3,8400000
+Đống Đa,30.9,Phòng trọ,Không nội thất,2,0,1,1,0,2,4900000
+Thanh Xuân,21.4,Chung cư mini,Không nội thất,3,1,1,1,1,2,4300000
+Cầu Giấy,17.6,Chung cư mini,Nội thất đầy đủ,1,0,1,1,1,5,4100000
+Ba Đình,12.5,Chung cư mini,Nội thất cơ bản,2,1,0,1,0,8,3500000
+Thanh Xuân,18.6,Chung cư mini,Nội thất đầy đủ,1,1,0,0,1,8,4300000
+Thanh Xuân,42.3,Chung cư mini,Nội thất cơ bản,2,0,1,0,1,5,7000000
+Hoàn Kiếm,22.5,Mini apartment,Nội thất đầy đủ,2,1,1,1,1,2,7800000
+Hoàn Kiếm,32.1,Chung cư mini,Không nội thất,3,1,1,1,1,4,8000000
+Tây Hồ,37.4,Chung cư mini,Không nội thất,4,0,0,0,0,7,6400000
+Hai Bà Trưng,50.1,CHDV,Nội thất cơ bản,4,1,1,1,1,6,12800000
+Tây Hồ,50.2,Chung cư mini,Nội thất cơ bản,4,1,1,0,1,10,13900000
+Hoàng Mai,44.1,Phòng trọ,Nội thất cơ bản,3,0,1,0,1,7,5300000
+Cầu Giấy,13.5,Phòng trọ,Nội thất đầy đủ,2,1,1,1,0,5,2600000
+Hoàng Mai,36.7,Phòng trọ,Không nội thất,4,0,1,0,1,2,4200000
+Bắc Từ Liêm,45.8,Mini apartment,Nội thất cơ bản,3,1,0,1,0,8,10100000
+Hoàng Mai,12.7,CHDV,Nội thất cơ bản,1,0,1,0,1,2,2100000
+Đống Đa,35.6,Mini apartment,Không nội thất,3,1,1,0,0,8,7000000
+Hoàng Mai,48.9,Chung cư mini,Nội thất đầy đủ,3,0,1,1,1,7,9500000
+Tây Hồ,32.4,Chung cư mini,Nội thất đầy đủ,2,1,1,1,1,3,11200000
+Ba Đình,12.2,Phòng trọ,Nội thất đầy đủ,1,1,1,0,1,4,2200000
+Ba Đình,12.5,Chung cư mini,Nội thất đầy đủ,2,0,1,1,0,7,3700000
+Hoàn Kiếm,29.9,Chung cư mini,Nội thất đầy đủ,2,1,1,1,1,4,9200000
+Cầu Giấy,18.7,Mini apartment,Không nội thất,2,0,0,0,1,9,3800000
+Cầu Giấy,40.6,Phòng trọ,Nội thất đầy đủ,3,0,0,0,1,7,7500000
+Đống Đa,42.5,Chung cư mini,Nội thất cơ bản,3,1,1,1,1,1,9300000
+Tây Hồ,19.6,Chung cư mini,Không nội thất,1,0,0,1,0,1,3500000
+Hoàn Kiếm,50.2,Chung cư mini,Không nội thất,3,1,0,0,1,4,10700000
+Bắc Từ Liêm,31.0,Chung cư mini,Nội thất đầy đủ,2,1,1,0,0,9,4300000
+Cầu Giấy,18.1,CHDV,Nội thất đầy đủ,1,1,1,0,1,4,4700000
+Ba Đình,44.9,Phòng trọ,Không nội thất,2,0,1,0,0,5,7200000
+Hoàng Mai,46.0,CHDV,Nội thất đầy đủ,3,1,1,1,1,1,12500000
+Hoàng Mai,39.5,Chung cư mini,Nội thất đầy đủ,3,0,0,1,1,2,9900000
+Hoàn Kiếm,48.7,Mini apartment,Không nội thất,3,1,1,0,1,4,13800000
+Tây Hồ,43.7,CHDV,Không nội thất,2,0,1,1,0,4,10400000
+Tây Hồ,49.9,Phòng trọ,Nội thất đầy đủ,4,1,1,1,1,10,10300000
+Hai Bà Trưng,30.7,Phòng trọ,Không nội thất,2,0,1,1,1,6,4500000
+Nam Từ Liêm,44.1,Mini apartment,Nội thất cơ bản,3,1,1,1,0,6,7700000
+Cầu Giấy,55.0,Chung cư mini,Không nội thất,4,1,1,1,0,8,11000000
+Tây Hồ,43.2,Mini apartment,Nội thất cơ bản,3,1,1,1,0,9,13900000
+Ba Đình,16.9,Phòng trọ,Nội thất đầy đủ,1,0,0,0,1,1,3500000
+Hoàn Kiếm,34.3,Chung cư mini,Nội thất cơ bản,1,1,0,0,1,1,7700000
+Bắc Từ Liêm,37.3,CHDV,Nội thất đầy đủ,3,0,0,1,1,6,6800000
+Hai Bà Trưng,19.5,Mini apartment,Nội thất đầy đủ,2,1,0,0,1,4,5000000
+Thanh Xuân,53.4,Phòng trọ,Nội thất đầy đủ,4,0,0,0,1,4,9400000
+Đống Đa,19.5,CHDV,Nội thất cơ bản,1,1,1,0,1,1,5500000
+Bắc Từ Liêm,19.6,Chung cư mini,Không nội thất,1,1,1,1,0,9,2100000
+Thanh Xuân,51.4,Phòng trọ,Nội thất cơ bản,4,1,1,1,1,3,8500000
+Hoàng Mai,32.0,Chung cư mini,Không nội thất,2,1,1,0,1,5,5000000
+Đống Đa,14.7,Chung cư mini,Nội thất đầy đủ,1,1,1,0,1,10,3600000
+Cầu Giấy,37.7,Mini apartment,Nội thất cơ bản,2,0,0,1,1,1,7800000
+Ba Đình,37.9,Chung cư mini,Nội thất cơ bản,4,0,1,0,1,8,8300000
+Đống Đa,14.8,Phòng trọ,Không nội thất,1,0,1,1,1,3,2100000
+Nam Từ Liêm,53.8,Phòng trọ,Nội thất đầy đủ,4,1,1,0,1,1,8500000
+Thanh Xuân,35.4,Phòng trọ,Nội thất đầy đủ,3,1,1,1,0,10,7000000
+Cầu Giấy,36.1,Phòng trọ,Nội thất cơ bản,2,0,0,1,1,6,7300000
+Nam Từ Liêm,34.4,CHDV,Nội thất đầy đủ,1,1,1,1,0,1,7900000
+Hoàng Mai,38.3,Phòng trọ,Không nội thất,3,0,1,1,1,3,5000000
+Nam Từ Liêm,23.4,Mini apartment,Nội thất cơ bản,2,1,1,0,1,5,4500000
+Hai Bà Trưng,24.4,Mini apartment,Nội thất đầy đủ,3,0,0,0,1,4,6200000
+Hai Bà Trưng,34.0,Chung cư mini,Nội thất cơ bản,3,1,1,1,1,7,7100000
+Hoàn Kiếm,46.7,Mini apartment,Nội thất đầy đủ,3,0,1,1,1,6,17200000
+Bắc Từ Liêm,14.1,CHDV,Không nội thất,1,1,0,0,1,3,2300000
+Bắc Từ Liêm,37.9,Chung cư mini,Không nội thất,3,0,1,1,0,8,5600000
+Cầu Giấy,46.7,Phòng trọ,Nội thất đầy đủ,3,1,1,1,0,8,10700000
+Hoàng Mai,18.7,Chung cư mini,Không nội thất,1,0,1,1,1,2,1700000
+Tây Hồ,12.6,Chung cư mini,Nội thất đầy đủ,1,0,0,1,1,7,3700000
+Hai Bà Trưng,25.4,Mini apartment,Nội thất đầy đủ,2,1,1,1,1,1,5400000
+Cầu Giấy,37.3,Chung cư mini,Không nội thất,3,1,1,1,0,2,7200000
+Tây Hồ,17.9,Mini apartment,Nội thất cơ bản,1,1,1,1,1,8,3900000
+Bắc Từ Liêm,30.3,Chung cư mini,Không nội thất,3,1,1,1,1,1,5000000
+Hoàn Kiếm,35.7,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,2,8200000
+Nam Từ Liêm,37.8,Mini apartment,Không nội thất,2,1,1,0,1,1,6000000
+Hai Bà Trưng,23.8,Chung cư mini,Không nội thất,2,1,1,0,1,5,4700000
+Cầu Giấy,29.2,Phòng trọ,Nội thất cơ bản,2,0,1,0,1,7,5500000
+Đống Đa,45.5,Chung cư mini,Nội thất cơ bản,2,0,1,1,1,6,9900000
+Tây Hồ,52.5,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,6,13500000
+Nam Từ Liêm,49.1,Chung cư mini,Nội thất đầy đủ,3,0,1,1,1,6,9800000
+Hai Bà Trưng,36.3,Chung cư mini,Nội thất đầy đủ,2,0,1,1,0,8,7300000
+Bắc Từ Liêm,29.6,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,5,4100000
+Hoàng Mai,26.3,Mini apartment,Nội thất đầy đủ,3,1,0,0,1,10,5700000
+Tây Hồ,17.4,Chung cư mini,Nội thất cơ bản,1,1,1,1,1,7,3700000
+Bắc Từ Liêm,16.6,Phòng trọ,Nội thất đầy đủ,1,0,1,0,1,3,2400000
+Hai Bà Trưng,41.6,Chung cư mini,Nội thất đầy đủ,3,0,1,0,1,9,9600000
+Tây Hồ,23.2,Mini apartment,Nội thất cơ bản,2,1,1,1,1,10,8000000
+Nam Từ Liêm,23.0,Phòng trọ,Nội thất cơ bản,1,0,0,0,1,3,2900000
+Hai Bà Trưng,54.9,Phòng trọ,Nội thất đầy đủ,4,1,1,1,1,6,9800000
+Thanh Xuân,20.1,Phòng trọ,Nội thất đầy đủ,1,1,1,0,1,3,2800000
+Cầu Giấy,18.4,Phòng trọ,Nội thất đầy đủ,1,0,1,1,1,1,4300000
+Nam Từ Liêm,16.2,CHDV,Không nội thất,1,0,1,0,1,1,2700000
+Tây Hồ,36.9,CHDV,Nội thất cơ bản,3,1,1,0,1,3,10100000
+Hoàng Mai,39.0,Phòng trọ,Không nội thất,3,1,1,1,1,4,4400000
+Bắc Từ Liêm,27.7,Chung cư mini,Nội thất đầy đủ,1,0,0,1,1,2,5400000
+Đống Đa,35.0,Phòng trọ,Không nội thất,2,1,0,1,1,9,5700000
+Bắc Từ Liêm,45.9,Mini apartment,Nội thất đầy đủ,3,0,1,0,1,8,10300000
+Tây Hồ,47.2,Mini apartment,Không nội thất,3,1,1,0,0,3,11500000
+Bắc Từ Liêm,53.2,Phòng trọ,Không nội thất,4,1,0,1,1,7,5700000
+Cầu Giấy,47.4,Mini apartment,Nội thất cơ bản,3,1,1,0,1,4,14600000
+Hai Bà Trưng,36.3,CHDV,Nội thất đầy đủ,2,1,1,0,1,5,9700000
+Đống Đa,19.7,Phòng trọ,Không nội thất,1,0,0,1,0,4,2900000
+Ba Đình,16.3,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,9,3400000
+Tây Hồ,14.3,Chung cư mini,Nội thất cơ bản,1,1,1,0,0,7,3400000
+Hoàn Kiếm,40.7,CHDV,Không nội thất,2,1,1,0,0,4,9700000
+Ba Đình,46.7,Mini apartment,Không nội thất,3,1,1,1,1,8,10900000
+Bắc Từ Liêm,33.9,CHDV,Nội thất đầy đủ,2,0,0,0,1,2,7300000
+Tây Hồ,14.4,Mini apartment,Nội thất cơ bản,1,0,1,1,1,7,4200000
+Thanh Xuân,35.0,Chung cư mini,Không nội thất,2,1,0,0,1,1,6200000
+Hoàn Kiếm,52.2,CHDV,Nội thất đầy đủ,4,0,1,1,1,8,22700000
+Đống Đa,37.7,CHDV,Nội thất đầy đủ,3,0,1,0,1,6,10000000
+Hoàng Mai,46.8,Phòng trọ,Nội thất cơ bản,3,0,1,0,1,5,6900000
+Thanh Xuân,46.4,Chung cư mini,Nội thất cơ bản,3,1,1,1,1,9,8600000
+Ba Đình,52.1,CHDV,Nội thất đầy đủ,4,1,1,1,0,9,20200000
+Hai Bà Trưng,45.1,Phòng trọ,Nội thất đầy đủ,4,1,1,1,1,3,11200000
+Cầu Giấy,44.2,CHDV,Nội thất đầy đủ,3,0,0,1,0,9,14700000
+Hoàng Mai,22.1,Phòng trọ,Nội thất cơ bản,1,0,0,0,1,9,2200000
+Thanh Xuân,14.6,Chung cư mini,Nội thất cơ bản,1,1,1,0,1,2,2600000
+Hai Bà Trưng,34.3,CHDV,Nội thất đầy đủ,2,1,1,0,1,5,11600000
+Hai Bà Trưng,17.4,Phòng trọ,Không nội thất,1,1,0,1,0,2,2300000
+Tây Hồ,53.4,Phòng trọ,Nội thất cơ bản,4,1,1,0,1,1,12200000
+Thanh Xuân,24.5,Phòng trọ,Nội thất đầy đủ,2,0,1,1,0,7,3900000
+Đống Đa,48.7,Mini apartment,Nội thất cơ bản,2,1,0,0,1,4,10900000
+Bắc Từ Liêm,28.7,Phòng trọ,Nội thất cơ bản,2,1,1,1,0,5,3600000
+Hoàn Kiếm,25.9,Mini apartment,Nội thất cơ bản,1,0,1,0,0,4,8300000
+Hoàn Kiếm,52.2,Phòng trọ,Không nội thất,4,1,1,0,0,6,9500000
+Ba Đình,27.6,Mini apartment,Nội thất cơ bản,2,0,1,1,1,2,5900000
+Ba Đình,28.8,Mini apartment,Nội thất đầy đủ,2,1,1,1,1,8,11900000
+Hoàn Kiếm,16.6,Chung cư mini,Không nội thất,1,1,1,1,1,4,4000000
+Đống Đa,40.8,Chung cư mini,Không nội thất,3,1,0,1,1,8,8500000
+Cầu Giấy,24.4,Chung cư mini,Nội thất đầy đủ,2,0,1,1,1,3,5500000
+Nam Từ Liêm,37.2,Chung cư mini,Không nội thất,3,1,1,1,1,5,6100000
+Bắc Từ Liêm,37.4,Phòng trọ,Không nội thất,3,1,1,1,1,3,4300000
+Cầu Giấy,42.9,Phòng trọ,Nội thất đầy đủ,3,0,0,1,0,7,8200000
+Tây Hồ,44.0,Phòng trọ,Nội thất đầy đủ,2,1,0,0,1,3,10500000
+Nam Từ Liêm,34.1,Phòng trọ,Nội thất cơ bản,1,1,0,0,1,8,3800000
+Nam Từ Liêm,26.2,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,9,4000000
+Thanh Xuân,48.0,Chung cư mini,Không nội thất,2,1,0,1,0,2,8700000
+Đống Đa,25.3,Mini apartment,Nội thất đầy đủ,2,0,1,0,1,3,6200000
+Đống Đa,33.8,Phòng trọ,Nội thất cơ bản,3,0,1,0,0,7,5300000
+Nam Từ Liêm,29.3,Chung cư mini,Nội thất đầy đủ,2,0,1,1,1,5,6000000
+Thanh Xuân,48.8,Phòng trọ,Nội thất cơ bản,2,0,1,0,0,10,6800000
+Bắc Từ Liêm,30.6,CHDV,Nội thất cơ bản,2,1,0,1,1,7,6300000
+Nam Từ Liêm,28.6,Mini apartment,Nội thất cơ bản,2,0,1,1,1,2,5500000
+Hoàng Mai,41.7,Mini apartment,Nội thất cơ bản,2,1,1,0,1,4,6500000
+Ba Đình,37.9,Mini apartment,Nội thất đầy đủ,4,1,1,1,0,1,11500000
+Ba Đình,16.6,Phòng trọ,Nội thất cơ bản,1,1,1,1,1,5,3000000
+Cầu Giấy,33.9,CHDV,Nội thất cơ bản,3,1,1,1,0,8,9500000
+Tây Hồ,43.6,CHDV,Nội thất cơ bản,3,0,1,0,1,1,12500000
+Ba Đình,54.7,Phòng trọ,Nội thất cơ bản,4,1,1,0,1,7,11300000
+Hai Bà Trưng,39.1,Mini apartment,Nội thất đầy đủ,2,1,1,1,1,7,8200000
+Cầu Giấy,27.9,Phòng trọ,Nội thất đầy đủ,2,1,0,0,1,7,6500000
+Ba Đình,21.7,Chung cư mini,Nội thất cơ bản,2,1,0,0,1,1,4900000
+Tây Hồ,49.5,Phòng trọ,Nội thất đầy đủ,4,1,0,0,0,3,10000000
+Đống Đa,47.0,Phòng trọ,Nội thất đầy đủ,3,0,0,0,0,2,9400000
+Đống Đa,22.1,CHDV,Nội thất cơ bản,3,1,1,0,1,5,4600000
+Bắc Từ Liêm,20.6,Chung cư mini,Nội thất cơ bản,1,0,0,0,0,2,2400000
+Nam Từ Liêm,42.8,Phòng trọ,Nội thất đầy đủ,4,1,1,1,1,5,9100000
+Hoàng Mai,25.5,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,5,3500000
+Đống Đa,25.2,CHDV,Nội thất đầy đủ,2,0,1,0,1,4,6700000
+Thanh Xuân,18.5,Phòng trọ,Nội thất cơ bản,1,0,0,1,1,7,2700000
+Ba Đình,23.4,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,10,4500000
+Thanh Xuân,30.4,Mini apartment,Không nội thất,2,0,1,1,1,6,5600000
+Tây Hồ,43.5,CHDV,Nội thất cơ bản,3,0,1,0,1,2,13000000
+Đống Đa,26.5,Phòng trọ,Nội thất đầy đủ,1,0,1,0,0,4,4800000
+Hoàng Mai,26.1,CHDV,Nội thất cơ bản,3,0,0,1,1,7,5300000
+Tây Hồ,24.3,CHDV,Nội thất cơ bản,2,0,1,0,0,9,6800000
+Hai Bà Trưng,32.6,Mini apartment,Nội thất đầy đủ,1,1,1,1,0,9,8000000
+Hai Bà Trưng,19.8,Chung cư mini,Nội thất cơ bản,1,0,0,0,1,3,3100000
+Thanh Xuân,32.9,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,1,5600000
+Nam Từ Liêm,42.3,Phòng trọ,Nội thất đầy đủ,2,0,1,1,1,9,7400000
+Cầu Giấy,13.3,Phòng trọ,Nội thất đầy đủ,2,1,1,1,0,8,3300000
+Nam Từ Liêm,12.4,Chung cư mini,Không nội thất,2,1,1,0,0,7,1800000
+Bắc Từ Liêm,15.2,Phòng trọ,Nội thất cơ bản,2,1,0,0,0,6,1900000
+Nam Từ Liêm,35.0,Chung cư mini,Nội thất cơ bản,3,1,0,0,1,10,6000000
+Bắc Từ Liêm,48.7,Phòng trọ,Nội thất cơ bản,3,1,0,1,0,7,7000000
+Bắc Từ Liêm,12.2,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,9,1500000
+Hoàng Mai,52.3,Mini apartment,Nội thất cơ bản,3,0,1,0,1,6,8500000
+Đống Đa,16.6,Chung cư mini,Không nội thất,1,0,1,1,1,10,3300000
+Hoàng Mai,48.2,Phòng trọ,Nội thất cơ bản,3,1,0,0,0,3,6000000
+Bắc Từ Liêm,32.8,CHDV,Không nội thất,2,0,1,0,0,3,5100000
+Tây Hồ,40.4,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,4,8500000
+Hai Bà Trưng,34.0,CHDV,Nội thất đầy đủ,2,1,1,1,0,10,9400000
+Bắc Từ Liêm,32.5,CHDV,Nội thất đầy đủ,1,0,1,0,0,10,6600000
+Hoàng Mai,47.9,Phòng trọ,Nội thất cơ bản,4,0,0,0,1,8,6000000
+Tây Hồ,44.5,CHDV,Không nội thất,3,1,1,1,1,10,14100000
+Hoàng Mai,32.8,Chung cư mini,Không nội thất,2,1,1,0,1,9,4800000
+Nam Từ Liêm,16.8,Chung cư mini,Nội thất cơ bản,1,1,1,0,1,8,2900000
+Ba Đình,17.0,Phòng trọ,Không nội thất,1,1,0,0,1,10,2400000
+Thanh Xuân,46.5,Phòng trọ,Nội thất cơ bản,4,1,1,1,1,2,8100000
+Cầu Giấy,34.8,Mini apartment,Không nội thất,2,0,1,1,0,4,8000000
+Hoàng Mai,32.7,Phòng trọ,Nội thất đầy đủ,2,0,1,0,1,4,4400000
+Cầu Giấy,41.3,Chung cư mini,Nội thất cơ bản,2,0,1,0,1,2,10700000
+Hoàn Kiếm,48.9,Chung cư mini,Không nội thất,3,1,0,0,1,8,11600000
+Hoàng Mai,39.0,Chung cư mini,Nội thất đầy đủ,2,0,1,0,1,3,6700000
+Ba Đình,44.8,Phòng trọ,Nội thất cơ bản,3,1,0,1,0,2,8600000
+Cầu Giấy,44.9,Phòng trọ,Không nội thất,3,1,1,0,1,7,7100000
+Bắc Từ Liêm,27.3,CHDV,Nội thất cơ bản,3,1,0,0,1,1,5700000
+Hoàng Mai,23.8,Phòng trọ,Nội thất cơ bản,2,0,0,1,0,6,3300000
+Đống Đa,46.5,Phòng trọ,Nội thất đầy đủ,2,0,1,0,1,3,9200000
+Thanh Xuân,28.2,Phòng trọ,Không nội thất,1,1,1,1,0,3,4300000
+Ba Đình,50.8,Phòng trọ,Nội thất cơ bản,4,1,1,0,1,5,9000000
+Cầu Giấy,15.0,Mini apartment,Không nội thất,1,1,1,1,1,3,3700000
+Ba Đình,14.5,Phòng trọ,Không nội thất,1,0,1,0,0,4,2300000
+Tây Hồ,51.9,Phòng trọ,Nội thất đầy đủ,4,1,1,1,1,3,12600000
+Thanh Xuân,39.9,Phòng trọ,Nội thất đầy đủ,2,1,0,0,1,7,6800000
+Bắc Từ Liêm,28.3,CHDV,Nội thất cơ bản,3,0,1,1,1,3,5900000
+Hoàng Mai,44.5,Chung cư mini,Nội thất cơ bản,2,1,0,0,1,10,7900000
+Hoàng Mai,40.9,Phòng trọ,Không nội thất,4,1,1,1,0,4,4300000
+Hoàng Mai,34.8,CHDV,Nội thất đầy đủ,2,1,1,0,0,2,9200000
+Thanh Xuân,16.3,Chung cư mini,Không nội thất,1,0,0,1,1,2,2800000
+Đống Đa,46.9,Mini apartment,Không nội thất,2,1,1,1,1,9,10100000
+Hoàn Kiếm,49.2,CHDV,Nội thất cơ bản,4,0,1,1,0,1,14300000
+Hai Bà Trưng,19.4,Phòng trọ,Nội thất cơ bản,2,0,0,1,0,1,3200000
+Nam Từ Liêm,48.6,Phòng trọ,Nội thất cơ bản,3,1,0,0,1,10,7200000
+Cầu Giấy,49.7,Phòng trọ,Không nội thất,4,1,1,0,0,1,8500000
+Đống Đa,35.6,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,3,6800000
+Bắc Từ Liêm,40.2,Mini apartment,Nội thất cơ bản,2,1,1,0,1,2,7800000
+Cầu Giấy,28.4,Phòng trọ,Không nội thất,2,0,1,0,0,3,4600000
+Hoàng Mai,24.1,Phòng trọ,Nội thất đầy đủ,3,0,1,0,1,5,3400000
+Ba Đình,43.0,CHDV,Không nội thất,3,1,1,0,1,9,10500000
+Bắc Từ Liêm,49.1,Chung cư mini,Nội thất cơ bản,3,1,1,1,1,2,8300000
+Cầu Giấy,40.1,Phòng trọ,Nội thất cơ bản,3,1,0,1,1,1,9200000
+Hoàng Mai,34.0,Phòng trọ,Không nội thất,2,1,0,1,1,6,3900000
+Cầu Giấy,18.8,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,3,3500000
+Ba Đình,14.3,CHDV,Nội thất đầy đủ,1,1,1,1,1,7,5400000
+Hoàng Mai,31.2,Phòng trọ,Không nội thất,1,0,1,1,1,6,3400000
+Hoàn Kiếm,14.1,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,7,3900000
+Đống Đa,36.5,Chung cư mini,Nội thất cơ bản,2,1,1,1,1,5,8200000
+Tây Hồ,28.5,Phòng trọ,Không nội thất,2,0,1,1,1,1,5400000
+Nam Từ Liêm,44.6,Chung cư mini,Nội thất cơ bản,3,1,1,0,1,3,7000000
+Thanh Xuân,25.1,Chung cư mini,Nội thất cơ bản,2,1,0,0,1,3,5600000
+Nam Từ Liêm,37.5,Phòng trọ,Nội thất đầy đủ,4,1,0,0,0,7,5900000
+Bắc Từ Liêm,35.1,Mini apartment,Nội thất đầy đủ,2,1,0,1,1,3,7700000
+Nam Từ Liêm,12.2,Chung cư mini,Nội thất đầy đủ,1,0,1,1,0,5,2400000
+Hoàng Mai,15.1,Phòng trọ,Nội thất đầy đủ,2,0,1,1,1,4,2100000
+Hoàn Kiếm,24.5,Chung cư mini,Nội thất đầy đủ,2,0,1,1,0,4,8000000
+Tây Hồ,49.9,CHDV,Nội thất cơ bản,4,0,0,1,1,7,14700000
+Đống Đa,18.3,CHDV,Nội thất cơ bản,2,1,1,1,0,1,5000000
+Đống Đa,42.6,Phòng trọ,Nội thất cơ bản,4,0,1,1,1,7,7000000
+Ba Đình,53.9,Mini apartment,Không nội thất,4,0,1,0,0,8,12000000
+Thanh Xuân,46.0,Phòng trọ,Nội thất đầy đủ,3,1,1,0,1,3,8000000
+Cầu Giấy,22.4,Phòng trọ,Nội thất cơ bản,2,1,1,0,0,3,4200000
+Hoàn Kiếm,51.1,Phòng trọ,Không nội thất,3,1,1,0,0,4,9600000
+Cầu Giấy,16.0,Phòng trọ,Không nội thất,1,1,1,1,1,6,2600000
+Tây Hồ,32.1,CHDV,Nội thất cơ bản,2,1,1,0,1,7,9200000
+Nam Từ Liêm,50.2,Phòng trọ,Nội thất cơ bản,4,0,1,1,1,1,7300000
+Đống Đa,39.6,Phòng trọ,Nội thất cơ bản,2,0,1,0,0,4,6400000
+Tây Hồ,29.8,Mini apartment,Nội thất cơ bản,2,1,0,0,1,7,8200000
+Nam Từ Liêm,24.6,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,2,4200000
+Đống Đa,28.1,Phòng trọ,Nội thất cơ bản,2,0,1,1,1,1,5000000
+Nam Từ Liêm,33.9,Phòng trọ,Không nội thất,2,0,1,0,1,1,4500000
+Thanh Xuân,25.7,Phòng trọ,Không nội thất,1,1,0,1,1,10,3400000
+Hoàn Kiếm,53.7,Phòng trọ,Nội thất cơ bản,4,0,1,0,1,6,11200000
+Bắc Từ Liêm,52.1,Chung cư mini,Nội thất cơ bản,4,0,1,1,1,5,8000000
+Tây Hồ,49.4,Phòng trọ,Không nội thất,4,0,1,1,1,1,8900000
+Tây Hồ,30.1,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,10,5900000
+Hai Bà Trưng,41.7,CHDV,Không nội thất,4,1,1,1,1,3,8800000
+Hoàng Mai,50.8,Chung cư mini,Nội thất cơ bản,4,0,1,1,1,7,7100000
+Thanh Xuân,48.6,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,9,8800000
+Thanh Xuân,29.8,Chung cư mini,Nội thất cơ bản,2,0,0,1,1,9,5400000
+Cầu Giấy,16.8,Phòng trọ,Nội thất đầy đủ,1,1,0,0,0,6,3900000
+Nam Từ Liêm,15.3,Chung cư mini,Không nội thất,1,1,1,1,1,3,2300000
+Hoàng Mai,36.8,Chung cư mini,Nội thất đầy đủ,3,1,0,1,1,1,7700000
+Hoàn Kiếm,39.6,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,3,8900000
+Hoàn Kiếm,48.5,Mini apartment,Nội thất cơ bản,3,0,1,0,1,10,14800000
+Thanh Xuân,24.6,Phòng trọ,Nội thất cơ bản,1,1,0,1,1,2,3300000
+Hoàn Kiếm,19.2,CHDV,Nội thất cơ bản,1,0,1,1,0,5,6500000
+Hai Bà Trưng,28.3,Phòng trọ,Nội thất cơ bản,2,0,1,1,1,8,4400000
+Tây Hồ,27.2,CHDV,Nội thất cơ bản,2,1,1,0,1,5,8800000
+Ba Đình,17.7,Chung cư mini,Không nội thất,1,0,1,0,1,1,2900000
+Bắc Từ Liêm,40.9,CHDV,Không nội thất,3,1,0,0,0,3,5900000
+Cầu Giấy,33.9,Phòng trọ,Nội thất cơ bản,2,0,1,0,1,5,6200000
+Nam Từ Liêm,43.0,Chung cư mini,Nội thất cơ bản,3,1,1,1,1,7,7900000
+Bắc Từ Liêm,27.2,Chung cư mini,Nội thất cơ bản,2,1,1,1,1,5,4600000
+Nam Từ Liêm,26.0,CHDV,Không nội thất,2,1,0,1,1,10,5000000
+Đống Đa,32.3,Chung cư mini,Nội thất đầy đủ,2,0,1,1,0,5,9400000
+Bắc Từ Liêm,49.7,Chung cư mini,Nội thất đầy đủ,4,0,1,0,1,7,9600000
+Ba Đình,13.7,Phòng trọ,Nội thất đầy đủ,2,1,0,0,1,8,2900000
+Thanh Xuân,46.6,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,8,7300000
+Hai Bà Trưng,27.9,Chung cư mini,Nội thất đầy đủ,2,1,1,1,1,7,7600000
+Tây Hồ,48.7,Phòng trọ,Nội thất đầy đủ,3,0,0,1,1,3,9400000
+Tây Hồ,46.5,Mini apartment,Nội thất cơ bản,3,1,1,0,0,2,13400000
+Hai Bà Trưng,27.0,CHDV,Nội thất cơ bản,2,0,0,1,1,1,5400000
+Hoàng Mai,41.8,Mini apartment,Nội thất đầy đủ,3,1,1,0,1,6,10300000
+Đống Đa,18.9,Phòng trọ,Nội thất cơ bản,1,1,0,1,1,9,3100000
+Nam Từ Liêm,50.5,Mini apartment,Nội thất cơ bản,3,0,0,1,0,3,9900000
+Ba Đình,29.4,CHDV,Không nội thất,3,0,1,1,1,5,7500000
+Hoàn Kiếm,31.6,Chung cư mini,Không nội thất,2,0,1,0,0,9,5900000
+Bắc Từ Liêm,42.3,Chung cư mini,Nội thất đầy đủ,3,1,0,1,1,9,8700000
+Đống Đa,47.3,Phòng trọ,Nội thất cơ bản,3,0,1,0,1,7,7400000
+Bắc Từ Liêm,22.2,CHDV,Nội thất cơ bản,1,1,1,0,1,4,4400000
+Ba Đình,40.4,Chung cư mini,Không nội thất,2,0,1,1,1,2,7400000
+Cầu Giấy,28.9,Phòng trọ,Nội thất cơ bản,2,1,0,0,1,2,5200000
+Cầu Giấy,27.9,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,4,5200000
+Đống Đa,41.7,Mini apartment,Không nội thất,4,1,1,0,1,1,8300000
+Thanh Xuân,28.6,Mini apartment,Nội thất đầy đủ,2,1,1,1,1,4,8400000
+Ba Đình,26.9,Mini apartment,Không nội thất,2,1,0,1,1,6,6400000
+Ba Đình,47.9,Chung cư mini,Nội thất cơ bản,3,0,0,0,1,6,10400000
+Hai Bà Trưng,16.4,Phòng trọ,Nội thất cơ bản,1,0,1,1,0,7,2600000
+Thanh Xuân,41.1,Phòng trọ,Không nội thất,2,0,0,1,1,5,4500000
+Nam Từ Liêm,22.7,Phòng trọ,Nội thất đầy đủ,2,1,0,1,0,9,4700000
+Nam Từ Liêm,12.7,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,2,1900000
+Hoàn Kiếm,19.2,Phòng trọ,Nội thất đầy đủ,1,0,0,1,1,2,4700000
+Tây Hồ,38.1,Phòng trọ,Không nội thất,3,1,1,0,0,4,6600000
+Cầu Giấy,42.5,Phòng trọ,Không nội thất,4,1,1,0,1,4,7900000
+Nam Từ Liêm,12.9,Mini apartment,Không nội thất,1,0,1,0,1,4,2100000
+Thanh Xuân,13.6,Phòng trọ,Nội thất cơ bản,1,1,0,1,1,1,1900000
+Ba Đình,50.8,Mini apartment,Nội thất đầy đủ,4,1,0,1,1,4,13700000
+Nam Từ Liêm,15.2,Chung cư mini,Nội thất đầy đủ,1,0,1,1,1,5,2500000
+Ba Đình,50.4,Phòng trọ,Nội thất đầy đủ,4,1,1,1,0,9,12000000
+Nam Từ Liêm,21.8,Phòng trọ,Nội thất đầy đủ,2,0,1,1,1,3,4000000
+Cầu Giấy,43.8,Phòng trọ,Nội thất đầy đủ,3,1,0,0,1,3,7700000
+Bắc Từ Liêm,25.3,Phòng trọ,Nội thất cơ bản,1,0,0,0,0,5,3300000
+Nam Từ Liêm,48.9,Chung cư mini,Không nội thất,3,1,1,1,1,10,8900000
+Thanh Xuân,42.1,Phòng trọ,Nội thất cơ bản,2,0,1,0,1,6,5300000
+Nam Từ Liêm,29.3,Phòng trọ,Không nội thất,3,1,1,1,1,3,3300000
+Tây Hồ,15.3,Phòng trọ,Không nội thất,1,0,1,0,1,1,2200000
+Cầu Giấy,43.5,Mini apartment,Nội thất cơ bản,4,1,1,0,0,10,12100000
+Thanh Xuân,38.5,CHDV,Nội thất đầy đủ,3,1,0,1,1,8,10700000
+Hai Bà Trưng,12.1,CHDV,Không nội thất,1,0,1,0,1,1,2300000
+Thanh Xuân,12.4,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,2,2100000
+Tây Hồ,46.8,CHDV,Nội thất đầy đủ,3,1,1,0,0,3,16400000
+Bắc Từ Liêm,23.2,CHDV,Nội thất cơ bản,2,1,1,1,1,6,5000000
+Cầu Giấy,39.4,Chung cư mini,Không nội thất,3,1,1,1,0,4,8100000
+Hai Bà Trưng,31.5,Mini apartment,Không nội thất,1,1,1,1,0,4,5700000
+Tây Hồ,49.1,Phòng trọ,Nội thất đầy đủ,4,1,1,1,1,9,13900000
+Tây Hồ,51.4,Mini apartment,Nội thất đầy đủ,4,1,0,0,1,6,16600000
+Đống Đa,54.9,Mini apartment,Nội thất đầy đủ,4,0,1,0,1,2,15900000
+Cầu Giấy,18.6,Phòng trọ,Nội thất cơ bản,1,1,0,0,1,7,3300000
+Thanh Xuân,49.1,Chung cư mini,Không nội thất,4,1,1,1,0,3,9500000
+Ba Đình,23.4,Mini apartment,Không nội thất,3,0,1,1,1,9,6300000
+Bắc Từ Liêm,37.4,Phòng trọ,Nội thất đầy đủ,2,0,1,0,1,6,5900000
+Ba Đình,33.7,Chung cư mini,Không nội thất,2,1,0,1,1,8,6800000
+Thanh Xuân,12.8,Mini apartment,Nội thất cơ bản,1,1,1,0,0,1,2400000
+Thanh Xuân,52.1,Chung cư mini,Nội thất cơ bản,4,0,1,0,1,2,10500000
+Cầu Giấy,15.4,Phòng trọ,Không nội thất,1,1,0,1,1,6,2500000
+Thanh Xuân,41.6,Chung cư mini,Không nội thất,3,1,1,0,1,3,6900000
+Đống Đa,45.8,Phòng trọ,Nội thất cơ bản,3,1,0,0,1,1,7100000
+Hai Bà Trưng,46.2,Chung cư mini,Không nội thất,3,0,1,1,1,6,9300000
+Thanh Xuân,17.8,Phòng trọ,Không nội thất,2,1,1,1,1,5,2700000
+Ba Đình,31.2,Chung cư mini,Nội thất đầy đủ,3,0,1,0,1,9,8600000
+Thanh Xuân,47.7,Chung cư mini,Nội thất đầy đủ,3,0,0,1,1,6,9900000
+Đống Đa,25.0,CHDV,Không nội thất,1,1,1,1,0,5,5200000
+Nam Từ Liêm,32.1,Chung cư mini,Nội thất đầy đủ,3,0,1,0,1,1,6300000
+Nam Từ Liêm,23.7,Chung cư mini,Nội thất cơ bản,3,1,1,1,1,1,4400000
+Tây Hồ,31.9,Chung cư mini,Nội thất cơ bản,2,1,1,0,1,1,7100000
+Bắc Từ Liêm,50.2,Phòng trọ,Nội thất đầy đủ,4,1,0,0,1,7,6600000
+Hoàn Kiếm,31.6,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,6,10100000
+Hai Bà Trưng,35.9,Phòng trọ,Nội thất đầy đủ,3,1,1,1,0,5,7600000
+Hoàng Mai,29.4,Mini apartment,Không nội thất,2,1,1,0,1,4,4700000
+Tây Hồ,31.8,Phòng trọ,Không nội thất,2,1,1,0,1,8,5400000
+Bắc Từ Liêm,12.7,Phòng trọ,Nội thất đầy đủ,2,1,1,0,1,8,1700000
+Nam Từ Liêm,24.2,Chung cư mini,Nội thất cơ bản,3,1,1,0,1,5,4000000
+Ba Đình,30.8,Chung cư mini,Không nội thất,2,0,0,1,1,4,6700000
+Hoàng Mai,39.3,Phòng trọ,Nội thất đầy đủ,3,1,0,0,0,2,5100000
+Bắc Từ Liêm,31.4,Chung cư mini,Nội thất đầy đủ,1,0,1,1,1,7,6700000
+Bắc Từ Liêm,26.5,Chung cư mini,Nội thất đầy đủ,3,1,0,1,1,5,5100000
+Tây Hồ,28.7,CHDV,Nội thất cơ bản,2,1,1,1,0,3,7300000
+Hoàng Mai,22.4,Phòng trọ,Nội thất đầy đủ,3,1,1,0,1,9,3800000
+Cầu Giấy,51.8,Chung cư mini,Không nội thất,4,1,1,0,1,9,11500000
+Hoàn Kiếm,34.4,Chung cư mini,Không nội thất,3,1,1,0,1,10,7900000
+Cầu Giấy,12.6,Chung cư mini,Nội thất cơ bản,1,1,1,1,1,8,3300000
+Hoàng Mai,12.8,Chung cư mini,Không nội thất,1,0,0,0,1,1,1500000
+Cầu Giấy,53.8,Chung cư mini,Nội thất cơ bản,3,0,0,1,0,3,12700000
+Đống Đa,21.5,Phòng trọ,Nội thất cơ bản,2,1,1,0,0,2,3500000
+Nam Từ Liêm,46.6,Phòng trọ,Nội thất cơ bản,4,0,1,0,1,4,6200000
+Đống Đa,14.5,Phòng trọ,Không nội thất,1,1,0,0,1,2,2300000
+Thanh Xuân,51.6,Phòng trọ,Không nội thất,4,1,1,0,0,8,7700000
+Cầu Giấy,49.6,Phòng trọ,Nội thất cơ bản,3,0,1,1,1,1,8100000
+Thanh Xuân,36.6,Chung cư mini,Nội thất cơ bản,4,1,1,0,1,4,7400000
+Ba Đình,12.4,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,5,3400000
+Hai Bà Trưng,23.1,Mini apartment,Nội thất đầy đủ,2,1,1,1,1,10,7300000
+Ba Đình,29.5,Phòng trọ,Nội thất cơ bản,2,1,0,1,0,4,5100000
+Hoàng Mai,31.8,CHDV,Nội thất đầy đủ,2,1,0,0,1,8,8400000
+Bắc Từ Liêm,24.8,Chung cư mini,Không nội thất,2,1,1,1,1,2,3800000
+Nam Từ Liêm,13.4,Phòng trọ,Không nội thất,1,1,0,0,1,9,1400000
+Cầu Giấy,37.4,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,2,8700000
+Tây Hồ,34.5,Chung cư mini,Nội thất cơ bản,3,0,1,0,1,2,8600000
+Hai Bà Trưng,24.2,Phòng trọ,Nội thất đầy đủ,3,1,0,0,1,2,3900000
+Hoàn Kiếm,13.6,Mini apartment,Nội thất cơ bản,1,0,1,1,0,10,4200000
+Hoàn Kiếm,54.8,Chung cư mini,Nội thất đầy đủ,4,0,1,1,1,8,22200000
+Hoàn Kiếm,32.7,Mini apartment,Nội thất cơ bản,1,0,1,0,0,3,10000000
+Cầu Giấy,44.5,Phòng trọ,Nội thất cơ bản,2,0,0,0,1,10,7900000
+Hoàn Kiếm,31.4,CHDV,Nội thất cơ bản,2,1,0,1,1,10,10100000
+Đống Đa,13.9,Chung cư mini,Nội thất đầy đủ,2,1,0,0,1,8,3600000
+Hai Bà Trưng,25.3,CHDV,Nội thất cơ bản,1,1,1,0,0,7,5300000
+Đống Đa,25.8,Phòng trọ,Nội thất đầy đủ,2,0,0,1,1,10,4900000
+Bắc Từ Liêm,48.0,Chung cư mini,Không nội thất,4,1,1,1,1,4,5700000
+Hai Bà Trưng,40.1,Chung cư mini,Không nội thất,4,1,0,1,1,7,7700000
+Đống Đa,23.8,CHDV,Nội thất cơ bản,2,1,1,1,1,8,6300000
+Hai Bà Trưng,53.6,Phòng trọ,Nội thất cơ bản,4,0,1,0,1,6,9000000
+Bắc Từ Liêm,25.8,Mini apartment,Nội thất đầy đủ,2,1,1,1,1,6,5600000
+Thanh Xuân,54.9,Phòng trọ,Nội thất cơ bản,3,1,0,0,1,3,7300000
+Cầu Giấy,54.8,CHDV,Nội thất cơ bản,3,1,0,0,1,5,15300000
+Cầu Giấy,20.2,Mini apartment,Nội thất cơ bản,1,0,1,1,1,10,4900000
+Hoàn Kiếm,25.4,CHDV,Nội thất cơ bản,2,1,1,0,1,2,9200000
+Ba Đình,32.9,Chung cư mini,Nội thất đầy đủ,3,1,0,1,1,5,8800000
+Hoàn Kiếm,40.6,Phòng trọ,Không nội thất,3,0,1,0,1,5,6900000
+Hoàng Mai,34.7,Mini apartment,Nội thất cơ bản,2,1,0,0,1,7,5600000
+Đống Đa,53.7,Phòng trọ,Nội thất đầy đủ,4,0,0,1,1,4,9700000
+Hai Bà Trưng,43.1,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,6,10300000
+Ba Đình,21.1,Chung cư mini,Nội thất cơ bản,2,1,1,0,1,9,4500000
+Bắc Từ Liêm,16.5,CHDV,Nội thất cơ bản,2,0,1,0,1,4,2900000
+Hoàng Mai,41.6,Phòng trọ,Không nội thất,3,0,1,0,1,6,4900000
+Bắc Từ Liêm,18.8,Chung cư mini,Nội thất cơ bản,1,1,1,0,1,9,2800000
+Cầu Giấy,45.9,CHDV,Nội thất đầy đủ,3,1,0,1,1,10,12300000
+Cầu Giấy,25.4,Phòng trọ,Nội thất cơ bản,2,0,1,0,1,1,5000000
+Hoàn Kiếm,26.1,Mini apartment,Không nội thất,2,1,1,1,1,8,7300000
+Đống Đa,12.5,Phòng trọ,Không nội thất,1,0,1,0,1,1,1800000
+Ba Đình,42.1,Phòng trọ,Không nội thất,3,0,1,0,1,4,6600000
+Nam Từ Liêm,16.9,Phòng trọ,Không nội thất,1,1,0,0,1,3,2100000
+Hoàng Mai,45.2,Phòng trọ,Không nội thất,3,0,1,0,0,4,5400000
+Hoàng Mai,33.2,Mini apartment,Nội thất cơ bản,2,1,1,0,1,7,6800000
+Hoàn Kiếm,45.7,Phòng trọ,Không nội thất,4,0,0,0,0,9,8300000
+Cầu Giấy,37.1,Phòng trọ,Không nội thất,4,1,1,0,1,9,5400000
+Hoàn Kiếm,15.5,Phòng trọ,Nội thất cơ bản,2,0,1,0,0,10,3300000
+Hai Bà Trưng,44.9,Chung cư mini,Không nội thất,3,0,1,1,1,1,7900000
+Ba Đình,15.0,Chung cư mini,Không nội thất,1,0,0,1,1,10,2900000
+Đống Đa,32.6,Phòng trọ,Nội thất cơ bản,2,0,1,0,1,1,4800000
+Thanh Xuân,19.4,Phòng trọ,Không nội thất,2,1,0,1,1,9,2800000
+Tây Hồ,44.4,Mini apartment,Nội thất cơ bản,3,1,0,1,0,4,12400000
+Tây Hồ,51.2,Phòng trọ,Không nội thất,4,0,1,0,1,3,8300000
+Hoàn Kiếm,35.8,Chung cư mini,Nội thất đầy đủ,3,0,1,1,1,9,13400000
+Hai Bà Trưng,34.7,Phòng trọ,Nội thất đầy đủ,2,0,1,1,1,5,6900000
+Ba Đình,44.9,CHDV,Nội thất đầy đủ,3,0,1,0,1,6,15400000
+Nam Từ Liêm,12.2,Phòng trọ,Nội thất cơ bản,1,1,0,1,0,1,1800000
+Tây Hồ,51.5,Chung cư mini,Nội thất đầy đủ,4,1,1,1,1,1,16400000
+Ba Đình,20.5,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,7,3600000
+Đống Đa,54.3,Mini apartment,Không nội thất,4,0,0,0,1,10,10700000
+Bắc Từ Liêm,43.7,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,8,6300000
+Hai Bà Trưng,45.3,CHDV,Nội thất đầy đủ,4,0,1,1,0,8,13900000
+Cầu Giấy,40.2,Phòng trọ,Nội thất cơ bản,3,1,1,0,0,7,7800000
+Ba Đình,32.3,Phòng trọ,Không nội thất,2,1,1,0,1,9,4800000
+Đống Đa,36.6,CHDV,Nội thất đầy đủ,2,1,0,1,1,1,11900000
+Nam Từ Liêm,14.0,Phòng trọ,Nội thất đầy đủ,1,1,1,0,0,2,2100000
+Thanh Xuân,38.8,Mini apartment,Không nội thất,3,0,1,1,1,3,7700000
+Cầu Giấy,38.9,Mini apartment,Nội thất cơ bản,3,1,1,0,1,5,9400000
+Thanh Xuân,50.3,Mini apartment,Không nội thất,4,1,1,0,1,4,11500000
+Nam Từ Liêm,33.7,Phòng trọ,Nội thất đầy đủ,1,1,1,0,1,4,5500000
+Đống Đa,15.3,CHDV,Không nội thất,2,0,1,0,1,8,3200000
+Tây Hồ,25.2,Phòng trọ,Nội thất cơ bản,2,0,0,0,0,8,4900000
+Thanh Xuân,40.2,Mini apartment,Nội thất đầy đủ,2,1,0,1,1,7,11200000
+Cầu Giấy,22.3,Chung cư mini,Nội thất cơ bản,2,0,1,1,1,1,5400000
+Hoàn Kiếm,24.1,CHDV,Nội thất cơ bản,3,1,1,0,1,10,7200000
+Hoàng Mai,47.3,Chung cư mini,Nội thất cơ bản,3,1,1,1,1,4,9200000
+Ba Đình,37.1,Chung cư mini,Không nội thất,3,0,1,0,1,1,7100000
+Tây Hồ,33.9,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,5,6700000
+Thanh Xuân,25.7,CHDV,Không nội thất,2,0,1,0,1,3,3700000
+Bắc Từ Liêm,43.4,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,3,5200000
+Ba Đình,24.4,Chung cư mini,Không nội thất,2,0,1,1,1,4,4800000
+Hoàn Kiếm,43.7,CHDV,Nội thất cơ bản,3,1,0,1,1,2,14800000
+Nam Từ Liêm,15.0,Chung cư mini,Nội thất đầy đủ,1,1,1,0,1,7,2900000
+Hoàng Mai,49.2,Phòng trọ,Nội thất đầy đủ,4,0,0,1,1,4,6400000
+Đống Đa,33.5,Chung cư mini,Nội thất cơ bản,2,1,1,0,0,5,7200000
+Hoàn Kiếm,30.9,Phòng trọ,Không nội thất,2,1,1,0,1,2,5400000
+Hoàn Kiếm,38.3,Chung cư mini,Nội thất cơ bản,3,1,0,0,1,6,9300000
+Nam Từ Liêm,38.8,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,9,6900000
+Hai Bà Trưng,17.7,Phòng trọ,Không nội thất,1,1,0,0,1,8,1900000
+Nam Từ Liêm,44.5,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,8,8300000
+Hai Bà Trưng,23.9,CHDV,Nội thất cơ bản,1,0,1,0,0,2,5000000
+Hai Bà Trưng,50.9,Phòng trọ,Nội thất đầy đủ,4,1,1,0,1,4,9500000
+Tây Hồ,47.2,Phòng trọ,Nội thất đầy đủ,3,0,1,1,1,8,12400000
+Tây Hồ,26.9,Mini apartment,Nội thất đầy đủ,1,1,0,0,0,1,7600000
+Cầu Giấy,46.7,Phòng trọ,Nội thất cơ bản,3,1,0,1,1,8,9300000
+Thanh Xuân,27.3,Chung cư mini,Không nội thất,2,1,0,1,1,3,4500000
+Thanh Xuân,16.3,CHDV,Nội thất cơ bản,1,1,1,1,1,8,5100000
+Đống Đa,53.4,Mini apartment,Nội thất cơ bản,4,1,1,0,0,6,13800000
+Thanh Xuân,40.1,CHDV,Không nội thất,3,1,1,0,1,7,7200000
+Tây Hồ,31.6,CHDV,Nội thất cơ bản,3,1,1,1,1,2,11600000
+Cầu Giấy,29.1,CHDV,Nội thất cơ bản,1,1,0,1,1,1,8700000
+Cầu Giấy,26.0,Phòng trọ,Nội thất cơ bản,1,1,1,1,1,6,5000000
+Hai Bà Trưng,54.2,CHDV,Nội thất cơ bản,3,1,1,0,1,3,12400000
+Nam Từ Liêm,17.8,Phòng trọ,Không nội thất,1,0,1,0,1,4,1700000
+Đống Đa,25.5,Mini apartment,Nội thất đầy đủ,1,1,0,1,1,9,7600000
+Hai Bà Trưng,32.9,Phòng trọ,Không nội thất,2,1,0,0,1,3,4100000
+Nam Từ Liêm,32.6,Chung cư mini,Nội thất cơ bản,2,1,1,0,0,2,5000000
+Thanh Xuân,32.3,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,2,5300000
+Hai Bà Trưng,19.6,CHDV,Nội thất đầy đủ,1,1,1,0,1,2,6100000
+Ba Đình,18.2,Phòng trọ,Không nội thất,1,0,1,1,1,6,2800000
+Thanh Xuân,23.0,Mini apartment,Nội thất cơ bản,3,0,0,1,1,2,5100000
+Nam Từ Liêm,51.3,CHDV,Nội thất cơ bản,4,0,1,0,1,7,10900000
+Đống Đa,16.9,Phòng trọ,Không nội thất,1,0,1,0,1,7,2500000
+Nam Từ Liêm,44.6,CHDV,Nội thất cơ bản,3,1,1,1,1,7,9100000
+Hai Bà Trưng,44.6,CHDV,Nội thất đầy đủ,4,1,1,0,1,2,12400000
+Hai Bà Trưng,46.8,Chung cư mini,Nội thất đầy đủ,3,0,0,1,1,7,9700000
+Hoàn Kiếm,50.1,Phòng trọ,Không nội thất,4,1,1,1,1,10,9000000
+Đống Đa,23.3,Phòng trọ,Không nội thất,3,1,1,1,1,8,3900000
+Bắc Từ Liêm,21.7,Phòng trọ,Nội thất cơ bản,2,0,0,1,1,8,2500000
+Thanh Xuân,32.0,Phòng trọ,Nội thất cơ bản,1,0,1,0,1,2,4100000
+Cầu Giấy,23.4,Mini apartment,Không nội thất,2,1,0,1,0,5,4600000
+Đống Đa,43.6,Phòng trọ,Không nội thất,3,1,1,0,0,6,5500000
+Cầu Giấy,39.3,CHDV,Nội thất đầy đủ,4,0,1,0,1,9,10400000
+Đống Đa,49.6,Phòng trọ,Nội thất đầy đủ,3,0,1,0,1,6,9900000
+Đống Đa,15.6,Chung cư mini,Không nội thất,2,0,1,0,1,10,2100000
+Nam Từ Liêm,51.3,CHDV,Nội thất cơ bản,4,0,1,0,1,6,11100000
+Đống Đa,24.6,Mini apartment,Nội thất cơ bản,2,1,1,0,0,10,6200000
+Hoàn Kiếm,33.1,Phòng trọ,Không nội thất,1,1,1,1,1,10,6300000
+Bắc Từ Liêm,30.9,Chung cư mini,Nội thất cơ bản,2,1,1,1,1,6,5100000
+Hai Bà Trưng,44.7,Phòng trọ,Nội thất cơ bản,4,1,1,0,0,9,7100000
+Hoàng Mai,30.1,Phòng trọ,Nội thất đầy đủ,2,0,0,1,1,10,4700000
+Cầu Giấy,52.6,Phòng trọ,Nội thất đầy đủ,4,0,1,0,1,7,11600000
+Hai Bà Trưng,50.8,Chung cư mini,Nội thất cơ bản,4,1,1,1,1,1,12100000
+Hoàng Mai,49.5,Phòng trọ,Nội thất cơ bản,4,1,0,0,1,1,7400000
+Bắc Từ Liêm,15.1,CHDV,Không nội thất,1,1,1,1,1,4,2900000
+Bắc Từ Liêm,48.7,Phòng trọ,Nội thất cơ bản,3,0,1,0,0,2,5300000
+Cầu Giấy,45.6,Chung cư mini,Nội thất cơ bản,3,1,1,1,1,3,11900000
+Cầu Giấy,16.5,Phòng trọ,Không nội thất,1,1,1,0,1,7,2700000
+Bắc Từ Liêm,16.6,CHDV,Không nội thất,1,1,1,0,0,7,2500000
+Hoàng Mai,16.4,Mini apartment,Không nội thất,1,1,0,0,1,3,2300000
+Đống Đa,12.5,Chung cư mini,Nội thất đầy đủ,1,0,0,0,1,2,2700000
+Thanh Xuân,35.6,CHDV,Không nội thất,3,1,1,1,1,1,6600000
+Ba Đình,53.9,Phòng trọ,Không nội thất,4,1,1,1,1,9,8500000
+Hai Bà Trưng,30.9,Chung cư mini,Nội thất cơ bản,2,1,1,0,1,10,6600000
+Nam Từ Liêm,35.3,Phòng trọ,Nội thất cơ bản,3,1,0,1,0,3,4900000
+Hai Bà Trưng,53.6,Phòng trọ,Không nội thất,4,0,1,0,1,9,7500000
+Nam Từ Liêm,23.0,CHDV,Nội thất đầy đủ,2,1,1,1,1,4,6400000
+Hoàng Mai,48.9,Mini apartment,Nội thất đầy đủ,3,1,1,0,1,10,10800000
+Nam Từ Liêm,35.5,Phòng trọ,Nội thất cơ bản,3,0,1,1,0,6,5300000
+Cầu Giấy,36.5,Chung cư mini,Nội thất cơ bản,3,1,1,0,1,7,8000000
+Thanh Xuân,26.8,Chung cư mini,Không nội thất,2,0,1,1,0,10,4100000
+Thanh Xuân,36.1,Phòng trọ,Nội thất cơ bản,2,1,0,0,1,6,5300000
+Cầu Giấy,15.1,Phòng trọ,Nội thất đầy đủ,1,1,1,1,0,1,3900000
+Hoàn Kiếm,44.9,Phòng trọ,Không nội thất,3,0,1,1,0,6,9300000
+Hoàng Mai,24.2,Phòng trọ,Không nội thất,2,0,0,0,1,6,2900000
+Hoàn Kiếm,50.2,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,5,9700000
+Hoàn Kiếm,27.8,Phòng trọ,Không nội thất,2,1,1,1,1,3,5300000
+Hai Bà Trưng,18.1,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,10,3800000
+Bắc Từ Liêm,41.9,CHDV,Không nội thất,3,1,1,1,1,3,8700000
+Hai Bà Trưng,19.1,Chung cư mini,Nội thất đầy đủ,1,1,1,1,1,10,3900000
+Bắc Từ Liêm,44.4,Mini apartment,Nội thất cơ bản,2,0,0,1,1,7,8200000
+Ba Đình,53.6,Phòng trọ,Nội thất đầy đủ,4,1,0,1,1,8,14300000
+Nam Từ Liêm,45.5,CHDV,Nội thất cơ bản,2,1,1,0,1,3,9800000
+Bắc Từ Liêm,13.0,Mini apartment,Nội thất cơ bản,2,1,1,1,1,3,2000000
+Cầu Giấy,37.8,Chung cư mini,Nội thất đầy đủ,3,1,1,1,1,7,11300000
+Hai Bà Trưng,41.9,Phòng trọ,Nội thất cơ bản,2,0,1,1,1,10,7100000
+Hoàng Mai,47.5,CHDV,Nội thất cơ bản,3,1,1,0,1,7,9800000
+Nam Từ Liêm,14.4,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,9,1900000
+Ba Đình,32.6,Phòng trọ,Nội thất đầy đủ,1,0,1,1,1,6,6600000
+Bắc Từ Liêm,35.0,Chung cư mini,Nội thất cơ bản,2,1,1,1,1,7,6000000
+Ba Đình,19.3,Chung cư mini,Nội thất đầy đủ,1,1,1,0,0,10,5000000
+Hoàng Mai,25.9,Phòng trọ,Không nội thất,3,1,1,0,1,1,2800000
+Hoàn Kiếm,30.9,Mini apartment,Nội thất cơ bản,2,0,1,0,1,7,8700000
+Thanh Xuân,47.8,Chung cư mini,Nội thất đầy đủ,3,0,0,1,1,2,10500000
+Hoàng Mai,52.0,Chung cư mini,Nội thất cơ bản,4,1,1,0,1,7,9900000
+Tây Hồ,39.0,Mini apartment,Nội thất đầy đủ,3,1,0,1,1,3,11500000
+Hoàng Mai,29.0,Phòng trọ,Nội thất đầy đủ,3,0,0,1,1,9,3900000
+Ba Đình,22.9,Mini apartment,Nội thất cơ bản,2,1,0,1,1,5,6000000
+Cầu Giấy,54.2,Chung cư mini,Không nội thất,4,1,1,0,1,7,9300000
+Hai Bà Trưng,54.3,Phòng trọ,Không nội thất,4,0,0,1,1,8,8100000
+Cầu Giấy,51.8,CHDV,Nội thất đầy đủ,4,1,1,1,1,2,14400000
+Ba Đình,45.8,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,1,13700000
+Hai Bà Trưng,26.0,CHDV,Không nội thất,2,0,1,0,0,7,5600000
+Tây Hồ,47.1,Mini apartment,Không nội thất,3,1,1,1,1,6,12400000
+Thanh Xuân,29.6,CHDV,Không nội thất,2,1,1,1,1,6,5000000
+Nam Từ Liêm,26.1,Chung cư mini,Nội thất đầy đủ,1,1,1,1,1,2,5400000
+Ba Đình,44.0,Mini apartment,Nội thất cơ bản,3,1,1,0,0,3,10700000
+Bắc Từ Liêm,15.4,Chung cư mini,Nội thất cơ bản,1,1,1,0,1,4,2100000
+Ba Đình,14.1,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,3,2800000
+Ba Đình,31.3,Mini apartment,Nội thất đầy đủ,3,0,1,1,1,2,10600000
+Hai Bà Trưng,31.2,Phòng trọ,Nội thất cơ bản,2,0,0,1,0,3,5300000
+Đống Đa,50.5,CHDV,Nội thất cơ bản,4,1,1,0,1,6,13100000
+Hoàng Mai,17.4,Mini apartment,Không nội thất,1,0,1,0,1,9,2700000
+Đống Đa,17.3,CHDV,Nội thất cơ bản,1,0,0,1,0,4,4800000
+Tây Hồ,18.3,Chung cư mini,Nội thất đầy đủ,1,0,1,1,1,6,6300000
+Bắc Từ Liêm,13.3,CHDV,Nội thất đầy đủ,1,1,1,0,1,1,3100000
+Thanh Xuân,15.1,Chung cư mini,Không nội thất,2,0,0,1,1,6,2300000
+Hoàn Kiếm,40.4,Mini apartment,Không nội thất,4,1,0,1,1,3,10900000
+Tây Hồ,30.6,Phòng trọ,Không nội thất,2,1,1,0,1,9,5300000
+Hoàn Kiếm,44.8,Phòng trọ,Nội thất cơ bản,3,1,1,0,0,4,10100000
+Hoàn Kiếm,54.7,Phòng trọ,Nội thất đầy đủ,4,0,0,0,1,7,12100000
+Thanh Xuân,40.3,Chung cư mini,Không nội thất,4,1,1,0,1,4,7100000
+Cầu Giấy,14.2,Chung cư mini,Nội thất cơ bản,1,1,1,1,1,6,3500000
+Đống Đa,16.5,CHDV,Nội thất cơ bản,2,0,1,0,1,7,4200000
+Ba Đình,49.9,Phòng trọ,Không nội thất,4,0,1,0,1,2,7300000
+Nam Từ Liêm,34.7,Chung cư mini,Nội thất cơ bản,3,0,0,1,1,10,6200000
+Hoàn Kiếm,47.5,Phòng trọ,Không nội thất,4,1,0,0,1,6,10400000
+Bắc Từ Liêm,48.8,Phòng trọ,Nội thất cơ bản,3,1,0,1,1,8,6100000
+Tây Hồ,51.9,Chung cư mini,Nội thất đầy đủ,4,0,1,0,1,6,15400000
+Cầu Giấy,52.8,Phòng trọ,Nội thất cơ bản,4,1,1,0,1,2,8100000
+Hoàn Kiếm,35.9,Phòng trọ,Không nội thất,3,0,0,1,0,4,6500000
+Cầu Giấy,26.7,Phòng trọ,Nội thất đầy đủ,2,1,1,0,1,1,5800000
+Cầu Giấy,53.4,Phòng trọ,Nội thất cơ bản,4,0,0,1,1,7,10200000
+Hoàn Kiếm,35.5,Chung cư mini,Nội thất đầy đủ,3,1,0,0,1,8,11800000
+Hai Bà Trưng,14.8,Phòng trọ,Không nội thất,1,1,1,1,1,10,2100000
+Hoàng Mai,39.6,CHDV,Không nội thất,3,0,1,1,1,2,7600000
+Bắc Từ Liêm,37.3,CHDV,Không nội thất,3,1,1,0,1,10,5800000
+Ba Đình,50.5,Chung cư mini,Không nội thất,4,1,0,1,1,5,12700000
+Ba Đình,40.1,Mini apartment,Nội thất cơ bản,2,0,1,0,1,8,10600000
+Bắc Từ Liêm,27.0,Chung cư mini,Nội thất đầy đủ,2,1,0,1,0,8,5000000
+Hai Bà Trưng,53.5,Chung cư mini,Nội thất cơ bản,3,1,1,0,1,5,9200000
+Ba Đình,46.5,Mini apartment,Không nội thất,2,1,1,1,1,8,10200000
+Cầu Giấy,39.1,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,6,7600000
+Thanh Xuân,24.6,Mini apartment,Không nội thất,2,1,1,1,1,5,4400000
+Tây Hồ,28.1,Phòng trọ,Nội thất cơ bản,2,0,0,1,1,4,5900000
+Đống Đa,40.8,Phòng trọ,Nội thất cơ bản,2,0,1,1,1,5,7200000
+Ba Đình,15.1,Phòng trọ,Nội thất đầy đủ,1,1,1,0,1,4,2800000
+Bắc Từ Liêm,23.0,CHDV,Nội thất đầy đủ,2,1,0,1,1,1,5400000
+Thanh Xuân,42.7,Chung cư mini,Không nội thất,3,0,1,0,0,3,6500000
+Hoàn Kiếm,32.6,CHDV,Nội thất cơ bản,3,0,1,0,1,8,10100000
+Hoàng Mai,29.3,Phòng trọ,Nội thất đầy đủ,2,1,1,0,0,7,5000000
+Bắc Từ Liêm,18.5,Phòng trọ,Nội thất đầy đủ,1,0,1,0,1,7,2200000
+Cầu Giấy,31.0,Phòng trọ,Nội thất cơ bản,2,0,1,1,1,3,5000000
+Hoàng Mai,45.1,Phòng trọ,Nội thất đầy đủ,3,1,0,0,0,9,7100000
+Tây Hồ,23.4,Mini apartment,Không nội thất,2,1,1,1,1,6,4900000
+Tây Hồ,12.2,Phòng trọ,Nội thất đầy đủ,2,1,1,0,1,8,2700000
+Hai Bà Trưng,40.7,CHDV,Không nội thất,3,0,1,0,1,8,9100000
+Nam Từ Liêm,53.8,CHDV,Nội thất cơ bản,4,0,1,1,1,3,11400000
+Hai Bà Trưng,38.1,Phòng trọ,Nội thất đầy đủ,3,0,1,0,1,4,5900000
+Thanh Xuân,17.2,Chung cư mini,Không nội thất,2,1,1,0,1,6,2900000
+Hoàng Mai,25.8,Phòng trọ,Nội thất cơ bản,2,0,0,0,1,2,3000000
+Nam Từ Liêm,49.3,Phòng trọ,Nội thất cơ bản,4,0,1,0,1,7,6300000
+Hoàn Kiếm,22.0,Phòng trọ,Nội thất đầy đủ,2,0,1,1,1,2,7300000
+Cầu Giấy,38.1,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,5,11100000
+Hoàng Mai,29.3,Phòng trọ,Nội thất đầy đủ,3,0,0,0,1,4,4100000
+Hai Bà Trưng,20.9,Chung cư mini,Nội thất cơ bản,1,1,1,1,0,9,4600000
+Đống Đa,47.0,Chung cư mini,Nội thất đầy đủ,2,0,1,1,0,2,11100000
+Nam Từ Liêm,43.9,Phòng trọ,Nội thất cơ bản,4,0,1,0,0,7,5700000
+Nam Từ Liêm,40.4,Chung cư mini,Nội thất cơ bản,4,1,1,1,1,7,7900000
+Cầu Giấy,22.2,CHDV,Nội thất đầy đủ,1,0,1,0,1,7,7200000
+Ba Đình,16.2,Phòng trọ,Nội thất cơ bản,2,1,0,0,1,1,3200000
+Tây Hồ,36.8,Phòng trọ,Không nội thất,3,0,1,0,1,8,7100000
+Tây Hồ,35.8,CHDV,Không nội thất,3,1,1,1,1,2,10800000
+Đống Đa,20.1,Phòng trọ,Không nội thất,2,0,1,0,1,5,3100000
+Thanh Xuân,14.4,Chung cư mini,Nội thất đầy đủ,1,0,1,1,1,2,3400000
+Thanh Xuân,15.5,Phòng trọ,Nội thất cơ bản,1,1,1,0,1,5,2600000
+Hoàn Kiếm,54.7,Phòng trọ,Nội thất đầy đủ,4,1,0,0,1,7,14800000
+Hoàng Mai,45.7,Phòng trọ,Nội thất cơ bản,3,1,0,1,1,6,5300000
+Bắc Từ Liêm,51.6,Phòng trọ,Không nội thất,3,1,0,0,1,5,5800000
+Ba Đình,20.4,Chung cư mini,Nội thất cơ bản,1,1,0,0,1,4,5300000
+Hai Bà Trưng,53.3,Phòng trọ,Nội thất đầy đủ,4,0,1,0,1,8,9100000
+Bắc Từ Liêm,18.1,CHDV,Nội thất cơ bản,1,0,1,0,1,8,3100000
+Bắc Từ Liêm,33.9,Mini apartment,Nội thất đầy đủ,2,0,1,0,1,1,6500000
+Nam Từ Liêm,47.7,Chung cư mini,Nội thất cơ bản,4,1,1,0,1,10,8900000
+Đống Đa,27.0,CHDV,Nội thất cơ bản,2,0,0,0,1,2,6000000
+Tây Hồ,30.3,Phòng trọ,Nội thất cơ bản,2,0,0,0,1,3,5500000
+Hoàn Kiếm,17.5,Phòng trọ,Nội thất đầy đủ,1,1,0,1,1,1,4500000
+Thanh Xuân,17.3,CHDV,Nội thất đầy đủ,1,1,1,0,1,3,3600000
+Đống Đa,38.6,Phòng trọ,Không nội thất,4,1,1,0,1,10,6200000
+Nam Từ Liêm,41.0,Chung cư mini,Nội thất cơ bản,3,0,1,1,1,8,7000000
+Hai Bà Trưng,45.4,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,4,6300000
+Hoàn Kiếm,35.9,Chung cư mini,Nội thất đầy đủ,3,0,1,0,1,7,11500000
+Nam Từ Liêm,39.8,Mini apartment,Không nội thất,3,1,1,0,1,7,7100000
+Tây Hồ,12.6,Mini apartment,Nội thất đầy đủ,1,0,0,1,1,5,4000000
+Tây Hồ,19.0,CHDV,Nội thất đầy đủ,2,1,0,0,1,1,6700000
+Tây Hồ,54.4,CHDV,Không nội thất,4,0,1,1,1,10,15400000
+Đống Đa,15.3,Chung cư mini,Nội thất đầy đủ,1,1,1,1,1,4,3600000
+Đống Đa,41.2,Chung cư mini,Không nội thất,3,1,1,1,0,7,8700000
+Thanh Xuân,19.6,Phòng trọ,Không nội thất,1,0,1,0,0,5,2600000
+Thanh Xuân,42.8,Phòng trọ,Không nội thất,2,0,0,1,1,2,4800000
+Hai Bà Trưng,42.4,Chung cư mini,Không nội thất,3,1,1,1,1,8,8600000
+Hoàn Kiếm,22.1,Mini apartment,Nội thất đầy đủ,1,1,1,1,1,2,7500000
+Cầu Giấy,23.6,Phòng trọ,Không nội thất,1,1,1,0,1,8,4000000
+Cầu Giấy,40.2,Chung cư mini,Không nội thất,3,1,1,1,1,2,8600000
+Nam Từ Liêm,28.8,Chung cư mini,Không nội thất,2,1,0,1,1,5,4300000
+Tây Hồ,20.4,Chung cư mini,Không nội thất,1,0,1,1,1,4,4500000
+Hoàn Kiếm,43.5,CHDV,Không nội thất,2,0,0,1,1,1,11000000
+Bắc Từ Liêm,18.6,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,8,2600000
+Đống Đa,48.8,Chung cư mini,Không nội thất,4,1,0,1,1,10,11100000
+Hoàng Mai,34.1,CHDV,Nội thất đầy đủ,2,1,1,0,1,3,7400000
+Ba Đình,16.5,Chung cư mini,Nội thất đầy đủ,1,1,1,1,1,4,4600000
+Hai Bà Trưng,41.8,Phòng trọ,Không nội thất,3,1,1,0,1,4,5600000
+Tây Hồ,34.3,Chung cư mini,Nội thất đầy đủ,2,1,1,0,1,5,10300000
+Tây Hồ,24.8,CHDV,Không nội thất,3,1,0,1,0,3,7300000
+Tây Hồ,30.2,Phòng trọ,Không nội thất,1,1,1,0,1,9,4300000
+Đống Đa,24.8,CHDV,Không nội thất,2,1,0,1,0,4,4700000
+Đống Đa,23.3,CHDV,Nội thất cơ bản,2,1,1,1,1,10,6400000
+Ba Đình,19.0,Chung cư mini,Nội thất cơ bản,1,1,0,0,1,4,4400000
+Bắc Từ Liêm,27.6,Mini apartment,Nội thất đầy đủ,2,0,1,0,1,6,4900000
+Hoàn Kiếm,22.8,CHDV,Nội thất cơ bản,3,0,0,1,1,8,7400000
+Tây Hồ,41.4,CHDV,Nội thất đầy đủ,2,0,0,0,1,7,12500000
+Cầu Giấy,41.4,CHDV,Không nội thất,2,1,1,1,1,4,9900000
+Thanh Xuân,33.6,Phòng trọ,Nội thất đầy đủ,1,1,1,1,1,4,6900000
+Cầu Giấy,45.5,Phòng trọ,Không nội thất,4,1,1,1,1,5,7600000
+Nam Từ Liêm,48.2,Chung cư mini,Không nội thất,3,1,1,1,1,10,7600000
+Cầu Giấy,36.9,Phòng trọ,Không nội thất,3,0,1,1,1,5,6100000
+Nam Từ Liêm,38.6,Phòng trọ,Không nội thất,2,1,1,1,0,1,5200000
+Hoàng Mai,24.2,Mini apartment,Nội thất cơ bản,3,1,0,1,1,8,4700000
+Thanh Xuân,50.5,CHDV,Nội thất đầy đủ,4,1,0,1,0,10,13500000
+Cầu Giấy,13.0,Chung cư mini,Không nội thất,1,1,0,0,1,5,2600000
+Hoàng Mai,27.0,Mini apartment,Nội thất đầy đủ,2,0,1,0,1,3,6000000
+Hai Bà Trưng,43.0,CHDV,Nội thất cơ bản,2,1,0,1,1,3,11400000
+Hoàn Kiếm,15.4,Phòng trọ,Nội thất đầy đủ,1,0,1,1,1,4,3700000
+Hoàng Mai,19.9,Phòng trọ,Không nội thất,1,1,1,0,1,7,2400000
+Hoàn Kiếm,37.3,Chung cư mini,Nội thất cơ bản,2,0,1,0,1,5,10100000
+Cầu Giấy,36.1,CHDV,Nội thất đầy đủ,3,1,0,1,1,1,12100000
+Bắc Từ Liêm,43.8,Phòng trọ,Nội thất cơ bản,3,0,0,0,1,5,5900000
+Hoàng Mai,46.9,Chung cư mini,Nội thất cơ bản,3,1,1,0,1,5,8400000
+Thanh Xuân,17.5,Phòng trọ,Không nội thất,1,0,0,0,1,6,2500000
+Cầu Giấy,12.8,CHDV,Không nội thất,1,1,1,1,1,7,3500000
+Tây Hồ,41.7,CHDV,Nội thất cơ bản,3,1,0,0,1,5,9900000
+Đống Đa,25.0,CHDV,Nội thất đầy đủ,2,0,1,0,1,2,6800000
+Hoàng Mai,38.9,Mini apartment,Không nội thất,2,0,1,0,0,2,4800000
+Thanh Xuân,18.5,CHDV,Nội thất cơ bản,2,1,1,0,1,4,3900000
+Hai Bà Trưng,32.2,Mini apartment,Nội thất cơ bản,1,0,1,1,1,1,6600000
+Tây Hồ,33.7,Mini apartment,Nội thất cơ bản,2,1,1,1,1,7,10700000
+Hai Bà Trưng,37.2,CHDV,Nội thất cơ bản,2,0,1,0,1,1,7900000
+Cầu Giấy,34.1,Chung cư mini,Nội thất đầy đủ,1,0,1,0,1,3,9700000
+Đống Đa,33.3,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,10,5500000
+Hoàng Mai,26.3,Chung cư mini,Nội thất đầy đủ,1,0,0,0,0,7,4400000
+Hoàng Mai,15.1,Chung cư mini,Không nội thất,1,0,1,1,1,6,1900000
+Bắc Từ Liêm,15.8,Phòng trọ,Không nội thất,1,1,0,0,1,7,1900000
+Bắc Từ Liêm,30.7,Phòng trọ,Không nội thất,2,0,1,0,1,5,3700000
+Cầu Giấy,27.3,Mini apartment,Không nội thất,1,1,0,0,1,8,5800000
+Cầu Giấy,34.2,Mini apartment,Không nội thất,1,0,1,1,1,6,6400000
+Đống Đa,25.1,CHDV,Không nội thất,2,0,1,0,1,4,5200000
+Bắc Từ Liêm,41.6,Phòng trọ,Nội thất đầy đủ,4,1,1,0,1,1,6400000
+Thanh Xuân,49.2,Phòng trọ,Không nội thất,4,0,0,0,1,2,5800000
+Thanh Xuân,24.9,Phòng trọ,Nội thất đầy đủ,2,1,1,0,1,6,5500000
+Đống Đa,20.3,Phòng trọ,Không nội thất,1,1,0,0,0,4,3300000
+Thanh Xuân,17.0,Phòng trọ,Nội thất đầy đủ,2,1,1,0,1,3,2500000
+Nam Từ Liêm,38.5,Phòng trọ,Nội thất đầy đủ,2,1,1,0,1,7,5600000
+Hoàn Kiếm,31.1,Mini apartment,Không nội thất,2,0,1,1,1,7,8400000
+Đống Đa,20.1,CHDV,Nội thất đầy đủ,1,1,0,1,1,2,5300000
+Đống Đa,40.1,Phòng trọ,Nội thất cơ bản,3,1,1,0,0,8,7100000
+Ba Đình,18.4,Phòng trọ,Nội thất đầy đủ,2,0,0,0,1,1,3800000
+Tây Hồ,35.8,Chung cư mini,Nội thất cơ bản,2,1,1,1,1,10,9400000
+Tây Hồ,34.7,Phòng trọ,Nội thất cơ bản,3,1,0,0,1,7,7600000
+Nam Từ Liêm,43.6,Mini apartment,Nội thất đầy đủ,3,1,1,0,1,10,12200000
+Bắc Từ Liêm,14.4,Phòng trọ,Nội thất cơ bản,1,0,1,1,1,1,1800000
+Cầu Giấy,50.2,Phòng trọ,Không nội thất,3,1,1,1,1,3,7500000
+Cầu Giấy,42.2,Phòng trọ,Nội thất đầy đủ,3,1,1,0,0,3,9200000
+Hai Bà Trưng,21.3,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,10,3300000
+Nam Từ Liêm,19.9,Chung cư mini,Nội thất cơ bản,1,0,0,1,1,2,3900000
+Đống Đa,30.6,CHDV,Không nội thất,2,1,1,0,0,10,7300000
+Nam Từ Liêm,47.2,Chung cư mini,Nội thất cơ bản,4,0,1,1,0,5,8700000
+Nam Từ Liêm,48.2,Phòng trọ,Nội thất đầy đủ,3,0,1,0,1,4,8100000
+Nam Từ Liêm,34.4,Chung cư mini,Không nội thất,2,0,1,0,0,6,4800000
+Tây Hồ,49.0,Chung cư mini,Nội thất cơ bản,4,1,1,1,0,2,14300000
+Nam Từ Liêm,12.2,Mini apartment,Nội thất cơ bản,1,1,1,1,1,4,2300000
+Hoàn Kiếm,13.5,Phòng trọ,Nội thất đầy đủ,1,0,0,1,0,7,3500000
+Cầu Giấy,51.2,Phòng trọ,Nội thất cơ bản,4,1,1,0,1,1,11100000
+Hai Bà Trưng,45.3,Chung cư mini,Nội thất cơ bản,3,1,0,1,1,3,8400000
+Hoàn Kiếm,31.4,Chung cư mini,Nội thất đầy đủ,2,1,1,1,0,1,10100000
+Hai Bà Trưng,44.4,Chung cư mini,Nội thất cơ bản,2,0,1,1,1,2,9000000
+Ba Đình,53.1,Phòng trọ,Không nội thất,4,0,1,1,1,9,8300000
+Hai Bà Trưng,45.2,Chung cư mini,Không nội thất,2,1,0,0,1,10,6700000
+Cầu Giấy,48.2,Mini apartment,Nội thất cơ bản,3,0,1,0,0,5,10800000
+Cầu Giấy,44.7,Chung cư mini,Không nội thất,3,1,0,1,1,4,9200000
+Nam Từ Liêm,19.2,Mini apartment,Không nội thất,1,0,1,1,1,4,3300000
+Hoàng Mai,47.8,Chung cư mini,Nội thất đầy đủ,2,1,0,0,1,8,8800000
+Ba Đình,20.4,Mini apartment,Không nội thất,1,0,1,0,1,3,5200000
+Đống Đa,50.4,CHDV,Nội thất đầy đủ,4,1,1,1,1,4,18100000
+Thanh Xuân,31.7,Phòng trọ,Không nội thất,2,1,1,0,1,2,4300000
+Hai Bà Trưng,41.1,Mini apartment,Nội thất đầy đủ,3,1,1,1,1,6,10900000
+Hoàng Mai,33.4,Phòng trọ,Nội thất đầy đủ,2,1,1,0,0,9,5200000
+Nam Từ Liêm,16.0,Mini apartment,Không nội thất,1,0,1,1,1,4,2900000
+Tây Hồ,24.5,Chung cư mini,Nội thất cơ bản,2,1,0,0,0,6,6300000
+Đống Đa,54.3,Phòng trọ,Không nội thất,4,1,1,0,1,4,9100000
+Bắc Từ Liêm,53.3,Chung cư mini,Nội thất đầy đủ,4,1,1,0,0,2,9500000
+Hoàng Mai,25.8,Mini apartment,Nội thất đầy đủ,3,1,1,1,1,6,5700000
+Tây Hồ,54.8,Phòng trọ,Nội thất cơ bản,3,1,1,1,1,7,10000000
+Ba Đình,48.4,Chung cư mini,Nội thất cơ bản,3,1,1,1,1,4,12900000
+Nam Từ Liêm,38.3,CHDV,Nội thất cơ bản,3,1,1,0,1,7,6900000
+Đống Đa,13.7,CHDV,Nội thất đầy đủ,1,1,0,1,1,8,4200000
+Đống Đa,50.8,Phòng trọ,Nội thất cơ bản,4,1,1,1,1,3,9000000
+Đống Đa,36.0,Phòng trọ,Không nội thất,3,0,1,1,1,2,5500000
+Ba Đình,49.3,Phòng trọ,Nội thất cơ bản,4,0,1,1,1,5,10900000
+Hai Bà Trưng,47.9,Chung cư mini,Không nội thất,3,1,1,0,0,2,9200000
+Bắc Từ Liêm,47.8,Chung cư mini,Nội thất đầy đủ,3,0,1,1,1,10,9800000
+Ba Đình,42.0,Mini apartment,Không nội thất,4,0,1,1,0,5,9200000
+Thanh Xuân,24.5,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,10,4000000
+Bắc Từ Liêm,26.5,Chung cư mini,Không nội thất,2,0,1,1,1,6,3300000
+Cầu Giấy,25.3,Phòng trọ,Không nội thất,1,1,0,0,1,8,3700000
+Nam Từ Liêm,12.9,Phòng trọ,Nội thất cơ bản,1,0,1,1,0,6,1800000
+Ba Đình,37.1,Chung cư mini,Nội thất đầy đủ,3,1,1,1,1,4,9900000
+Tây Hồ,42.0,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,3,11700000
+Bắc Từ Liêm,48.7,Chung cư mini,Không nội thất,3,1,1,1,1,2,6200000
+Thanh Xuân,18.0,Mini apartment,Không nội thất,1,0,0,0,1,1,3200000
+Cầu Giấy,35.4,Chung cư mini,Nội thất đầy đủ,2,0,1,0,1,2,8700000
+Hai Bà Trưng,12.3,Mini apartment,Nội thất cơ bản,1,1,1,1,1,2,2100000
+Tây Hồ,16.1,Mini apartment,Không nội thất,1,1,0,0,1,5,4300000
+Bắc Từ Liêm,14.3,Chung cư mini,Nội thất đầy đủ,1,1,1,0,1,9,2900000
+Nam Từ Liêm,43.2,CHDV,Nội thất đầy đủ,2,1,0,0,0,1,7900000
+Tây Hồ,15.5,Chung cư mini,Nội thất đầy đủ,1,1,0,0,1,4,4600000
+Cầu Giấy,42.8,Phòng trọ,Nội thất đầy đủ,3,1,1,0,1,10,11100000
+Tây Hồ,22.7,CHDV,Nội thất đầy đủ,1,0,1,0,0,7,7200000
+Hoàn Kiếm,49.7,Phòng trọ,Không nội thất,3,0,1,0,1,10,9200000
+Hoàng Mai,47.0,Chung cư mini,Không nội thất,2,1,1,0,1,3,6400000
+Hai Bà Trưng,53.2,CHDV,Nội thất cơ bản,4,1,1,1,0,8,14400000
+Cầu Giấy,50.0,Phòng trọ,Nội thất cơ bản,4,0,1,1,1,3,10500000
+Tây Hồ,52.1,Phòng trọ,Nội thất cơ bản,4,0,0,1,1,8,9300000
+Hoàng Mai,48.9,Mini apartment,Nội thất cơ bản,3,0,1,1,1,2,8400000
+Hoàng Mai,41.8,Chung cư mini,Nội thất cơ bản,3,0,1,0,1,5,6800000
+Tây Hồ,19.3,Phòng trọ,Nội thất cơ bản,1,0,1,1,1,4,3800000
+Nam Từ Liêm,23.7,Chung cư mini,Không nội thất,3,1,0,1,1,9,3900000
+Hoàn Kiếm,21.1,Chung cư mini,Không nội thất,2,1,1,0,1,3,4700000
+Ba Đình,38.0,Chung cư mini,Nội thất cơ bản,3,0,1,0,0,5,7900000
+Hoàn Kiếm,33.7,Mini apartment,Nội thất đầy đủ,2,1,0,0,1,10,12800000
+Tây Hồ,49.3,Chung cư mini,Không nội thất,3,1,0,1,1,9,9800000
+Hai Bà Trưng,53.0,Phòng trọ,Nội thất cơ bản,4,1,0,0,1,6,8100000
+Ba Đình,29.4,CHDV,Nội thất đầy đủ,2,0,0,1,0,2,9300000
+Cầu Giấy,33.8,Mini apartment,Nội thất cơ bản,1,0,1,0,0,1,8200000
+Hoàn Kiếm,53.8,Phòng trọ,Không nội thất,4,1,1,0,0,1,9600000
+Tây Hồ,23.9,Phòng trọ,Nội thất cơ bản,3,1,1,1,0,7,5400000
+Hoàn Kiếm,46.1,Phòng trọ,Không nội thất,3,0,1,1,1,2,9500000
+Ba Đình,21.7,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,7,5900000
+Thanh Xuân,41.3,Chung cư mini,Không nội thất,2,1,1,1,1,1,7200000
+Bắc Từ Liêm,22.9,Chung cư mini,Nội thất cơ bản,1,0,0,0,1,4,3300000
+Hoàn Kiếm,50.0,Mini apartment,Không nội thất,3,1,1,1,1,10,13500000
+Cầu Giấy,36.1,CHDV,Nội thất cơ bản,3,1,1,1,1,4,8600000
+Cầu Giấy,20.0,Phòng trọ,Nội thất cơ bản,1,0,1,1,1,5,3700000
+Đống Đa,21.6,Phòng trọ,Không nội thất,3,1,0,0,0,10,3400000
+Hoàn Kiếm,33.2,Phòng trọ,Nội thất cơ bản,1,0,1,0,1,1,7100000
+Bắc Từ Liêm,53.3,Phòng trọ,Không nội thất,4,1,1,1,1,7,6100000
+Nam Từ Liêm,45.1,Chung cư mini,Nội thất cơ bản,4,1,1,0,1,2,7400000
+Hoàng Mai,33.0,Mini apartment,Nội thất cơ bản,2,1,1,1,1,2,5700000
+Bắc Từ Liêm,26.5,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,8,2500000
+Hoàng Mai,35.6,Chung cư mini,Nội thất đầy đủ,3,0,0,0,1,9,6400000
+Hoàng Mai,44.2,CHDV,Nội thất cơ bản,3,0,0,1,1,6,11100000
+Thanh Xuân,45.7,Phòng trọ,Nội thất cơ bản,3,0,0,0,1,1,7200000
+Đống Đa,26.0,Phòng trọ,Không nội thất,2,1,1,1,1,1,3600000
+Bắc Từ Liêm,43.0,Chung cư mini,Nội thất cơ bản,3,0,0,1,1,7,6400000
+Bắc Từ Liêm,40.3,Phòng trọ,Nội thất đầy đủ,4,1,0,1,1,8,6000000
+Thanh Xuân,53.2,Mini apartment,Không nội thất,4,0,0,0,1,3,10700000
+Hoàn Kiếm,52.0,Phòng trọ,Nội thất đầy đủ,4,0,1,1,1,9,16700000
+Hoàn Kiếm,45.9,Phòng trọ,Không nội thất,3,1,0,1,0,4,8600000
+Hoàn Kiếm,43.1,Chung cư mini,Nội thất đầy đủ,3,1,1,0,1,4,13900000
+Hai Bà Trưng,23.8,Mini apartment,Không nội thất,3,1,0,0,1,3,4700000
+Hoàng Mai,48.4,Phòng trọ,Nội thất đầy đủ,2,1,1,0,0,8,7400000
+Hai Bà Trưng,30.4,Phòng trọ,Nội thất cơ bản,2,0,1,1,0,9,4900000
+Đống Đa,23.7,Phòng trọ,Không nội thất,2,1,0,1,0,1,3500000
+Thanh Xuân,28.5,Phòng trọ,Không nội thất,3,1,1,1,1,2,4100000
+Bắc Từ Liêm,47.9,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,1,4900000
+Hoàng Mai,18.4,Chung cư mini,Nội thất đầy đủ,1,0,0,0,1,4,3100000
+Hai Bà Trưng,31.6,Phòng trọ,Không nội thất,2,1,0,0,1,10,3800000
+Hai Bà Trưng,33.2,Phòng trọ,Không nội thất,1,1,1,0,1,7,4800000
+Tây Hồ,13.6,CHDV,Nội thất cơ bản,1,1,0,0,1,7,3600000
+Hai Bà Trưng,20.4,Phòng trọ,Nội thất cơ bản,1,0,1,1,1,6,2700000
+Nam Từ Liêm,47.5,Phòng trọ,Nội thất cơ bản,3,1,1,1,0,5,5600000
+Bắc Từ Liêm,47.7,Phòng trọ,Nội thất cơ bản,2,0,1,1,1,4,6200000
+Nam Từ Liêm,24.6,Mini apartment,Không nội thất,1,1,1,0,1,8,3700000
+Bắc Từ Liêm,49.6,Phòng trọ,Nội thất đầy đủ,4,1,1,1,1,7,7900000
+Thanh Xuân,45.2,Mini apartment,Nội thất cơ bản,3,1,1,1,1,10,12100000
+Bắc Từ Liêm,30.0,CHDV,Không nội thất,2,1,0,0,1,1,4800000
+Nam Từ Liêm,44.2,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,6,7100000
+Bắc Từ Liêm,53.3,Mini apartment,Nội thất cơ bản,3,1,0,0,1,2,8000000
+Thanh Xuân,31.7,Phòng trọ,Nội thất cơ bản,2,0,0,1,1,4,4800000
+Thanh Xuân,22.3,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,5,3500000
+Đống Đa,52.5,CHDV,Không nội thất,4,1,0,1,1,8,13300000
+Bắc Từ Liêm,38.0,CHDV,Nội thất cơ bản,4,0,0,0,1,6,5300000
+Tây Hồ,16.5,Chung cư mini,Nội thất đầy đủ,1,1,1,0,1,2,5100000
+Hoàn Kiếm,36.6,Phòng trọ,Không nội thất,3,0,1,0,1,5,5400000
+Cầu Giấy,33.5,Chung cư mini,Nội thất cơ bản,2,0,0,1,1,5,7100000
+Thanh Xuân,48.8,CHDV,Nội thất đầy đủ,3,1,0,1,1,6,15500000
+Ba Đình,34.8,Phòng trọ,Nội thất đầy đủ,3,0,0,0,1,1,5600000
+Hoàn Kiếm,23.0,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,8,5100000
+Hoàng Mai,41.1,Phòng trọ,Nội thất cơ bản,3,1,1,0,0,3,5200000
+Bắc Từ Liêm,35.3,Phòng trọ,Nội thất cơ bản,3,1,1,0,1,5,4500000
+Nam Từ Liêm,22.0,Mini apartment,Nội thất đầy đủ,2,1,1,1,0,7,5400000
+Cầu Giấy,36.7,Phòng trọ,Nội thất đầy đủ,3,1,1,1,1,3,8400000
+Ba Đình,47.3,Mini apartment,Không nội thất,4,1,1,0,1,10,10100000
+Hoàn Kiếm,13.2,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,6,2800000
+Bắc Từ Liêm,39.1,CHDV,Nội thất cơ bản,3,1,0,0,0,5,7100000
+Đống Đa,27.0,Phòng trọ,Nội thất đầy đủ,2,1,1,0,0,7,5300000
+Hoàng Mai,24.6,Phòng trọ,Nội thất cơ bản,2,1,1,1,1,10,4200000
+Cầu Giấy,28.9,Phòng trọ,Nội thất cơ bản,2,1,0,1,1,3,6100000
+Tây Hồ,26.7,Phòng trọ,Nội thất đầy đủ,1,1,0,0,0,2,6700000
+Đống Đa,47.8,Chung cư mini,Không nội thất,3,1,1,0,1,4,9300000
+Ba Đình,23.8,Mini apartment,Không nội thất,3,1,1,1,0,3,6800000
+Cầu Giấy,43.5,Chung cư mini,Nội thất cơ bản,3,0,0,1,1,4,9000000
+Đống Đa,16.0,Phòng trọ,Nội thất cơ bản,1,0,1,1,0,7,2600000
+Hoàng Mai,52.9,Phòng trọ,Không nội thất,4,1,0,0,0,5,5700000
+Tây Hồ,38.8,Phòng trọ,Không nội thất,2,0,1,1,1,4,6300000
+Đống Đa,42.4,Chung cư mini,Nội thất cơ bản,3,1,1,0,1,6,9300000
+Hai Bà Trưng,24.8,CHDV,Nội thất đầy đủ,2,1,1,1,1,7,7400000
+Tây Hồ,29.7,Mini apartment,Nội thất cơ bản,2,0,1,1,1,5,8600000
+Ba Đình,21.6,Phòng trọ,Nội thất cơ bản,2,1,1,0,1,7,4900000
+Hoàng Mai,52.1,Chung cư mini,Không nội thất,3,0,1,0,1,3,6100000
+Bắc Từ Liêm,33.0,Chung cư mini,Nội thất đầy đủ,2,1,0,0,1,7,5200000
+Nam Từ Liêm,39.1,Chung cư mini,Nội thất đầy đủ,2,1,1,0,0,3,5800000
+Nam Từ Liêm,43.6,Chung cư mini,Nội thất cơ bản,4,1,1,0,1,6,7200000
+Nam Từ Liêm,28.0,Chung cư mini,Không nội thất,2,1,0,1,1,8,4200000
+Cầu Giấy,43.0,Chung cư mini,Không nội thất,3,1,1,0,0,6,8100000
+Ba Đình,41.1,Phòng trọ,Không nội thất,2,1,0,1,0,10,6200000
+Hoàng Mai,42.3,CHDV,Nội thất cơ bản,2,0,0,1,1,3,8100000
+Tây Hồ,33.0,Phòng trọ,Nội thất đầy đủ,2,1,1,1,1,5,7700000
+Cầu Giấy,28.5,Chung cư mini,Nội thất đầy đủ,1,1,1,1,0,9,7200000
+Ba Đình,21.5,Phòng trọ,Nội thất cơ bản,2,1,0,0,1,8,4100000

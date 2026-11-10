@@ -6,6 +6,7 @@ import { ArrowLeft, Loader, Sparkles, CalendarClock, ShieldCheck, BadgePlus, Rot
 import listingService from '../../services/listingService';
 import propertyService from '../../services/propertyService';
 import { getBuilding, getRooms } from '../../features/properties/propertySlice';
+import AiPriceSuggestionWidget from '../../components/ai/AiPriceSuggestionWidget';
 
 const RENEWAL_OPTIONS = [
   { id: 7, label: '7 ngày' },
@@ -180,6 +181,26 @@ const EditListing = () => {
                   placeholder="Mô tả chi tiết"
                 />
               </div>
+
+              {/* Widget Gợi ý giá thuê thông minh từ dữ liệu phòng trên web */}
+              <AiPriceSuggestionWidget
+                initialData={{
+                  address: currentBuilding?.address || room?.address,
+                  area: room?.area,
+                  floor: room?.floor,
+                  amenities: room?.amenities,
+                  type: currentBuilding?.type,
+                }}
+                currentPrice={form.rent_price}
+                onApplyPrice={(suggestedPrice) => {
+                  setForm(prev => ({
+                    ...prev,
+                    rent_price: suggestedPrice,
+                    deposit_amount: prev.deposit_amount === prev.rent_price ? suggestedPrice : prev.deposit_amount
+                  }));
+                  toast.success(`Đã áp dụng giá gợi ý: ${new Intl.NumberFormat('vi-VN').format(suggestedPrice)} đ/tháng`);
+                }}
+              />
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div>

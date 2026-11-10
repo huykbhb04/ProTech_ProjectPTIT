@@ -11,7 +11,9 @@ paddlepaddle
 paddleocr
 easyocr
 shapely
-shapely
 pyyaml
 scikit-learn
 geopy
+# ML Price Prediction (added)
+pandas
+joblib

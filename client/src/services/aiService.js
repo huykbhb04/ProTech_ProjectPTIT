@@ -25,7 +25,17 @@ const aiService = {
     chat: async (chatData) => {
         const response = await api.post('/ai/chat', chatData);
         return response.data;
-    }
+    },
+
+    /**
+     * Gợi ý giá thuê phòng bằng ML.
+     * Dữ liệu được đọc từ thông tin phòng thật trên web.
+     * ⚠️ Model huấn luyện trên dữ liệu giả lập - chỉ mang tính tham khảo.
+     */
+    predictPrice: async (roomFeatures) => {
+        const response = await api.post('/ai/predict-price', roomFeatures);
+        return response.data;
+    },
 };
 
 export default aiService;

@@ -5,6 +5,7 @@ import { getBuilding, getRooms, createRoom, updateRoom, deleteRoom, getRoomDetai
 import propertyService from '../../services/propertyService';
 import listingService from '../../services/listingService';
 import aiService from '../../services/aiService';
+import AiPriceSuggestionWidget from '../../components/ai/AiPriceSuggestionWidget';
 import {
     Building2,
     MapPin,
@@ -336,6 +337,26 @@ const RoomListingTab = ({ room }) => {
                             )}
                         </div>
                     </div>
+
+                    {/* Widget Gợi ý giá thuê thông minh từ dữ liệu phòng trên web */}
+                    <AiPriceSuggestionWidget
+                        initialData={{
+                            address: room.address,
+                            area: room.area,
+                            floor: room.floor,
+                            amenities: formData.amenities || room.amenities,
+                            room_type: 'Phòng trọ',
+                        }}
+                        currentPrice={formData.rent_price}
+                        onApplyPrice={(suggestedPrice) => {
+                            setFormData(prev => ({
+                                ...prev,
+                                rent_price: suggestedPrice,
+                                deposit_amount: prev.deposit_amount === prev.rent_price ? suggestedPrice : prev.deposit_amount
+                            }));
+                        }}
+                    />
+
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Giá thuê (VNĐ)</label>
@@ -749,6 +770,22 @@ const RoomDetailModal = ({ room, onClose, onUpdate }) => {
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div className="bg-white p-6 rounded-xl border shadow-sm">
                                     <h3 className="font-bold text-gray-800 mb-4 flex items-center"><Building2 size={18} className="mr-2 text-indigo-600" /> Thông tin phòng</h3>
+                                    {isEditing && (
+                                        <div className="mb-4">
+                                            <AiPriceSuggestionWidget
+                                                initialData={{
+                                                    address: room.address,
+                                                    area: editForm.area,
+                                                    floor: editForm.floor,
+                                                    amenities: editForm.amenities,
+                                                }}
+                                                currentPrice={editForm.basePrice}
+                                                onApplyPrice={(suggestedPrice) => {
+                                                    setEditForm(prev => ({ ...prev, basePrice: suggestedPrice }));
+                                                }}
+                                            />
+                                        </div>
+                                    )}
                                     <div className="space-y-3 text-sm">
                                         <div className="flex justify-between py-2 border-b border-gray-100">
                                             <span className="text-gray-500">Giá thuê niêm yết</span>
@@ -1580,6 +1617,21 @@ const BuildingDetail = () => {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Widget Gợi ý giá thuê thông minh từ dữ liệu phòng đang nhập */}
+                            <AiPriceSuggestionWidget
+                                initialData={{
+                                    address: currentBuilding?.address,
+                                    area: newRoom.area,
+                                    floor: newRoom.floor,
+                                    amenities: newRoom.selectedAmenities,
+                                    type: currentBuilding?.type,
+                                }}
+                                currentPrice={newRoom.basePrice}
+                                onApplyPrice={(suggestedPrice) => {
+                                    setNewRoom(prev => ({ ...prev, basePrice: suggestedPrice }));
+                                }}
+                            />
 
                             <div>
                                 <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 text-indigo-600">Giá thuê VNĐ / Tháng</label>
