@@ -341,11 +341,14 @@ const RoomListingTab = ({ room }) => {
                     {/* Widget Gợi ý giá thuê thông minh từ dữ liệu phòng trên web */}
                     <AiPriceSuggestionWidget
                         initialData={{
-                            address: room.address,
+                            address_full: room.address_full || room.address,
+                            address: room.address_full || room.address,
                             area: room.area,
                             floor: room.floor,
                             amenities: formData.amenities || room.amenities,
-                            room_type: 'Phòng trọ',
+                            room_type: room.type || 'Phòng trọ',
+                            title: formData.title,
+                            description: formData.description || room.description,
                         }}
                         currentPrice={formData.rent_price}
                         onApplyPrice={(suggestedPrice) => {
@@ -774,10 +777,13 @@ const RoomDetailModal = ({ room, onClose, onUpdate }) => {
                                         <div className="mb-4">
                                             <AiPriceSuggestionWidget
                                                 initialData={{
-                                                    address: room.address,
+                                                    address_full: currentRoomDetails?.address_full || room.address_full || room.address,
+                                                    address: currentRoomDetails?.address_full || room.address_full || room.address,
                                                     area: editForm.area,
                                                     floor: editForm.floor,
                                                     amenities: editForm.amenities,
+                                                    title: room.room_number ? `Phòng ${room.room_number}` : '',
+                                                    description: editForm.description || room.description,
                                                 }}
                                                 currentPrice={editForm.basePrice}
                                                 onApplyPrice={(suggestedPrice) => {
@@ -1621,11 +1627,14 @@ const BuildingDetail = () => {
                             {/* Widget Gợi ý giá thuê thông minh từ dữ liệu phòng đang nhập */}
                             <AiPriceSuggestionWidget
                                 initialData={{
-                                    address: currentBuilding?.address,
+                                    address_full: currentBuilding?.address_full || currentBuilding?.address,
+                                    address: currentBuilding?.address_full || currentBuilding?.address,
                                     area: newRoom.area,
                                     floor: newRoom.floor,
                                     amenities: newRoom.selectedAmenities,
                                     type: currentBuilding?.type,
+                                    title: newRoom.roomNumber ? `Phòng ${newRoom.roomNumber}` : '',
+                                    description: newRoom.description,
                                 }}
                                 currentPrice={newRoom.basePrice}
                                 onApplyPrice={(suggestedPrice) => {

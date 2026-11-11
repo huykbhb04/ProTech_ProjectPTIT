@@ -185,11 +185,14 @@ const EditListing = () => {
               {/* Widget Gợi ý giá thuê thông minh từ dữ liệu phòng trên web */}
               <AiPriceSuggestionWidget
                 initialData={{
-                  address: currentBuilding?.address || room?.address,
+                  address_full: currentBuilding?.address_full || currentBuilding?.address || room?.address_full || room?.address,
+                  address: currentBuilding?.address_full || currentBuilding?.address || room?.address_full || room?.address,
                   area: room?.area,
                   floor: room?.floor,
                   amenities: room?.amenities,
                   type: currentBuilding?.type,
+                  title: form.title,
+                  description: form.description || room?.description,
                 }}
                 currentPrice={form.rent_price}
                 onApplyPrice={(suggestedPrice) => {

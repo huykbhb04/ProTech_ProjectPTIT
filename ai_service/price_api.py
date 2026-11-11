@@ -71,14 +71,15 @@ def load_price_model():
 load_price_model()
 
 # -------------------------------------------------------------------
-# Danh mục hợp lệ
+# Danh mục hợp lệ (Tất cả 16 quận/huyện trong tập dữ liệu mô hình)
 # -------------------------------------------------------------------
 VALID_DISTRICTS = [
-    "Đống Đa", "Cầu Giấy", "Ba Đình", "Hoàn Kiếm",
-    "Tây Hồ", "Hai Bà Trưng", "Hoàng Mai", "Thanh Xuân",
-    "Nam Từ Liêm", "Bắc Từ Liêm",
+    "Cầu Giấy", "Đống Đa", "Thanh Xuân", "Nam Từ Liêm",
+    "Bắc Từ Liêm", "Hoàng Mai", "Hai Bà Trưng", "Ba Đình",
+    "Tây Hồ", "Hoàn Kiếm", "Hà Đông", "Long Biên",
+    "Thanh Trì", "Hoài Đức", "Gia Lâm", "Đông Anh",
 ]
-VALID_ROOM_TYPES = ["Phòng trọ", "Chung cư mini", "CHDV", "Mini apartment"]
+VALID_ROOM_TYPES = ["Phòng trọ", "Chung cư mini", "Căn hộ dịch vụ", "Nhà nguyên căn", "Homestay"]
 VALID_FURNITURE  = ["Không nội thất", "Nội thất cơ bản", "Nội thất đầy đủ"]
 
 # -------------------------------------------------------------------
@@ -160,60 +161,83 @@ class PricePredictRequest(BaseModel):
                 return val
         except Exception:
             pass
-        return v
+        return 1 if v else 0
 
     @field_validator("district")
     @classmethod
     def validate_district(cls, v: str) -> str:
+        if not v:
+            return "Cầu Giấy"
+        v_clean = str(v).strip().lower()
+        # Tìm quận phù hợp
         for d in VALID_DISTRICTS:
-            if d.lower() in v.lower():
+            d_lower = d.lower()
+            if d_lower in v_clean or v_clean in d_lower:
                 return d
-        raise ValueError(
-            f"Khu vực không hợp lệ: '{v}'. "
-            f"Chấp nhận: {VALID_DISTRICTS}"
-        )
+        # Xử lý trường hợp có prefix 'quận ', 'huyện ', 'q.'
+        for d in VALID_DISTRICTS:
+            pure = d.lower().replace("bắc ", "").replace("nam ", "")
+            if pure in v_clean:
+                return d
+        # Fallback an toàn thay vì crash 422
+        return "Cầu Giấy"
 
     @field_validator("room_type")
     @classmethod
     def validate_room_type(cls, v: str) -> str:
+        if not v:
+            return "Phòng trọ"
         mapping = {
-            "căn hộ dịch vụ": "CHDV",
-            "chdv": "CHDV",
+            "căn hộ dịch vụ": "Căn hộ dịch vụ",
+            "can ho dich vu": "Căn hộ dịch vụ",
+            "chdv": "Căn hộ dịch vụ",
             "chung cư mini": "Chung cư mini",
-            "nhà nguyên căn": "Mini apartment",
-            "mini apartment": "Mini apartment",
+            "chung cu mini": "Chung cư mini",
+            "ccmn": "Chung cư mini",
+            "mini apartment": "Chung cư mini",
+            "nhà nguyên căn": "Nhà nguyên căn",
+            "nha nguyen can": "Nhà nguyên căn",
             "phòng trọ": "Phòng trọ",
+            "phong tro": "Phòng trọ",
+            "homestay": "Homestay",
         }
-        normalized = mapping.get(v.lower().strip())
+        normalized = mapping.get(str(v).lower().strip())
         if normalized:
             return normalized
-        if v not in VALID_ROOM_TYPES:
-            raise ValueError(
-                f"Loại phòng không hợp lệ: '{v}'. "
-                f"Chấp nhận: {VALID_ROOM_TYPES}"
-            )
-        return v
+        for rt in VALID_ROOM_TYPES:
+            if rt.lower() in str(v).lower():
+                return rt
+        return "Phòng trọ"
 
     @field_validator("furniture_level")
     @classmethod
     def validate_furniture(cls, v: str) -> str:
+        if not v:
+            return "Nội thất cơ bản"
         mapping = {
             "đầy đủ": "Nội thất đầy đủ",
+            "day du": "Nội thất đầy đủ",
+            "full": "Nội thất đầy đủ",
             "nội thất đầy đủ": "Nội thất đầy đủ",
+            "noi that day du": "Nội thất đầy đủ",
             "cơ bản": "Nội thất cơ bản",
+            "co ban": "Nội thất cơ bản",
             "nội thất cơ bản": "Nội thất cơ bản",
+            "noi that co ban": "Nội thất cơ bản",
             "trống": "Không nội thất",
+            "trong": "Không nội thất",
             "không nội thất": "Không nội thất",
+            "khong noi that": "Không nội thất",
+            "không đồ": "Không nội thất",
+            "khong do": "Không nội thất",
         }
-        normalized = mapping.get(v.lower().strip())
+        normalized = mapping.get(str(v).lower().strip())
         if normalized:
             return normalized
-        if v not in VALID_FURNITURE:
-            raise ValueError(
-                f"Nội thất không hợp lệ: '{v}'. "
-                f"Chấp nhận: {VALID_FURNITURE}"
-            )
-        return v
+        for f in VALID_FURNITURE:
+            if f.lower() in str(v).lower():
+                return f
+        return "Nội thất cơ bản"
 
     model_config = {
         "json_schema_extra": {
